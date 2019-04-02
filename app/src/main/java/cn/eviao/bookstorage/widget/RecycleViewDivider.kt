@@ -1,4 +1,4 @@
-package cn.eviao.bookstorage.ui
+package cn.eviao.bookstorage.widget
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

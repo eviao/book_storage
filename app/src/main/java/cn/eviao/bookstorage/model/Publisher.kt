@@ -1,10 +1,14 @@
 package cn.eviao.bookstorage.model
 
-import com.activeandroid.Model
-import com.activeandroid.annotation.Column
-import com.activeandroid.annotation.Table
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
-@Table(name = "publishers")
+@Entity(
+    tableName = "publishers",
+    indices = [Index(value = ["name"], unique = true)])
 data class Publisher(
-    @Column(name = "name", unique = true, notNull = true, index = true) val name: String
-) : Model()
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val name: String
+)

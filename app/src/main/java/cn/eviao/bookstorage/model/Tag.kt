@@ -1,10 +1,14 @@
 package cn.eviao.bookstorage.model
 
-import com.activeandroid.Model
-import com.activeandroid.annotation.Column
-import com.activeandroid.annotation.Table
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
-@Table(name = "tags")
+@Entity(
+    tableName = "tags",
+    indices = [Index(value = ["text"], unique = true)])
 data class Tag(
-    @Column(name = "text", unique = true, notNull = true, index = true) val text: String
-) : Model()
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val text: String
+)
