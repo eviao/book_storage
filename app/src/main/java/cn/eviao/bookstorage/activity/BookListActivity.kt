@@ -1,9 +1,11 @@
 package cn.eviao.bookstorage.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -49,6 +51,12 @@ class BookListActivity : AppCompatActivity() {
         viewModel.allBooks.observe(this, Observer(bookListAdapter::submitList))
     }
 
+    fun onBookAddClick(view: View) {
+        val intent = Intent()
+        intent.setClass(this, BookScanActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_book_list, menu)
         return true
@@ -59,5 +67,4 @@ class BookListActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
