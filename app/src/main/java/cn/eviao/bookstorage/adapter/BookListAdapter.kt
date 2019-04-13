@@ -28,7 +28,7 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
 }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(context, LayoutInflater.from(context)
-            .inflate(R.layout.content_book_list_item, parent, false))
+            .inflate(R.layout.activity_book_list_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

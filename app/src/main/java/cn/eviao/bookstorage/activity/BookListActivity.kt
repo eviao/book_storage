@@ -1,5 +1,6 @@
 package cn.eviao.bookstorage.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,33 +17,30 @@ import cn.eviao.bookstorage.databinding.ActivityBookListBinding
 import cn.eviao.bookstorage.viewmodel.BookListViewModel
 
 import kotlinx.android.synthetic.main.activity_book_list.*
-import kotlinx.android.synthetic.main.content_book_list.*
 
 class BookListActivity : AppCompatActivity() {
 
-    private val binding by lazy(LazyThreadSafetyMode.NONE) {
-        DataBindingUtil.setContentView<ActivityBookListBinding>(this, R.layout.activity_book_list)
-    }
-    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(BookListViewModel::class.java)
-    }
-
+    private lateinit var binding: ActivityBookListBinding
+    private lateinit var viewModel: BookListViewModel
     private lateinit var bookListAdapter: BookListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(toolbar)
 
-        initBinding()
-        initBookList()
+        initDataBind()
+        setSupportActionBar(binding.toolbar)
+
+        initData()
     }
 
-    private fun initBinding() {
+    private fun initDataBind() {
+        viewModel = ViewModelProviders.of(this).get(BookListViewModel::class.java)
+        binding = DataBindingUtil.setContentView<ActivityBookListBinding>(this, R.layout.activity_book_list)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
 
-    private fun initBookList() {
+    private fun initData() {
         bookListAdapter = BookListAdapter(this)
 
         rv_bookList.adapter = bookListAdapter
@@ -51,7 +49,7 @@ class BookListActivity : AppCompatActivity() {
         viewModel.allBooks.observe(this, Observer(bookListAdapter::submitList))
     }
 
-    fun onBookAddClick(view: View) {
+    fun onAddClick(view: View) {
         val intent = Intent()
         intent.setClass(this, BookScanActivity::class.java)
         startActivity(intent)
@@ -65,6 +63,14 @@ class BookListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    companion object {
+        fun start(context: Context) {
+            val intent = Intent(context, BookListActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            context.startActivity(intent)
         }
     }
 }

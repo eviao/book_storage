@@ -2,30 +2,35 @@ package cn.eviao.bookstorage.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.AfterPermissionGranted
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.viewmodel.BookScanViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_book_scanning.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_book_scan.*
 
 class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
 
     private var lightState = false
 
-    companion object {
-        const val CAMERA_REQUEST_CODE: Int = 1
+    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProviders.of(this).get(BookScanViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_scanning)
+        setContentView(R.layout.activity_book_scan)
         setSupportActionBar(toolbar)
 
         initToolbar()
@@ -34,7 +39,7 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
 
     override fun onStart() {
         super.onStart()
-        scanningTask()
+        doScanning()
     }
 
     override fun onStop() {
@@ -48,9 +53,7 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
     }
 
     private fun initToolbar() {
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
     private fun initScanner() {
@@ -92,7 +95,7 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
     }
 
     @AfterPermissionGranted(CAMERA_REQUEST_CODE)
-    private fun scanningTask() {
+    private fun doScanning() {
         val perms = Manifest.permission.CAMERA
         if (EasyPermissions.hasPermissions(this, perms)) {
             // unfix: 小米手机在首次确认摄像头权限时无法识别
@@ -104,19 +107,37 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
         }
     }
 
-    private fun vibrateTask() {
+    private fun doVibrate() {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(VibrationEffect.createOneShot(200, 128))
     }
 
+    private fun showNextPage(isbn: String) {
+        viewModel
+            .checkBookExists(isbn)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result, _ ->
+                if (result) {
+                    BookDetailActivity.start(this, isbn)
+                } else {
+                    BookAddActivity.start(this, isbn)
+                }
+            }
+    }
+
     override fun onScanQRCodeSuccess(result: String) {
-        vibrateTask()
-        Snackbar.make(zbv_scanner, result, Snackbar.LENGTH_LONG).show()
+        doVibrate()
+        showNextPage(result)
     }
 
     override fun onScanQRCodeOpenCameraError() {
-        Snackbar.make(zbv_scanner, "图书编号扫描失败", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(zbv_scanner, "图书条码扫描失败", Snackbar.LENGTH_LONG).show()
     }
 
     override fun onCameraAmbientBrightnessChanged(isDark: Boolean) { }
+
+    companion object {
+        const val CAMERA_REQUEST_CODE: Int = 1
+    }
 }

@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "tags",
-    indices = [Index(value = ["text"], unique = true)])
+    indices = [Index(value = ["text"], unique = true)]
+)
 data class Tag(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val text: String
 )

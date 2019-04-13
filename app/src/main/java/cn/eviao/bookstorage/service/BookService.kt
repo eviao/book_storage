@@ -1,0 +1,62 @@
+package cn.eviao.bookstorage.service
+
+import android.app.Application
+import android.content.Context
+import cn.eviao.bookstorage.data.AppDatabase
+import cn.eviao.bookstorage.http.Http
+import cn.eviao.bookstorage.http.Response
+import cn.eviao.bookstorage.http.impl.DoubanCrawlImpl
+import cn.eviao.bookstorage.model.BookTagRef
+import cn.eviao.bookstorage.model.Tag
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+
+class BookService(private val context: Context) {
+    private val database = AppDatabase.get(context)
+
+    private val bookDao = database.bookDao()
+    private val tagDao = database.tagDao()
+    private val bookTagRefDao = database.bookTagRefDao()
+
+    private val http: Http = DoubanCrawlImpl()
+
+
+    fun pullBook(isbn: String): Completable {
+        return http.fetch(isbn)
+            .map { addBook(it) }
+            .flatMapCompletable { it }
+    }
+
+    fun ensureTags(texts: List<String>): Single<List<Long>> {
+        val loadTagId = { text: String -> tagDao.loadByText(text).map { it.id } }
+        val insertTag = { text: String -> tagDao.insert(Tag(id = 0, text = text)) }
+
+        val tags = texts.map { loadTagId(it).switchIfEmpty(insertTag(it)) }
+        return Single.concatArray(*(Array(tags.count(), { tags.get(it) }))).toList()
+    }
+
+    fun addBook(response: Response): Completable {
+        val insertBook = bookDao.insert(response.book)
+        val insertTags = ensureTags(response.tags)
+        val insertRefs = { refs: List<BookTagRef> -> bookTagRefDao.insert(refs) }
+
+        val combineBookWithTag = BiFunction<Long, List<Long>, Pair<Long, List<Long>>> { bookId, tagId -> bookId to tagId }
+
+        return Completable.create { emitter ->
+            AppDatabase.get(context).runInTransaction {
+                Single.zip(insertBook, insertTags, combineBookWithTag).flatMap { (bookId, tagIds) ->
+                    insertRefs(tagIds.map { BookTagRef(id = 0, bookId = bookId, tagId = it) })
+                }.subscribe(
+                    {
+                        emitter.onComplete()
+                    },
+                    {
+                        emitter.onError(it)
+                    }
+                )
+            }
+        }
+    }
+
+}

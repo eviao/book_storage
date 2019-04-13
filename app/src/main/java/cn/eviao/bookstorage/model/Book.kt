@@ -1,35 +1,37 @@
 package cn.eviao.bookstorage.model
 
+import android.os.Parcelable
 import androidx.room.*
+import kotlinx.android.parcel.Parcelize
 
 @Entity(
     tableName = "books",
     indices = [
         Index(value = ["title"]),
         Index(value = ["isbn"], unique = true)
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = Publisher::class,
-            parentColumns = ["id"],
-            childColumns = ["publisher_id"])
-    ])
+    ]
+)
+@Parcelize
 data class Book(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val title: String,
     val subtitle: String? = null,
     val originTitle: String? = null,
 
-    val image: String? = null,
-
     val isbn: String,
     val pubdate: String? = null,
+    val image: String? = null,
 
     val rating: Double? = null,
     val catalog: String? = null,
     val summary: String? = null,
 
-    @ColumnInfo(name = "publisher_id", index = true)
-    val publisherId: Int? = null
-)
+    val author: String? = null,
+    val publisher: String? = null
+) : Parcelable {
+
+    fun isNew(): Boolean {
+        return id == 0L
+    }
+}

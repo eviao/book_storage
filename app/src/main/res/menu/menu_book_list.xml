@@ -3,4 +3,9 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="cn.eviao.bookstorage.activity.BookListActivity">
 
+    <item android:id="@+id/action_export"
+          android:title="全部导出"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_flash_on_white_24dp"
+          app:showAsAction="always" />
 </menu>
