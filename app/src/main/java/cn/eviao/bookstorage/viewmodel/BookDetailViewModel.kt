@@ -7,13 +7,13 @@ import cn.eviao.bookstorage.data.AppDatabase
 import cn.eviao.bookstorage.data.DaoException
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Tag
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import java.util.ArrayList
 
 class BookDetailViewModel(app: Application) : AndroidViewModel(app) {
     private val bookDao = AppDatabase.get(app).bookDao()
     private val tagDao = AppDatabase.get(app).tagDao()
-    private val bookTagRefDao = AppDatabase.get(app).bookTagRefDao()
 
     val book = MutableLiveData<Book>()
     val tags = MutableLiveData<ArrayList<String>>()
@@ -34,5 +34,11 @@ class BookDetailViewModel(app: Application) : AndroidViewModel(app) {
                 tags.postValue(data as ArrayList<String>)
                 it
             }
+    }
+
+    fun deleteBook(id: Long): Completable {
+        val loadBook = bookDao.loadById(id)
+        val deleteBook = { book: Book -> bookDao.delete(book) }
+        return loadBook.flatMapCompletable(deleteBook)
     }
 }

@@ -6,7 +6,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.Glide
 import co.lujun.androidtagview.TagContainerLayout
 
-
 @BindingAdapter("url")
 fun ImageView.setImageUrl(url: String?) {
     url?.let {

@@ -139,5 +139,10 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
 
     companion object {
         const val CAMERA_REQUEST_CODE: Int = 1
+
+        fun start(context: Context) {
+            val intent = Intent(context, BookScanActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

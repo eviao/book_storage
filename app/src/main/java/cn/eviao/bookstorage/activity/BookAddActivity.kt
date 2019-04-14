@@ -36,6 +36,7 @@ class BookAddActivity : AppCompatActivity() {
 
     private fun initDataBind() {
         viewModel = ViewModelProviders.of(this).get(BookAddViewModel::class.java)
+
         binding = DataBindingUtil.setContentView<ActivityBookAddBinding>(this, R.layout.activity_book_add)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -52,14 +53,12 @@ class BookAddActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { progress.showContent() },
                 {
-                    progress.showError(
-                        getDrawable(R.drawable.ic_description_blue_grey_50_24dp),
-                        "加载错误",
-                        it.message,
-                        "重试"
-                    ) {
+                    progress.showContent()
+                },
+                {
+                    val icon = getDrawable(R.drawable.ic_description_blue_grey_50_24dp)
+                    progress.showError(icon, "加载错误", it.message, "重试") {
                         fetchBook()
                     }
                 }
@@ -67,7 +66,7 @@ class BookAddActivity : AppCompatActivity() {
     }
 
     private fun initParams() {
-        isbn = intent.getStringExtra("isbn") ?: "9787111135104"
+        isbn = intent.getStringExtra("isbn")
     }
 
     private fun initData() {
@@ -82,12 +81,8 @@ class BookAddActivity : AppCompatActivity() {
                 .subscribe({
                     BookListActivity.start(this)
                 }, {
-                    progress.showError(
-                        getDrawable(R.drawable.ic_description_blue_grey_50_24dp),
-                        "保存错误",
-                        it.message,
-                        "重试"
-                    ) {
+                    val icon = getDrawable(R.drawable.ic_description_blue_grey_50_24dp)
+                    progress.showError(icon, "保存错误", it.message, "重试" ) {
                         addBook()
                     }
                 })

@@ -35,6 +35,7 @@ class BookListActivity : AppCompatActivity() {
 
     private fun initDataBind() {
         viewModel = ViewModelProviders.of(this).get(BookListViewModel::class.java)
+
         binding = DataBindingUtil.setContentView<ActivityBookListBinding>(this, R.layout.activity_book_list)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -50,9 +51,7 @@ class BookListActivity : AppCompatActivity() {
     }
 
     fun onAddClick(view: View) {
-        val intent = Intent()
-        intent.setClass(this, BookScanActivity::class.java)
-        startActivity(intent)
+        BookScanActivity.start(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

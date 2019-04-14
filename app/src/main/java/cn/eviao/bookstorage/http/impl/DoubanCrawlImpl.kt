@@ -42,7 +42,7 @@ class DoubanCrawlImpl : Http {
             .map { it.siblingElements().select("a") }
             .flatMap { it }
             .map { it.text() }
-            .reduce { t, u -> "${t}, ${u}" }
+            .reduce { t, u -> "${t} / ${u}" }
     }
 
     private fun parseAttrTag(document: Document, title: String): String? {

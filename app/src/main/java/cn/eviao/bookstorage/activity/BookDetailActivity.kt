@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.activity
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,38 +35,39 @@ class BookDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         initTabs()
+        initToolbar()
 
         initParams()
         initData()
     }
 
-    private fun showError(t: Throwable) {
-        progress.showError(
-            getDrawable(R.drawable.ic_description_blue_grey_50_24dp),
-            "发生错误",
-            t.message,
-            "关闭"
-        ) {
-            finish()
-        }
+    private fun initToolbar() {
+        binding.toolbar.setNavigationOnClickListener { finish() }
     }
 
     private fun initDataBind() {
         viewModel = ViewModelProviders.of(this).get(BookDetailViewModel::class.java)
+
         binding = DataBindingUtil.setContentView<ActivityBookDetailBinding>(this, R.layout.activity_book_detail)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
 
     private fun initParams() {
-        isbn = intent.getStringExtra("isbn") ?: "9787111135104"
+        isbn = intent.getStringExtra("isbn") ?: "9787111544937"
+    }
+
+    private fun showError(t: Throwable) {
+        val icon = getDrawable(R.drawable.ic_description_blue_grey_50_24dp)
+        progress.showError(icon, "发生错误", t.message, "关闭") {
+            finish()
+        }
     }
 
     private fun initData() {
         progress.showLoading()
 
-        viewModel.loadBook(isbn)
-            .flatMap { viewModel.loadTags(it.id) }
+        viewModel.loadBook(isbn).flatMap { viewModel.loadTags(it.id) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -77,14 +79,15 @@ class BookDetailActivity : AppCompatActivity() {
     }
 
     private fun initContent() {
-        val book = viewModel.book.value!!
-        val tags = viewModel.tags.value ?: arrayListOf()
+        viewModel.book.value?.let { book ->
+            val tags = viewModel.tags.value ?: arrayListOf()
 
-        val adapter = TabPagerAdapter(supportFragmentManager, listOf(
-            "基本信息" to BookDetailBasicFragment.newInstance(book, tags),
-            "目录" to BookDetailCatalogFragment()
-        ))
-        vp_content.adapter = adapter
+            val adapter = TabPagerAdapter(supportFragmentManager, listOf(
+                "基本信息" to BookDetailBasicFragment.newInstance(book, tags),
+                "目录" to BookDetailCatalogFragment.newInstance(book)
+            ))
+            vp_content.adapter = adapter
+        }
     }
 
     private fun initTabs() {
@@ -94,12 +97,19 @@ class BookDetailActivity : AppCompatActivity() {
     private fun deleteBook() {
         AlertDialog.Builder(this)
             .setTitle("确认删除？")
-            .setPositiveButton("确认", { d, _ ->
-
+            .setPositiveButton("确认", { dialog, _ ->
+                viewModel.book.value?.let { book ->
+                    viewModel.deleteBook(book.id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            finish()
+                        }, {
+                            showError(it)
+                        })
+                }
             })
-            .setNegativeButton("取消", { d, _ ->
-
-            })
+            .setNegativeButton("取消", null)
             .show()
     }
 

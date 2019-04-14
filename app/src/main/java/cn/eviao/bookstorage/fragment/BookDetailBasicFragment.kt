@@ -18,18 +18,10 @@ private const val ARG_TAGS = "tags"
 
 class BookDetailBasicFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentBookDetailBasicBinding>(
             inflater, R.layout.fragment_book_detail_basic, container, false)
         binding.book = arguments?.getParcelable(ARG_BOOK)
-
-//        val tags: java.util.ArrayList<String> = ArrayList<String>()
-//        tags.add("123")
-//        tags.add("234")
         binding.tags = arguments?.getStringArrayList(ARG_TAGS)
         return binding.root
     }

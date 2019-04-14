@@ -67,4 +67,4 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-private val BOOK_DATA = arrayOf("9787111558668", "9787111135104")
+private val BOOK_DATA = arrayOf("9787111135104", "9787111544937")

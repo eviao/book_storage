@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "books_tags_reference",
     foreignKeys = [
-        ForeignKey(entity = Book::class, parentColumns = ["id"], childColumns = ["book_id"]),
-        ForeignKey(entity = Tag::class, parentColumns = ["id"], childColumns = ["tag_id"])
+        ForeignKey(entity = Book::class, parentColumns = ["id"], childColumns = ["book_id"], onDelete = ForeignKey.CASCADE),
+        ForeignKey(entity = Tag::class, parentColumns = ["id"], childColumns = ["tag_id"], onDelete = ForeignKey.CASCADE)
     ]
 )
 data class BookTagRef(

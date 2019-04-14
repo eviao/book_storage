@@ -8,6 +8,6 @@ class DoubanAPIImpl : Http {
     private val BASE_URL = "https://api.douban.com/v2/book/isbn"
 
     override fun fetch(isbn: String): Observable<Response> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("豆瓣图书API服务暂时无法访问")
     }
 }

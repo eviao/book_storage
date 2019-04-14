@@ -1,11 +1,11 @@
 package cn.eviao.bookstorage.service
 
-import android.app.Application
 import android.content.Context
 import cn.eviao.bookstorage.data.AppDatabase
 import cn.eviao.bookstorage.http.Http
 import cn.eviao.bookstorage.http.Response
 import cn.eviao.bookstorage.http.impl.DoubanCrawlImpl
+import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.BookTagRef
 import cn.eviao.bookstorage.model.Tag
 import io.reactivex.Completable
@@ -23,9 +23,7 @@ class BookService(private val context: Context) {
 
 
     fun pullBook(isbn: String): Completable {
-        return http.fetch(isbn)
-            .map { addBook(it) }
-            .flatMapCompletable { it }
+        return http.fetch(isbn).flatMapCompletable { addBook(it) }
     }
 
     fun ensureTags(texts: List<String>): Single<List<Long>> {
@@ -58,5 +56,4 @@ class BookService(private val context: Context) {
             }
         }
     }
-
 }

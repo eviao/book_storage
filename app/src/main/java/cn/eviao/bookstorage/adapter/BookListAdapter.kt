@@ -10,10 +10,13 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.activity.BookDetailActivity
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.viewmodel.BookDetailViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
-class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Book>() {
+class DiffCallback : DiffUtil.ItemCallback<Book>() {
     override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
         return oldItem.id == newItem.id
     }
@@ -21,11 +24,10 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
     override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
         return oldItem == newItem
     }
+}
 
-    override fun getChangePayload(oldItem: Book, newItem: Book): Any? {
-        return null
-    }
-}) {
+class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAdapter.ViewHolder>(DiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(context, LayoutInflater.from(context)
             .inflate(R.layout.activity_book_list_item, parent, false))
@@ -35,18 +37,30 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
         holder.bindTo(getItem(position))
     }
 
-    class ViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.iv_image)
         val titleView: TextView = itemView.findViewById(R.id.tv_title)
         val subtitleView: TextView = itemView.findViewById(R.id.tv_subtitle)
         val summaryView: TextView = itemView.findViewById(R.id.tv_summary)
 
+        var book: Book? = null
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         fun bindTo(book: Book?) {
+            this.book = book
+
             book?.image?.let { Glide.with(context).load(it).into(imageView) }
 
             titleView.text = book?.title
             subtitleView.text = book?.subtitle
             summaryView.text = book?.summary
+        }
+
+        override fun onClick(v: View) {
+            book?.let { BookDetailActivity.start(context, it.isbn) }
         }
     }
 }
