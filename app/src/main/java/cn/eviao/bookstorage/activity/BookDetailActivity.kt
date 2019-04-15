@@ -97,7 +97,7 @@ class BookDetailActivity : AppCompatActivity() {
     private fun deleteBook() {
         AlertDialog.Builder(this)
             .setTitle("确认删除？")
-            .setPositiveButton("确认", { dialog, _ ->
+            .setPositiveButton("确认") { dialog, _ ->
                 viewModel.book.value?.let { book ->
                     viewModel.deleteBook(book.id)
                         .subscribeOn(Schedulers.io())
@@ -108,7 +108,7 @@ class BookDetailActivity : AppCompatActivity() {
                             showError(it)
                         })
                 }
-            })
+            }
             .setNegativeButton("取消", null)
             .show()
     }

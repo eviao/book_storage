@@ -12,7 +12,6 @@ import cn.eviao.bookstorage.databinding.FragmentBookDetailBasicBinding
 import cn.eviao.bookstorage.model.Book
 import java.util.ArrayList
 
-
 private const val ARG_BOOK = "book"
 private const val ARG_TAGS = "tags"
 

@@ -7,7 +7,6 @@ import org.jsoup.HttpStatusException
 import org.jsoup.nodes.Document
 import java.net.SocketTimeoutException
 
-
 class ErrorHandler : Function<Throwable, Observable<Document>> {
 
     override fun apply(t: Throwable): Observable<Document> {

@@ -39,8 +39,7 @@ class DoubanCrawlImpl : Http {
         return document
             .select("#info .pl")
             .filter { it.text().contains("作者") }
-            .map { it.siblingElements().select("a") }
-            .flatMap { it }
+            .flatMap { it.siblingElements().select("a") }
             .map { it.text() }
             .reduce { t, u -> "${t} / ${u}" }
     }
@@ -129,7 +128,7 @@ class DoubanCrawlImpl : Http {
                 it.onNext(getDocument(isbn))
                 it.onComplete()
             }
-            .retryWhen(RetryHandler(2, 1500))
+            .retryWhen(RetryHandler(2, 2000))
             .onErrorResumeNext(ErrorHandler())
             .map { parseContent(it, isbn) }
     }

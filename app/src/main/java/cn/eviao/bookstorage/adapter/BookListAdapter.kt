@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.activity.BookDetailActivity
 import cn.eviao.bookstorage.model.Book
-import cn.eviao.bookstorage.viewmodel.BookDetailViewModel
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 
 class DiffCallback : DiffUtil.ItemCallback<Book>() {
     override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {

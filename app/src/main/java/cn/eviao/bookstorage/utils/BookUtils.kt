@@ -1,7 +1,5 @@
 package cn.eviao.bookstorage.utils
 
-import java.util.regex.Pattern
-
 object BookUtils {
 
     fun isValidIsbn(isbn: String): Boolean {

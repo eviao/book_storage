@@ -13,13 +13,11 @@ import io.reactivex.functions.BiFunction
 
 class BookService(private val context: Context) {
     private val database = AppDatabase.get(context)
-
     private val bookDao = database.bookDao()
     private val tagDao = database.tagDao()
     private val bookTagDao = database.bookTagDao()
 
     private val http: Http = DoubanCrawlImpl()
-
 
     fun pullBook(isbn: String): Completable {
         return http.fetch(isbn).flatMapCompletable { addBook(it) }
