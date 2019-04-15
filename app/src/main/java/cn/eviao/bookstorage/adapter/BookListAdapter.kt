@@ -40,7 +40,7 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
     class ViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.iv_image)
         val titleView: TextView = itemView.findViewById(R.id.tv_title)
-        val subtitleView: TextView = itemView.findViewById(R.id.tv_subtitle)
+        val authorView: TextView = itemView.findViewById(R.id.tv_author)
         val summaryView: TextView = itemView.findViewById(R.id.tv_summary)
 
         var book: Book? = null
@@ -55,7 +55,7 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
             book?.image?.let { Glide.with(context).load(it).into(imageView) }
 
             titleView.text = book?.title
-            subtitleView.text = book?.subtitle
+            authorView.text = book?.author
             summaryView.text = book?.summary
         }
 
