@@ -14,11 +14,14 @@ import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.AfterPermissionGranted
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.utils.BookUtils
 import cn.eviao.bookstorage.viewmodel.BookScanViewModel
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_book_scan.*
+import java.util.concurrent.TimeUnit
 
 class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
 
@@ -68,15 +71,18 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
     private fun toggleLight() {
         val button = toolbar.menu.findItem(R.id.action_light)
 
-        if (lightState) {
-            zbv_scanner.closeFlashlight()
-            lightState = false
-            button.icon = getDrawable(R.drawable.ic_flash_on_white_24dp)
-        } else {
+        val open = {
             zbv_scanner.openFlashlight()
             lightState = true
             button.icon = getDrawable(R.drawable.ic_flash_off_white_24dp)
         }
+        val close = {
+            zbv_scanner.closeFlashlight()
+            lightState = false
+            button.icon = getDrawable(R.drawable.ic_flash_on_white_24dp)
+        }
+
+        if (lightState) close() else open()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,7 +134,20 @@ class BookScanActivity : AppCompatActivity(), QRCodeView.Delegate {
 
     override fun onScanQRCodeSuccess(result: String) {
         doVibrate()
-        showNextPage(result)
+
+        if (BookUtils.isValidIsbn(result)) {
+            showNextPage(result)
+        } else {
+            Snackbar.make(zbv_scanner, "无效的书号[${result}]", Snackbar.LENGTH_SHORT).show()
+
+            Observable
+                .timer(2000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    zbv_scanner.startSpot()
+                }
+        }
     }
 
     override fun onScanQRCodeOpenCameraError() {
