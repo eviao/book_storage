@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
         ForeignKey(entity = Tag::class, parentColumns = ["id"], childColumns = ["tag_id"], onDelete = ForeignKey.CASCADE)
     ]
 )
-data class BookTagRef(
+data class BookTag(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo(name = "book_id", index = true)

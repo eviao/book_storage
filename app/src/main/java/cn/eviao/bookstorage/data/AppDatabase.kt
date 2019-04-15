@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import cn.eviao.bookstorage.data.dao.BookDao
-import cn.eviao.bookstorage.data.dao.BookTagRefDao
+import cn.eviao.bookstorage.data.dao.BookTagDao
 import cn.eviao.bookstorage.data.dao.TagDao
 import cn.eviao.bookstorage.model.*
 import cn.eviao.bookstorage.service.BookService
@@ -18,7 +18,7 @@ private val DB_NAME: String = "book_storage.db"
     entities = [
         Book::class,
         Tag::class,
-        BookTagRef::class
+        BookTag::class
     ],
     version = 1,
     exportSchema = false
@@ -27,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun bookDao(): BookDao
     abstract fun tagDao(): TagDao
-    abstract fun bookTagRefDao(): BookTagRefDao
+    abstract fun bookTagDao(): BookTagDao
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null
