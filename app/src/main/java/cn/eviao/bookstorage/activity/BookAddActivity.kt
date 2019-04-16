@@ -29,9 +29,10 @@ class BookAddActivity : AppCompatActivity() {
         initDataBind()
         setSupportActionBar(binding.toolbar)
 
+        initToolbar()
+
         initParams()
         initData()
-        initToolbar()
     }
 
     private fun initDataBind() {
@@ -66,7 +67,7 @@ class BookAddActivity : AppCompatActivity() {
     }
 
     private fun initParams() {
-        isbn = intent.getStringExtra("isbn")
+        isbn = intent.getStringExtra("isbn") ?: "9787115400413"
     }
 
     private fun initData() {
