@@ -10,6 +10,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.adapter.BookListAdapter
@@ -46,6 +47,7 @@ class BookListActivity : AppCompatActivity() {
 
         rv_bookList.adapter = bookListAdapter
         rv_bookList.layoutManager = LinearLayoutManager(this)
+        rv_bookList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         viewModel.allBooks.observe(this, Observer(bookListAdapter::submitList))
     }
