@@ -28,6 +28,9 @@ interface BookDao {
     @Query("SELECT COUNT(*) != 0 FROM books WHERE isbn = :isbn")
     fun loadExistsByIsbn(isbn: String): Single<Boolean>
 
+    @Query("SELECT COUNT(*) FROM books")
+    fun count(): Single<Int>
+
     @Query("SELECT * FROM books ORDER BY id DESC")
     fun loadAll(): DataSource.Factory<Int, Book>
 }

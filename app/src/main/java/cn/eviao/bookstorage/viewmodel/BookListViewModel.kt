@@ -14,4 +14,6 @@ class BookListViewModel(app: Application) : AndroidViewModel(app) {
         enablePlaceholders = true,
         maxSize = 200
     ))
+
+    val count = bookDao.count()
 }

@@ -16,6 +16,8 @@ import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.adapter.BookListAdapter
 import cn.eviao.bookstorage.databinding.ActivityBookListBinding
 import cn.eviao.bookstorage.viewmodel.BookListViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 import kotlinx.android.synthetic.main.activity_book_list.*
 
@@ -43,6 +45,22 @@ class BookListActivity : AppCompatActivity() {
     }
 
     private fun initData() {
+        initBookCount()
+        initBookList()
+    }
+
+    private fun initBookCount() {
+        val title = getString(R.string.list_title)
+
+        viewModel.count
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { count, e ->
+                binding.toolbar.title = title.replace("{{count}}", count.toString())
+            }
+    }
+
+    private fun initBookList() {
         bookListAdapter = BookListAdapter(this)
 
         rv_bookList.adapter = bookListAdapter
