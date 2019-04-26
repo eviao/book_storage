@@ -15,5 +15,5 @@ class BookListViewModel(app: Application) : AndroidViewModel(app) {
         maxSize = 200
     ))
 
-    val count = bookDao.count()
+    val booksCount = bookDao.count()
 }
