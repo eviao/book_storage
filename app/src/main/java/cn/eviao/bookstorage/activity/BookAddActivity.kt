@@ -47,10 +47,10 @@ class BookAddActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
     }
 
-    private fun fetchBook() {
+    private fun initBook() {
         progress.showLoading()
 
-        viewModel.fetchBook(isbn)
+        viewModel.loadBook(isbn)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -60,7 +60,7 @@ class BookAddActivity : AppCompatActivity() {
                 {
                     val icon = getDrawable(R.drawable.ic_description_blue_grey_50_24dp)
                     progress.showError(icon, "加载错误", it.message, "重试") {
-                        fetchBook()
+                        initBook()
                     }
                 }
             )
@@ -71,7 +71,7 @@ class BookAddActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        fetchBook()
+        initBook()
     }
 
     private fun addBook() {

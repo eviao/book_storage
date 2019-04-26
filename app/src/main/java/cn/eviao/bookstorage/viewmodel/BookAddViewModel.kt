@@ -16,7 +16,7 @@ class BookAddViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val response = MutableLiveData<Response>()
 
-    fun fetchBook(isbn: String): Observable<Response> {
+    fun loadBook(isbn: String): Observable<Response> {
         return http.fetch(isbn)
             .map {
                 response.postValue(it)
