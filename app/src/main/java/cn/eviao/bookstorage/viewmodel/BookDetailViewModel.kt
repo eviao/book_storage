@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import cn.eviao.bookstorage.data.AppDatabase
-import cn.eviao.bookstorage.data.DaoException
+import cn.eviao.bookstorage.data.dao.DaoException
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Tag
 import io.reactivex.Completable
