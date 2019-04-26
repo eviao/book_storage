@@ -24,7 +24,7 @@
                     android:background="?attr/colorPrimary"
                     app:logo="@drawable/ic_list_white_24dp"
                     app:titleMarginStart="32dp"
-                    app:title='@{"Books (" + viewModel.booksCount.toString() + ")"}'
+                    app:title='@{"Books (" + viewModel.booksCount + ")"}'
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
         </com.google.android.material.appbar.AppBarLayout>
 
