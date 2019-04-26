@@ -56,7 +56,7 @@ class BookListActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { count, e ->
-                binding.toolbar.title = title.replace("{{booksCount}}", count.toString())
+                binding.toolbar.title = title.replace("{{count}}", count.toString())
             }
     }
 
