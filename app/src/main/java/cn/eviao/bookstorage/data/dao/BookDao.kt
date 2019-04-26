@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import cn.eviao.bookstorage.model.Book
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 
@@ -29,7 +30,7 @@ interface BookDao {
     fun loadExistsByIsbn(isbn: String): Single<Boolean>
 
     @Query("SELECT COUNT(*) FROM books")
-    fun count(): Single<Int>
+    fun count(): Flowable<Int>
 
     @Query("SELECT * FROM books ORDER BY id DESC")
     fun loadAll(): DataSource.Factory<Int, Book>

@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.data
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -30,6 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun bookTagDao(): BookTagDao
 
     companion object {
+        private val TAG = this.javaClass.name
         @Volatile private var INSTANCE: AppDatabase? = null
 
         fun get(context: Context): AppDatabase {
@@ -57,9 +59,9 @@ abstract class AppDatabase : RoomDatabase() {
                 BOOK_DATA.map { isbn ->
                     bookService.pullBook(isbn)
                         .subscribe({
-                            println("数据初始化完成..")
+                            Log.d(TAG, "[${isbn}] synced.")
                         }, {
-                            it.printStackTrace()
+                            Log.e(TAG, "sync failure!", it)
                         })
                 }
             }
@@ -67,4 +69,6 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-private val BOOK_DATA = arrayOf("9787111135104", "9787111544937")
+private val BOOK_DATA = arrayOf(
+    "9787111135104", "9787111544937", "9787111213826", "9787111075752"
+)

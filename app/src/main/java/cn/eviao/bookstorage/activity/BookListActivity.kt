@@ -50,14 +50,10 @@ class BookListActivity : AppCompatActivity() {
     }
 
     private fun initBooksCount() {
-        val title = getString(R.string.list_title)
-
-        viewModel.booksCount
+        viewModel.loadBooksCount()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { count, e ->
-                binding.toolbar.title = title.replace("{{count}}", count.toString())
-            }
+            .subscribe()
     }
 
     private fun initBookList() {

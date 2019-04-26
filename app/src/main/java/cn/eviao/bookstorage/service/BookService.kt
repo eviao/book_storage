@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.service
 
 import android.content.Context
+import android.util.Log
 import cn.eviao.bookstorage.data.AppDatabase
 import cn.eviao.bookstorage.http.Http
 import cn.eviao.bookstorage.http.Response
@@ -12,6 +13,8 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 class BookService(private val context: Context) {
+    private val TAG = this.javaClass.name
+
     private val database = AppDatabase.get(context)
     private val bookDao = database.bookDao()
     private val tagDao = database.tagDao()
@@ -44,9 +47,11 @@ class BookService(private val context: Context) {
                     insertRefs(tagIds.map { BookTag(id = 0, bookId = bookId, tagId = it) })
                 }.subscribe(
                     {
+                        Log.d(TAG, "[${response.book.title}] added successfully.")
                         emitter.onComplete()
                     },
                     {
+                        Log.e(TAG, "[${response.book.title}] persistence failed.", it)
                         emitter.onError(it)
                     }
                 )
