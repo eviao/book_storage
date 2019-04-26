@@ -39,7 +39,7 @@ class DoubanCrawlImpl : Http {
         return document
             .select("#info .pl")
             .filter { it.text().contains("作者") }
-            .flatMap { it.siblingElements().select("a") }
+            .flatMap { it.nextElementSibling().select("a") }
             .map { it.text() }
             .reduce { t, u -> "${t} / ${u}" }
     }
