@@ -16,11 +16,7 @@ class DoubanCrawlImpl : Http {
     }
 
     private fun getSubject(document: Document): String {
-        return document
-            .baseUri()
-            .split("/")
-            .filter { it.isNotBlank() }
-            .last()
+        return document.baseUri().split("/").filter { it.isNotBlank() }.last()
     }
 
     private fun parseTitle(document: Document): String {
@@ -51,8 +47,7 @@ class DoubanCrawlImpl : Http {
             .map { it.nextSibling().outerHtml() }
             .filter { it?.isNotBlank() ?: false }
             .map { it.trim() }
-            .ifEmpty { null }
-            ?.first()
+            .first()
     }
 
     private fun parseSubtitle(document: Document): String? = parseAttrTag(document, "副标题")
@@ -73,7 +68,7 @@ class DoubanCrawlImpl : Http {
             .stream()
             .map { it.previousSibling().outerHtml() }
             .reduce { t, u -> "${t}\r\n ${u}" }
-            .get()
+            .orElse(null)
     }
 
     private fun parseTags(document: Document): List<String> {
