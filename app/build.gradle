@@ -30,6 +30,14 @@ dependencies {
     implementation deps.support.core_ktx
     implementation deps.constraint_layout
 
+    implementation deps.anko
+    implementation deps.rxjava2
+    implementation deps.rxandroid
+
+    implementation deps.support.design
+    implementation deps.qmui
+    implementation deps.fresco
+
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
