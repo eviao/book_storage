@@ -5,24 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import org.jetbrains.anko.*
 
-
-class DiffCallback : DiffUtil.ItemCallback<Book>() {
-
-    override fun areItemsTheSame(oldItem: Book, newItem: Book) =
-        oldItem.id == newItem.id
-
-    override fun areContentsTheSame(oldItem: Book, newItem: Book) =
-        oldItem == newItem
-}
 
 class BookListItem : AnkoComponent<ViewGroup> {
 
