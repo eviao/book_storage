@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">book_storage</string>
+    <string name="app_search_hint">书名</string>
 </resources>
