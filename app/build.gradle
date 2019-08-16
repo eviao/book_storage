@@ -47,6 +47,9 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.11.3'
 
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
     implementation deps.rxjava2
     implementation deps.rxandroid
 

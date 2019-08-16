@@ -5,22 +5,29 @@ import android.text.InputFilter
 import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE
 import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.view.marginBottom
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.contract.BookListContract
+import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.persistence.DataSource
 import cn.eviao.bookstorage.service.BookService
 import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.adapter.BookListAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
-class BookListActivity : BaseActivity() {
+class BookListActivity : BaseActivity(), BookListContract.View {
+
     private lateinit var dataSource: DataSource
     private lateinit var bookService: BookService
 
@@ -36,6 +43,17 @@ class BookListActivity : BaseActivity() {
         ui.setContentView(this)
 
         bookService.loadAll().observe(this, Observer(ui.listAdapter::submitList))
+
+        ui.scanButton.setOnClickListener(showScanning)
+
+        bookService.add(Book(title = "111111111"))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+    }
+
+    val showScanning = View.OnClickListener {
+        startActivity<ScannerActivity>()
     }
 }
 
@@ -58,7 +76,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
                 searchEdit = editText {
                     inputType = TYPE_CLASS_TEXT or TYPE_TEXT_FLAG_AUTO_COMPLETE
                     imeOptions = EditorInfo.IME_ACTION_SEARCH
-                    hintResource = R.string.app_search_hint
+                    hintResource = R.string.search_hint
                     textAppearance = R.style.AppTheme_Search
                     background = getDrawable(context, R.drawable.search_edittext)
                     singleLine = true
@@ -84,7 +102,9 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
 
             // list
             frameLayout {
-                backgroundColor = 0xf1f2f3.opaque
+                topPadding = dip(16)
+                bottomPadding = dip(16)
+                backgroundColor = getColor(context, R.color.colorBackground)
 
                 recyclerView {
                     layoutManager = GridLayoutManager(context, COLS)

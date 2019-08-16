@@ -28,7 +28,6 @@ class BookListItem : AnkoComponent<ViewGroup> {
                 id = ID_PICTURE
 
                 val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
-                hierarchy.roundingParams = RoundingParams().setCornersRadius(dip(10).toFloat())
                 setHierarchy(hierarchy)
 
                 scaleType = ImageView.ScaleType.FIT_XY
