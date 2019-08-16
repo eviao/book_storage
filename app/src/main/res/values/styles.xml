@@ -7,4 +7,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="AppTheme.Search">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+    </style>
 </resources>
