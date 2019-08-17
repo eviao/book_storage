@@ -2,6 +2,7 @@ package cn.eviao.bookstorage.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity.CENTER
 import android.view.Gravity.RIGHT
 import android.widget.LinearLayout
@@ -12,7 +13,10 @@ import androidx.core.content.ContextCompat.getDrawable
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
+import cn.eviao.bookstorage.ui.widget.tickerView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.robinhood.ticker.TickerUtils
+import com.robinhood.ticker.TickerView
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
@@ -28,6 +32,8 @@ class BookDetailActivity : BaseActivity() {
         ui.setContentView(this)
 
         ui.pictureImage.setImageURI("https://img3.doubanio.com/view/subject/l/public/s29063065.jpg")
+
+        ui.scoreText.setText("9.7")
     }
 }
 
@@ -36,6 +42,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
     lateinit var titleText: TextView
     lateinit var subtitleText: TextView
     lateinit var pictureImage: SimpleDraweeView
+    lateinit var scoreText: TickerView
+
 
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
 
@@ -46,7 +54,6 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     themedToolbar(R.style.AppTheme_Book_Detail_Toolbar) {
                         backgroundColor = Color.WHITE
                         navigationIcon = getDrawable(context, R.drawable.ic_left)
-
                         inflateMenu(R.menu.menu_book_detail)
                     }
 
@@ -64,9 +71,14 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             }.lparams {
                                 weight = 1f
                             }
-                            textView("9.7") {
-                                textSize = sp(14).toFloat()
+
+                            scoreText = tickerView {
+                                textSize = sp(36).toFloat()
                                 textColor = getColor(context, R.color.colorPrimary)
+                                animationDuration = 600
+
+                                setCharacterLists(TickerUtils.provideNumberList())
+                                text = "0.0"
                             }
                         }
                     }

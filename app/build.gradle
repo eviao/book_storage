@@ -53,6 +53,8 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     implementation 'pub.devrel:easypermissions:3.0.0'
 
+    implementation 'com.robinhood.ticker:ticker:2.0.2'
+
     implementation deps.rxjava2
     implementation deps.rxandroid
 
