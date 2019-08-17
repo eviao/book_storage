@@ -1,16 +1,20 @@
 package cn.eviao.bookstorage.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity.CENTER
 import android.view.Gravity.RIGHT
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import com.facebook.drawee.view.SimpleDraweeView
 import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
 
 class BookDetailActivity : BaseActivity() {
@@ -36,117 +40,102 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
 
         verticalLayout {
-
-            cardView {
-                linearLayout {
-                    verticalLayout {
-                        titleText = textView("图书名称") {
-                            textSize = sp(8).toFloat()
-                            textColor = getColor(context, R.color.qmui_config_color_pure_black)
-                        }
-                        subtitleText = textView("图书副标题") {
-                            textSize = sp(6).toFloat()
-                            textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
-                        }
-                    }.lparams {
-                        weight = 1f
-                    }
-                    textView("9.7") {
-                        textSize = sp(14).toFloat()
-                    }
-                }
-            }
-
-            cardView {
-                linearLayout {
-                    pictureImage = simpleDraweeView{
-//                        scaleType = ImageView.ScaleType.CENTER_CROP
-                        adjustViewBounds = true
-                    }.lparams(width = dip(100), height = dip(130))
-
-                    verticalLayout {
-                        linearLayout {
-                            textView("ISBN:") {
-                                textColor = getColor(context, R.color.qmui_config_color_gray_2)
-                            }.lparams {
-                                rightMargin = dip(8)
-                            }
-                            textView("9787115481184") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
-                                gravity = RIGHT
-                            }.lparams(width = matchParent)
-                        }.lparams(width = matchParent) {
-                            bottomMargin = dip(4)
-                        }
-
-                        linearLayout {
-                            textView("作者:") {
-                                textColor = getColor(context, R.color.qmui_config_color_gray_2)
-                            }.lparams {
-                                rightMargin = dip(8)
-                            }
-                            textView("作者 / 作者 / 作者") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
-                                gravity = RIGHT
-                            }.lparams(width = matchParent)
-                        }.lparams(width = matchParent) {
-                            bottomMargin = dip(4)
-                        }
-
-                        linearLayout {
-                            textView("出版社:") {
-                                textColor = getColor(context, R.color.qmui_config_color_gray_2)
-                            }.lparams {
-                                rightMargin = dip(8)
-                            }
-                            textView("中国邮政出版社") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
-                                gravity = RIGHT
-                            }.lparams(width = matchParent)
-                        }.lparams(width = matchParent) {
-                            bottomMargin = dip(4)
-                        }
-
-                        linearLayout {
-                            textView("标签:") {
-                                textColor = getColor(context, R.color.qmui_config_color_gray_2)
-                            }.lparams {
-                                rightMargin = dip(8)
-                            }
-                            textView("标签/标签/标签/标签/标签/标签/标签/标签") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
-                                gravity = RIGHT
-                            }.lparams(width = matchParent)
-                        }
-                    }.lparams(width = matchParent) {
-                        leftMargin = dip(16)
-                    }
-                }.lparams(width = matchParent)
-            }
-
-            cardView {
+            scrollView {
                 verticalLayout {
-                    textView("内容说明") {
-                    }
-                    textView("内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明") {
 
-                    }
-                }
-            }
+                    themedToolbar(R.style.AppTheme_Toolbar) {
+                        backgroundColor = Color.WHITE
+                        navigationIcon = getDrawable(context, R.drawable.ic_left)
 
-            cardView {
-                verticalLayout {
-                    textView("目录") {
+                        inflateMenu(R.menu.menu_book_detail)
                     }
-                    textView("目录目录目录目录目录目录目录目录目录目录目录目录") {
 
+                    cardView {
+                        linearLayout {
+                            verticalLayout {
+                                titleText = textView("图书名称") {
+                                    textSize = sp(8).toFloat()
+                                    textColor = getColor(context, R.color.qmui_config_color_pure_black)
+                                }
+                                subtitleText = textView("图书副标题") {
+                                    textSize = sp(6).toFloat()
+                                    textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                                }
+                            }.lparams {
+                                weight = 1f
+                            }
+                            textView("9.7") {
+                                textSize = sp(14).toFloat()
+                                textColor = getColor(context, R.color.colorPrimary)
+                            }
+                        }
+                    }
+
+                    cardView {
+                        linearLayout {
+                            verticalLayout {
+                                pictureImage = simpleDraweeView{
+                                    //scaleType = ImageView.ScaleType.CENTER_CROP
+                                    adjustViewBounds = true
+                                    gravity = CENTER
+                                }.lparams(width = dip(100), height = dip(125))
+                            }.lparams(width = dip(120))
+
+                            verticalLayout {
+                                textView("9787115481184")
+                                textView("作者 / 作者 / 作者")
+                                textView("中国邮政出版社")
+                                textView("标签 / 标签 / 标签 / 标签 / 标签")
+                            }.lparams(width = matchParent) {
+                                leftMargin = dip(16)
+                            }.applyRecursively {
+                                when (it) {
+                                    is TextView -> {
+                                        it.textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                        it.gravity = RIGHT
+
+                                        it.lparams(width = matchParent) {
+                                            bottomMargin = dip(6)
+                                        }
+                                    }
+                                }
+                            }
+                        }.lparams(width = matchParent)
+                    }
+
+                    cardView {
+                        verticalLayout {
+                            textView("内容说明") {
+                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                textAppearance = R.style.AppTheme_Detail_Title
+                            }.lparams {
+                                bottomMargin = dip(4)
+                            }
+                            textView("\"内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明") {
+                                textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                            }
+                        }
+                    }
+
+                    cardView {
+                        verticalLayout {
+                            textView("目录") {
+                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                textAppearance = R.style.AppTheme_Detail_Title
+                            }.lparams {
+                                bottomMargin = dip(4)
+                            }
+                            textView("目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录") {
+                                textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                            }
+                        }
                     }
                 }
             }
         }.applyRecursively {
             when (it) {
                 is CardView -> {
-                    it.setContentPadding(dip(16), dip(16), dip(16), dip(16))
+                    it.setContentPadding(dip(24), dip(24), dip(24), dip(24))
                     it.elevation = 0f
 
                     val layoutParams = it.layoutParams as LinearLayout.LayoutParams

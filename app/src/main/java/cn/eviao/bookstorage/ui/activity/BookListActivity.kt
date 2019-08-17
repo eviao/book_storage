@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.view.marginBottom
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.eviao.bookstorage.R
@@ -104,7 +103,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
             frameLayout {
                 topPadding = dip(16)
                 bottomPadding = dip(16)
-                backgroundColor = getColor(context, R.color.colorBackground)
+                backgroundColor = getColor(context, R.color.app_background)
 
                 recyclerView {
                     layoutManager = GridLayoutManager(context, COLS)
