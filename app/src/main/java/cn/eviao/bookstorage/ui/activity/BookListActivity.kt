@@ -61,7 +61,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
     lateinit var listAdapter: BookListAdapter
 
     lateinit var searchEdit: EditText
-    lateinit var viewButton: ImageButton
+    lateinit var boxButton: ImageButton
     lateinit var scanButton: ImageButton
 
     companion object {
@@ -85,7 +85,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
                     rightMargin = dip(8)
                 }
 
-                viewButton = imageButton(imageResource = R.drawable.ic_list)
+                boxButton = imageButton(imageResource = R.drawable.ic_box)
                     .lparams {
                         gravity = Gravity.CENTER_VERTICAL
                         rightMargin = dip(8)

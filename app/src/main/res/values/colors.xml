@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#205072</color>
     <color name="colorAccent">#329D9C</color>
 
-    <color name="app_text_color">#FF2B2B2B</color>
-    <color name="app_text_color_70">#FF4B4B4B</color>
-    <color name="app_text_color_50">#FF7B7B7B</color>
+    <color name="app_text_color">#FF2A2A2A</color>
+    <color name="app_text_color_70">#FF4A4A4A</color>
+    <color name="app_text_color_50">#FF7A7A7A</color>
     <color name="app_background_color">#FFF1F2F3</color>
 </resources>

@@ -24,13 +24,21 @@
         </activity>
 
         <activity android:name=".ui.activity.BookDetailActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.activity.ScannerActivity" />
+        
+        <activity android:name=".ui.activity.BoxListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.activity.ScannerActivity" />
     </application>
 </manifest>

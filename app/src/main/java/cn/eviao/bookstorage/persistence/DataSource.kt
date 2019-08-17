@@ -5,12 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.model.Box
 
-@Database(entities = arrayOf(Book::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(
+    Book::class,
+    Box::class
+), version = 1, exportSchema = false)
 abstract class DataSource : RoomDatabase() {
 
     abstract fun bookDao(): BookDao
-
+    abstract fun boxDao(): BoxDao
 
     companion object {
         const val DB_NAME = "book_storage.db"
@@ -25,7 +29,8 @@ abstract class DataSource : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                DataSource::class.java, DB_NAME
+                DataSource::class.java,
+                DB_NAME
             ).build()
     }
 }

@@ -12,12 +12,28 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
     </style>
-    
-    <style name="AppTheme.Detail"></style>
-    <style name="AppTheme.Detail.Title">
+
+    <style name="AppTheme.Book"></style>
+    <style name="AppTheme.Book.Detail"></style>
+    <style name="AppTheme.Book.Detail.Title">
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="AppTheme.Toolbar">
+    <style name="AppTheme.Book.Detail.Toolbar">
         <item name="colorControlNormal">#AFAFAF</item>
     </style>
+
+    <style name="AppTheme.Box"></style>
+    <style name="AppTheme.Box.List"></style>
+    <style name="AppTheme.Box.List.Item"></style>
+    <style name="AppTheme.Box.List.Item.Title"></style>
+    
+
+    
+    <style name="Dialog" parent="QMUI.Dialog">
+        <item name="qmui_dialog_action_style">@style/Dialog.Action</item>
+    </style>
+    <style name="Dialog.Action">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

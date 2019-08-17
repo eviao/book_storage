@@ -1,14 +1,14 @@
 package cn.eviao.bookstorage.ui.widget
 
 import androidx.recyclerview.widget.DiffUtil
-import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.model.Identifiable
 
 
-class DiffCallback : DiffUtil.ItemCallback<Book>() {
+class DiffCallback<T : Identifiable> : DiffUtil.ItemCallback<T>() {
 
-    override fun areItemsTheSame(oldItem: Book, newItem: Book) =
-        oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: T, newItem: T) =
+        oldItem.identity() == newItem.identity()
 
-    override fun areContentsTheSame(oldItem: Book, newItem: Book) =
-        oldItem == newItem
+    override fun areContentsTheSame(oldItem: T, newItem: T) =
+        oldItem.equals(newItem)
 }

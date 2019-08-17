@@ -43,7 +43,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
             scrollView {
                 verticalLayout {
 
-                    themedToolbar(R.style.AppTheme_Toolbar) {
+                    themedToolbar(R.style.AppTheme_Book_Detail_Toolbar) {
                         backgroundColor = Color.WHITE
                         navigationIcon = getDrawable(context, R.drawable.ic_left)
 
@@ -107,7 +107,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                         verticalLayout {
                             textView("内容说明") {
                                 textColor = getColor(context, R.color.app_text_color_70)
-                                textAppearance = R.style.AppTheme_Detail_Title
+                                textAppearance = R.style.AppTheme_Book_Detail_Title
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
@@ -120,8 +120,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     cardView {
                         verticalLayout {
                             textView("目录") {
-                                textColor = getColor(context, R.color.app_text_color_70)
-                                textAppearance = R.style.AppTheme_Detail_Title
+                                textColor = getColor(context, R.color.app_text_color)
+                                textAppearance = R.style.AppTheme_Book_Detail_Title
                             }.lparams {
                                 bottomMargin = dip(4)
                             }

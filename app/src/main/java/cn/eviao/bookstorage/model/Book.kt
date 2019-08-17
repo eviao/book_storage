@@ -40,6 +40,9 @@ data class Book(
     val author: String? = null,
 
     val publisher: String? = null
-) : Parcelable {
+) : Identifiable, Parcelable {
+
+    override fun identity(): Long? = id
+
     fun isNew() = (id == null || id == 0L)
 }
