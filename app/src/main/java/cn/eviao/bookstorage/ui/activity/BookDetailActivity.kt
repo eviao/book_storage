@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity.CENTER
 import android.view.Gravity.RIGHT
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -14,6 +15,8 @@ import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import cn.eviao.bookstorage.ui.widget.tickerView
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
@@ -58,6 +61,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     }
 
                     cardView {
+                        setContentPadding(dip(24), dip(8), dip(24), dip(24))
+
                         linearLayout {
                             verticalLayout {
                                 titleText = textView("图书名称") {
@@ -87,10 +92,12 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                         linearLayout {
                             verticalLayout {
                                 pictureImage = simpleDraweeView{
-                                    //scaleType = ImageView.ScaleType.CENTER_CROP
-                                    adjustViewBounds = true
                                     gravity = CENTER
-                                }.lparams(width = dip(100), height = dip(125))
+
+                                    val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
+                                    hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
+                                    setHierarchy(hierarchy)
+                                }.lparams(width = dip(100), height = dip(130))
                             }.lparams(width = dip(120))
 
                             verticalLayout {
@@ -147,7 +154,9 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
         }.applyRecursively {
             when (it) {
                 is CardView -> {
-                    it.setContentPadding(dip(24), dip(24), dip(24), dip(24))
+                    if (it.contentPaddingTop == 0) {
+                        it.setContentPadding(dip(24), dip(24), dip(24), dip(24))
+                    }
                     it.elevation = 0f
 
                     val layoutParams = it.layoutParams as LinearLayout.LayoutParams

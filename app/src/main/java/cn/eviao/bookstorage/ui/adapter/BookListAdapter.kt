@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
@@ -28,9 +29,8 @@ class BookListItem : AnkoComponent<ViewGroup> {
                 id = ID_PICTURE
 
                 val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
+                hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                 setHierarchy(hierarchy)
-
-                scaleType = ImageView.ScaleType.FIT_XY
 
             }.lparams(width = matchParent, height = dip(120)) {
                 leftMargin = dip(16)
