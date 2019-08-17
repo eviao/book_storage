@@ -55,11 +55,11 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             verticalLayout {
                                 titleText = textView("图书名称") {
                                     textSize = sp(8).toFloat()
-                                    textColor = getColor(context, R.color.qmui_config_color_pure_black)
+                                    textColor = getColor(context, R.color.app_text_color)
                                 }
                                 subtitleText = textView("图书副标题") {
                                     textSize = sp(6).toFloat()
-                                    textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                                    textColor = getColor(context, R.color.app_text_color_50)
                                 }
                             }.lparams {
                                 weight = 1f
@@ -91,7 +91,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             }.applyRecursively {
                                 when (it) {
                                     is TextView -> {
-                                        it.textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                        it.textColor = getColor(context, R.color.app_text_color_70)
                                         it.gravity = RIGHT
 
                                         it.lparams(width = matchParent) {
@@ -106,13 +106,13 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     cardView {
                         verticalLayout {
                             textView("内容说明") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                textColor = getColor(context, R.color.app_text_color_70)
                                 textAppearance = R.style.AppTheme_Detail_Title
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
-                            textView("\"内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明") {
-                                textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                            textView("内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明") {
+                                textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
                     }
@@ -120,13 +120,13 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     cardView {
                         verticalLayout {
                             textView("目录") {
-                                textColor = getColor(context, R.color.qmui_config_color_75_pure_black)
+                                textColor = getColor(context, R.color.app_text_color_70)
                                 textAppearance = R.style.AppTheme_Detail_Title
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
                             textView("目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录") {
-                                textColor = getColor(context, R.color.qmui_config_color_50_pure_black)
+                                textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
                     }

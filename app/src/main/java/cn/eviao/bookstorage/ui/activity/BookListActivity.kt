@@ -103,7 +103,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
             frameLayout {
                 topPadding = dip(16)
                 bottomPadding = dip(16)
-                backgroundColor = getColor(context, R.color.app_background)
+                backgroundColor = getColor(context, R.color.app_background_color)
 
                 recyclerView {
                     layoutManager = GridLayoutManager(context, COLS)
