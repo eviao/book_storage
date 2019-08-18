@@ -91,16 +91,18 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                 verticalLayout {
 
                     cardView {
-                        setContentPadding(dip(24), dip(16), dip(24), dip(24))
+//                        setContentPadding(dip(24), dip(16), dip(24), dip(24))
+                        backgroundColor = getColor(context, R.color.colorPrimary)
 
                         verticalLayout {
                             titleText = textView("图书名称") {
                                 textSize = sp(8).toFloat()
-                                textColor = getColor(context, R.color.app_text_color)
+                                textColor = getColor(context, R.color.qmui_config_color_white)
                             }
                             subtitleText = textView("图书副标题") {
                                 textSize = sp(6).toFloat()
-                                textColor = getColor(context, R.color.app_text_color_50)
+//                                textColor = getColor(context, R.color.app_text_color_50)
+                                textColor = getColor(context, R.color.qmui_config_color_75_white)
                             }
                         }
                     }
@@ -151,9 +153,9 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
                     cardView {
                         verticalLayout {
-                            textView("内容说明") {
+                            themedTextView("内容说明", R.style.TextBold) {
                                 textColor = getColor(context, R.color.app_text_color_70)
-                                textAppearance = R.style.AppTheme_Book_Detail_Title
+                                textAppearance = R.style.TextBold
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
@@ -165,9 +167,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
                     cardView {
                         verticalLayout {
-                            textView("目录") {
+                            themedTextView("目录", R.style.TextBold) {
                                 textColor = getColor(context, R.color.app_text_color)
-                                textAppearance = R.style.AppTheme_Book_Detail_Title
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
@@ -181,9 +182,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
         }.applyRecursively {
             when (it) {
                 is CardView -> {
-                    if (it.contentPaddingTop == 0) {
-                        it.setContentPadding(dip(24), dip(24), dip(24), dip(24))
-                    }
+                    it.setContentPadding(dip(24), dip(24), dip(24), dip(24))
                     it.elevation = 0f
 
                     val layoutParams = it.layoutParams as LinearLayout.LayoutParams

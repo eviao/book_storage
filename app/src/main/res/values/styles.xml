@@ -15,11 +15,8 @@
 
     <style name="AppTheme.Book"></style>
     <style name="AppTheme.Book.Detail"></style>
-    <style name="AppTheme.Book.Detail.Title">
-        <item name="android:textStyle">bold</item>
-    </style>
     <style name="AppTheme.Book.Detail.Toolbar">
-        <item name="colorControlNormal">#AFAFAF</item>
+        <!--<item name="colorControlNormal">#AFAFAF</item>-->
     </style>
 
     <style name="AppTheme.Box"></style>
@@ -31,6 +28,10 @@
         <item name="android:scrollbars">none</item>
         <item name="android:scrollbarThumbVertical">@null</item>
         <item name="android:scrollbarTrackVertical">@null</item>
+    </style>
+
+    <style name="TextBold">
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="Dialog" parent="QMUI.Dialog">
