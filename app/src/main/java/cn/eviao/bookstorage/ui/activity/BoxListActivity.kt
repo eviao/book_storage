@@ -47,7 +47,7 @@ class BoxListActivity : BaseActivity() {
                     val builder = QMUIDialog.EditTextDialogBuilder(this)
                     builder.setTitle("创建")
                         .setPlaceholder("在此输入名称")
-                        .setInputType(InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE)
+                        .setInputType(InputType.TYPE_CLASS_TEXT)
                         .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
                         .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
 
@@ -61,7 +61,7 @@ class BoxListActivity : BaseActivity() {
 
         boxService.loadAll().observe(this, Observer(ui.listAdapter::submitList))
 
-        boxService.add(Box(name = "纸箱1"))
+        boxService.add(Box(name = "纸箱1", intro = "描述描述描述描述描述描述描述"))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
@@ -69,7 +69,7 @@ class BoxListActivity : BaseActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
-        boxService.add(Box(name = "纸箱3"))
+        boxService.add(Box(name = "纸箱3", intro = "描述描述描述描述描述描述描述"))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
@@ -87,6 +87,7 @@ class BoxListActivityUi : AnkoComponent<BoxListActivity> {
                 title = "列表"
                 backgroundColor = Color.WHITE
                 navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_left)
+                elevation = dip(1.0f).toFloat()
 
                 inflateMenu(R.menu.menu_box_list)
             }
@@ -94,7 +95,7 @@ class BoxListActivityUi : AnkoComponent<BoxListActivity> {
             cardView {
 
                 recyclerView {
-                    backgroundColor = getColor(context, R.color.app_background_color)
+                    backgroundColor = Color.WHITE
 
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))

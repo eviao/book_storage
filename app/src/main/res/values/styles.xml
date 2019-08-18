@@ -13,17 +13,6 @@
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.Book"></style>
-    <style name="AppTheme.Book.Detail"></style>
-    <style name="AppTheme.Book.Detail.Toolbar">
-        <!--<item name="colorControlNormal">#AFAFAF</item>-->
-    </style>
-
-    <style name="AppTheme.Box"></style>
-    <style name="AppTheme.Box.List"></style>
-    <style name="AppTheme.Box.List.Item"></style>
-    <style name="AppTheme.Box.List.Item.Title"></style>
-    
     <style name="AppTheme.Scrollbar">
         <item name="android:scrollbars">none</item>
         <item name="android:scrollbarThumbVertical">@null</item>

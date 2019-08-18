@@ -3,7 +3,6 @@ package cn.eviao.bookstorage.ui.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.model.Book
@@ -11,12 +10,11 @@ import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import org.jetbrains.anko.*
 
 
-class BookListItem : AnkoComponent<ViewGroup> {
+class BookListItemUi : AnkoComponent<ViewGroup> {
 
     companion object {
         const val ID_PICTURE = 0x0001
@@ -43,7 +41,7 @@ class BookListItem : AnkoComponent<ViewGroup> {
 class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAdapter.ViewHolder>(DiffCallback())  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(context, BookListItem().createView(AnkoContext.create(context, parent)))
+        ViewHolder(context, BookListItemUi().createView(AnkoContext.create(context, parent)))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bindTo(getItem(position))
@@ -52,7 +50,7 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
     class ViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         var book: Book? = null
-        val pictureImage = itemView.findViewById<SimpleDraweeView>(BookListItem.ID_PICTURE)
+        val pictureImage = itemView.findViewById<SimpleDraweeView>(BookListItemUi.ID_PICTURE)
 
         init {
             itemView.setOnClickListener(this)

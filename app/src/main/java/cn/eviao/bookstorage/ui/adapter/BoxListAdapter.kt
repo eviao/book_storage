@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.ui.adapter
 
 import android.content.Context
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -12,11 +13,13 @@ import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.textChangedListener
 
-class BoxListItem : AnkoComponent<ViewGroup> {
+class BoxListItemUi : AnkoComponent<ViewGroup> {
 
     companion object {
         const val ID_NAME = 0x0001
+        const val ID_INTRO = 0x0002
     }
 
     override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
@@ -27,11 +30,15 @@ class BoxListItem : AnkoComponent<ViewGroup> {
 
             textView {
                 id = ID_NAME
-
-                textSize = sp(8).toFloat()
+                textSize = sp(6).toFloat()
                 textColor = getColor(context, R.color.app_text_color_70)
-                textAppearance = R.style.AppTheme_Box_List_Item_Title
-            }
+            }.lparams(width = matchParent)
+
+            textView {
+                id = ID_INTRO
+                textSize = sp(6).toFloat()
+                textColor = getColor(context, R.color.app_text_color_10)
+            }.lparams(width = matchParent)
         }
     }
 }
@@ -39,16 +46,24 @@ class BoxListItem : AnkoComponent<ViewGroup> {
 class BoxListAdapter(val context: Context) : PagedListAdapter<Box, BoxListAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(BoxListItem().createView(AnkoContext.create(context, parent)))
+        ViewHolder(BoxListItemUi().createView(AnkoContext.create(context, parent)))
 
     override fun onBindViewHolder(holder: BoxListAdapter.ViewHolder, position: Int) {
-        val box = getItem(position)
-        holder.nameText.text = box?.name
+        getItem(position)?.let {
+            holder.nameText.text = it.name
+
+            if (it.intro.isNullOrBlank()) {
+                holder.introText.visibility = View.GONE
+            } else {
+                holder.introText.text = it.intro
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val nameText: TextView = itemView.findViewById(BoxListItem.ID_NAME)
+        val nameText: TextView = itemView.findViewById(BoxListItemUi.ID_NAME)
+        val introText: TextView = itemView.findViewById(BoxListItemUi.ID_INTRO)
 
         val handleClick = View.OnClickListener {
             println("**************")

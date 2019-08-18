@@ -13,9 +13,9 @@ class BoxService(private val dataSource: DataSource) {
     private val boxDao: BoxDao = dataSource.boxDao()
 
     private val pagingConfig = Config(
-        pageSize = 30,
+        pageSize = 20,
         enablePlaceholders = true,
-        maxSize = 300
+        maxSize = 200
     )
 
     fun add(box: Box): Single<Long> {

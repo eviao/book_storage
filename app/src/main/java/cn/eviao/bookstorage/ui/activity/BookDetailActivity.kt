@@ -79,7 +79,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
         verticalLayout {
 
-            toolbar = themedToolbar(R.style.AppTheme_Book_Detail_Toolbar) {
+            toolbar = themedToolbar {
                 backgroundColor = Color.WHITE
                 navigationIcon = getDrawable(context, R.drawable.ic_left)
                 inflateMenu(R.menu.menu_book_detail)

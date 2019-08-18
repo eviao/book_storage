@@ -17,7 +17,9 @@ data class Box(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
 
-    val name: String? = null
+    val name: String? = null,
+
+    val intro: String? = null
 ) : Identifiable, Parcelable {
 
     override fun identity(): Long? = id
