@@ -31,7 +31,6 @@ class BookListItem : AnkoComponent<ViewGroup> {
                 val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
                 hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                 setHierarchy(hierarchy)
-
             }.lparams(width = matchParent, height = dip(120)) {
                 leftMargin = dip(16)
                 rightMargin = dip(16)
