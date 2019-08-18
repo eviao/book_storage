@@ -18,9 +18,3 @@ inline fun ViewManager.simpleDraweeView(theme: Int = 0, init: SimpleDraweeView.(
 inline fun ViewManager.tickerView(theme: Int) = tickerView(theme) {}
 inline fun ViewManager.tickerView(theme: Int = 0, init: TickerView.() -> Unit) =
     ankoView({ TickerView(it) }, theme, init)
-
-
-@Suppress("NOTHING_TO_INLINE")
-inline fun ViewManager.scrollLayout(theme: Int) = scrollLayout(theme) {}
-inline fun ViewManager.scrollLayout(theme: Int = 0, init: QMUIContinuousNestedScrollLayout.() -> Unit) =
-    ankoView({ QMUIContinuousNestedScrollLayout(it) }, theme, init)
