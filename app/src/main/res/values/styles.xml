@@ -22,12 +22,11 @@
     <style name="TextBold">
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="Dialog" parent="QMUI.Dialog">
         <item name="qmui_dialog_action_style">@style/Dialog.Action</item>
     </style>
     <style name="Dialog.Action">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
-
 </resources>

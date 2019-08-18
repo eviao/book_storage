@@ -74,7 +74,6 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
     lateinit var pictureImage: SimpleDraweeView
     lateinit var scoreText: TickerView
 
-
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
 
         verticalLayout {
@@ -91,7 +90,6 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                 verticalLayout {
 
                     cardView {
-//                        setContentPadding(dip(24), dip(16), dip(24), dip(24))
                         backgroundColor = getColor(context, R.color.colorPrimary)
 
                         verticalLayout {
