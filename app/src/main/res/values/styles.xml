@@ -27,7 +27,11 @@
     <style name="AppTheme.Box.List.Item"></style>
     <style name="AppTheme.Box.List.Item.Title"></style>
     
-
+    <style name="AppTheme.Scrollbar">
+        <item name="android:scrollbars">none</item>
+        <item name="android:scrollbarThumbVertical">@null</item>
+        <item name="android:scrollbarTrackVertical">@null</item>
+    </style>
     
     <style name="Dialog" parent="QMUI.Dialog">
         <item name="qmui_dialog_action_style">@style/Dialog.Action</item>

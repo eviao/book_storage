@@ -78,30 +78,29 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
 
         verticalLayout {
-            scrollView {
+
+            toolbar = themedToolbar(R.style.AppTheme_Book_Detail_Toolbar) {
+                backgroundColor = Color.WHITE
+                navigationIcon = getDrawable(context, R.drawable.ic_left)
+                inflateMenu(R.menu.menu_book_detail)
+
+                elevation = dip(1).toFloat()
+            }
+
+            themedScrollView(R.style.AppTheme_Scrollbar) {
                 verticalLayout {
 
-                    toolbar = themedToolbar(R.style.AppTheme_Book_Detail_Toolbar) {
-                        backgroundColor = Color.WHITE
-                        navigationIcon = getDrawable(context, R.drawable.ic_left)
-                        inflateMenu(R.menu.menu_book_detail)
-                    }
-
                     cardView {
-                        setContentPadding(dip(24), dip(8), dip(24), dip(24))
+                        setContentPadding(dip(24), dip(16), dip(24), dip(24))
 
-                        linearLayout {
-                            verticalLayout {
-                                titleText = textView("图书名称") {
-                                    textSize = sp(8).toFloat()
-                                    textColor = getColor(context, R.color.app_text_color)
-                                }
-                                subtitleText = textView("图书副标题") {
-                                    textSize = sp(6).toFloat()
-                                    textColor = getColor(context, R.color.app_text_color_50)
-                                }
-                            }.lparams {
-                                weight = 1f
+                        verticalLayout {
+                            titleText = textView("图书名称") {
+                                textSize = sp(8).toFloat()
+                                textColor = getColor(context, R.color.app_text_color)
+                            }
+                            subtitleText = textView("图书副标题") {
+                                textSize = sp(6).toFloat()
+                                textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
                     }
