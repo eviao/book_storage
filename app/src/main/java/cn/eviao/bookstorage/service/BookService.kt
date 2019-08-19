@@ -1,17 +1,15 @@
 package cn.eviao.bookstorage.service
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Config
-import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.DataSource
 import io.reactivex.Single
 
-class BookService(private val dataSource: DataSource) {
+class BookService() {
 
-    private val bookDao: BookDao = dataSource.bookDao()
+    private val bookDao: BookDao = DataSource.getInstance().bookDao()
 
     private val pagingConfig = Config(
         pageSize = 30,
@@ -21,6 +19,10 @@ class BookService(private val dataSource: DataSource) {
 
     fun add(book: Book): Single<Long> {
         return bookDao.insert(book)
+    }
+
+    fun isExists(isbn: String): Single<Boolean> {
+        return bookDao.countBy(isbn).map { it > 0 }
     }
 
     fun count() = bookDao.count()

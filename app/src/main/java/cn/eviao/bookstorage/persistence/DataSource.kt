@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import cn.eviao.bookstorage.App
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Box
 
@@ -21,16 +22,12 @@ abstract class DataSource : RoomDatabase() {
 
         @Volatile private var INSTANCE: DataSource? = null
 
-        fun getInstance(context: Context): DataSource =
+        fun getInstance(): DataSource =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+                INSTANCE ?: buildDatabase().also { INSTANCE = it }
             }
 
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                DataSource::class.java,
-                DB_NAME
-            ).build()
+        private fun buildDatabase() = Room.databaseBuilder(App.getContext(),
+            DataSource::class.java, DB_NAME).build()
     }
 }

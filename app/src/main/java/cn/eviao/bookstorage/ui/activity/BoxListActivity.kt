@@ -27,7 +27,6 @@ import android.text.InputType
 
 class BoxListActivity : BaseActivity() {
 
-    private lateinit var dataSource: DataSource
     private lateinit var boxService: BoxService
 
     lateinit var ui: BoxListActivityUi
@@ -35,8 +34,7 @@ class BoxListActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dataSource = DataSource.getInstance(this)
-        boxService = BoxService(dataSource)
+        boxService = BoxService()
 
         ui = BoxListActivityUi()
         ui.setContentView(this)

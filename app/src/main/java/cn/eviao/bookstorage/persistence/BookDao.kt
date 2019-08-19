@@ -31,6 +31,9 @@ interface BookDao {
     @Query("select count(*) from books")
     fun count(): Single<Int>
 
+    @Query("select count(*) from books where isbn = :isbn")
+    fun countBy(isbn: String): Single<Int>
+
     @Query("select * from books where title like :title order by id desc")
     fun loadAll(title: String): DataSource.Factory<Int, Book>
 

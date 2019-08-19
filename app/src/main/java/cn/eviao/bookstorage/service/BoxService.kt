@@ -8,9 +8,9 @@ import cn.eviao.bookstorage.persistence.DataSource
 import io.reactivex.Completable
 import io.reactivex.Single
 
-class BoxService(private val dataSource: DataSource) {
+class BoxService() {
 
-    private val boxDao: BoxDao = dataSource.boxDao()
+    private val boxDao: BoxDao = DataSource.getInstance().boxDao()
 
     private val pagingConfig = Config(
         pageSize = 20,

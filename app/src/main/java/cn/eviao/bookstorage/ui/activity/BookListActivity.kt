@@ -35,8 +35,7 @@ class BookListActivity : BaseActivity(), BookListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dataSource = DataSource.getInstance(this)
-        bookService = BookService(dataSource)
+        bookService = BookService()
 
         ui = ListActivityUi()
         ui.setContentView(this)
