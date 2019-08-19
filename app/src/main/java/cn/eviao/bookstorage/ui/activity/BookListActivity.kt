@@ -75,7 +75,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
                 searchEdit = editText {
                     inputType = TYPE_CLASS_TEXT or TYPE_TEXT_FLAG_AUTO_COMPLETE
                     imeOptions = EditorInfo.IME_ACTION_SEARCH
-                    hintResource = R.string.search_hint
+                    hint = "共 128 本图书"
                     textAppearance = R.style.AppTheme_Search
                     background = getDrawable(context, R.drawable.search_edittext)
                     singleLine = true
@@ -101,16 +101,13 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
 
             // list
             frameLayout {
-                topPadding = dip(16)
-                bottomPadding = dip(16)
                 backgroundColor = getColor(context, R.color.app_background_color)
 
                 recyclerView {
                     layoutManager = GridLayoutManager(context, COLS)
-
                     listAdapter = BookListAdapter(context)
                     adapter = listAdapter
-                }.lparams(width = matchParent, height = wrapContent)
+                }
             }.lparams(width = matchParent, height = matchParent)
 
         }.applyRecursively {  }

@@ -3,6 +3,7 @@ package cn.eviao.bookstorage.ui.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.model.Book
@@ -29,10 +30,11 @@ class BookListItemUi : AnkoComponent<ViewGroup> {
                 val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
                 hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                 setHierarchy(hierarchy)
-            }.lparams(width = matchParent, height = dip(120)) {
-                leftMargin = dip(16)
-                rightMargin = dip(16)
-                bottomMargin = dip(32)
+            }.lparams(width = matchParent, height = dip(110)) {
+                leftMargin = dip(8)
+                topMargin = dip(24)
+                rightMargin = dip(8)
+                bottomMargin = dip(0)
             }
         }
     }

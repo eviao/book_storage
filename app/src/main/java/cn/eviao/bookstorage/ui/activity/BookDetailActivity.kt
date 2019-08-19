@@ -90,17 +90,17 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                 verticalLayout {
 
                     cardView {
-                        backgroundColor = getColor(context, R.color.colorPrimary)
+                        backgroundColor = Color.WHITE
 
                         verticalLayout {
                             titleText = textView("图书名称") {
                                 textSize = sp(8).toFloat()
-                                textColor = getColor(context, R.color.qmui_config_color_white)
+                                textColor = getColor(context, R.color.app_text_color)
                             }
                             subtitleText = textView("图书副标题") {
                                 textSize = sp(6).toFloat()
 //                                textColor = getColor(context, R.color.app_text_color_50)
-                                textColor = getColor(context, R.color.qmui_config_color_75_white)
+                                textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
                     }
@@ -184,7 +184,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                     it.elevation = 0f
 
                     val layoutParams = it.layoutParams as LinearLayout.LayoutParams
-                    layoutParams.bottomMargin = dip(16)
+                    layoutParams.topMargin = dip(16)
                 }
             }
         }
