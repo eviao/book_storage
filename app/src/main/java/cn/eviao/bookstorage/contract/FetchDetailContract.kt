@@ -1,9 +1,10 @@
 package cn.eviao.bookstorage.contract
 
+import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.presenter.BasePresenter
 import cn.eviao.bookstorage.ui.BaseView
 
-interface ScannerContract {
+interface FetchDetailContract {
     interface View : BaseView<Presenter> {
         fun showLoading()
 
@@ -11,16 +12,10 @@ interface ScannerContract {
 
         fun showError(message: String)
 
-        fun showErrorISBN(isbn: String)
-
-        fun restartScanning()
-
-        fun showFetchDetail(isbn: String)
-
-        fun showBookDetail(isbn: String)
+        fun renderBook(book: Book)
     }
 
     interface Presenter : BasePresenter {
-        fun loadDetail(isbn: String)
+        fun loadBook()
     }
 }

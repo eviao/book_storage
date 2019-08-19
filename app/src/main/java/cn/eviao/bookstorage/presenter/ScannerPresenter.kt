@@ -3,7 +3,7 @@ package cn.eviao.bookstorage.presenter
 import cn.eviao.bookstorage.contract.ScannerContract
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.DataSource
-import cn.eviao.bookstorage.utils.BookUtils
+import cn.eviao.bookstorage.utils.isValidISBN
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -25,7 +25,7 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
     }
 
     override fun loadDetail(isbn: String) {
-        if (!BookUtils.isValidISBN(isbn)) {
+        if (!isValidISBN(isbn)) {
             view.showErrorISBN(isbn)
             view.restartScanning()
             return
@@ -33,19 +33,19 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
 
         view.showLoading()
 
-        compositeDisposable.add(bookDao.countBy(isbn).map { it > 0 }
+        compositeDisposable.add(bookDao.countBy(isbn)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 view.hideLoading()
-
-                if (it) {
-                    view.showBookDetail()
+                if (it > 0) {
+                    view.showBookDetail(isbn)
                 } else {
-                    view.showFetchDetail()
+                    view.showFetchDetail(isbn)
                 }
             }, {
                 view.hideLoading()
+                view.showError(it.message ?: "加载失败")
             }))
     }
 }

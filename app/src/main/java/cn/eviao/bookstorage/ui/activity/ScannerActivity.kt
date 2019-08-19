@@ -10,11 +10,8 @@ import android.view.Gravity.BOTTOM
 import android.widget.FrameLayout
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.contract.ScannerContract
-import cn.eviao.bookstorage.persistence.DataSource
 import cn.eviao.bookstorage.presenter.ScannerPresenter
 import cn.eviao.bookstorage.ui.BaseActivity
-import cn.eviao.bookstorage.ui.BaseView
-import cn.eviao.bookstorage.utils.BookUtils
 import com.google.zxing.Result
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import me.dm7.barcodescanner.zxing.ZXingScannerView
@@ -39,8 +36,8 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
         super.onCreate(savedInstanceState)
 
         presenter = ScannerPresenter(this)
-        scannerView = initScannerView()
 
+        scannerView = initScannerView()
         loadingDialog = QMUITipDialog.Builder(this)
             .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
             .setTipWord("正在加载")
@@ -117,12 +114,20 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
         scannerView.longSnackbar("无效的书号: ${isbn}")
     }
 
-    override fun showFetchDetail() {
-        println("show fetchdetail")
+    override fun showError(message: String) {
+        QMUITipDialog.Builder(this)
+            .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+            .setTipWord(message)
+            .create()
+            .show()
     }
 
-    override fun showBookDetail() {
-        println("show bookdetail")
+    override fun showFetchDetail(isbn: String) {
+        startActivity<FetchDetailActivity>("isbn" to isbn)
+    }
+
+    override fun showBookDetail(isbn: String) {
+        startActivity<BookDetailActivity>("isbn" to isbn)
     }
 
     override fun handleResult(rawResult: Result) {

@@ -37,9 +37,11 @@ data class Book(
 
     val summary: String? = null,
 
-    val author: String? = null,
+    val authors: String? = null,
 
-    val publisher: String? = null
+    val publisher: String? = null,
+
+    val tags: String? = null
 ) : Identifiable, Parcelable {
 
     override fun identity(): Long? = id

@@ -1,7 +1,6 @@
 package cn.eviao.bookstorage.api.impl
 
 import cn.eviao.bookstorage.api.Api
-import cn.eviao.bookstorage.api.Response
 import cn.eviao.bookstorage.api.transformer.ErrorTransformer
 import cn.eviao.bookstorage.api.transformer.RetryTransformer
 import cn.eviao.bookstorage.model.Book
@@ -47,9 +46,9 @@ class DoubanCrawlImpl : Api {
             .select("#info .pl")
             .filter { it.text().contains(title) }
             .map { it.nextSibling().outerHtml() }
-            .filter { it?.isNotBlank() ?: false }
             .map { it.trim() }
-            .first()
+            .ifEmpty { null }
+            ?.first()
     }
 
     private fun parseSubtitle(document: Document): String? = parseAttrTag(document, "副标题")
@@ -73,15 +72,16 @@ class DoubanCrawlImpl : Api {
             .orElse(null)
     }
 
-    private fun parseTags(document: Document): List<String> {
+    private fun parseTags(document: Document): String {
         return document
             .select("#db-tags-section .tag")
             .map { it.text() }
             .filter { it?.isNotBlank() ?: false }
             .map { it.trim() }
+            .reduce { t, u -> "${t};${u}" }
     }
 
-    private fun parseContent(document: Document, isbn: String): Response {
+    private fun parseContent(document: Document, isbn: String): Book {
         val subject = getSubject(document)
 
         val title = parseTitle(document)
@@ -100,25 +100,23 @@ class DoubanCrawlImpl : Api {
         val summary = parseSummary(document)
         val catalog = parseCatalog(document, subject)
 
-        return Response(
-            book = Book(
-                title = title,
-                subtitle = subtitle,
-                originTitle = originTitle,
-                image = image,
-                isbn = isbn,
-                pubdate = pubdate,
-                rating = rating,
-                summary = summary,
-                catalog = catalog,
-                publisher = publisher,
-                author = authors
-            ),
+        return Book(
+            title = title,
+            subtitle = subtitle,
+            originTitle = originTitle,
+            image = image,
+            isbn = isbn,
+            pubdate = pubdate,
+            rating = rating,
+            summary = summary,
+            catalog = catalog,
+            publisher = publisher,
+            authors = authors,
             tags = tags
         )
     }
 
-    override fun fetch(isbn: String): Observable<Response> {
+    override fun fetch(isbn: String): Observable<Book> {
         return Observable
             .create<Document> {
                 it.onNext(getDocument(isbn))

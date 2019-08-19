@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.eviao.bookstorage.R
-import cn.eviao.bookstorage.contract.BookListContract
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.persistence.DataSource
 import cn.eviao.bookstorage.service.BookService
@@ -25,7 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
-class BookListActivity : BaseActivity(), BookListContract.View {
+class BookListActivity : BaseActivity() {
 
     private lateinit var dataSource: DataSource
     private lateinit var bookService: BookService
