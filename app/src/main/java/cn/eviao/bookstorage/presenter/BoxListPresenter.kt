@@ -5,48 +5,40 @@ import androidx.lifecycle.Observer
 import androidx.paging.Config
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import cn.eviao.bookstorage.contract.BookListContract
-import cn.eviao.bookstorage.model.Book
-import cn.eviao.bookstorage.persistence.BookDao
+import cn.eviao.bookstorage.contract.BoxListContract
+import cn.eviao.bookstorage.model.Box
+import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class BookListPresenter(val view: BookListContract.View) : BookListContract.Presenter {
+class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
-    private var bookDao: BookDao
+    private var boxDao: BoxDao
 
     init {
         compositeDisposable = CompositeDisposable()
-        bookDao = DataSource.getInstance().bookDao()
+        boxDao = DataSource.getInstance().boxDao()
     }
 
     override fun subscribe() {
-        loadCount()
-        loadBooks(null)
+        loadBoxs()
     }
 
     override fun unsubscribe() {
         compositeDisposable.clear()
     }
 
-    override fun loadBooks(keyword: String?) {
-
-        val loadAll = if (keyword.isNullOrBlank()) {
-            bookDao.loadAll()
-        } else {
-            bookDao.loadAll("%${keyword}%")
-        }
-
+    override fun loadBoxs() {
         val config = Config(
-            pageSize = 30,
+            pageSize = 20,
             enablePlaceholders = true,
-            maxSize = 300
+            maxSize = 200
         )
         val owner = view as LifecycleOwner
-        val observer = Observer<PagedList<Book>> {
+        val observer = Observer<PagedList<Box>> {
             if (it.isEmpty()) {
                 view.showEmpty()
             } else {
@@ -55,19 +47,17 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
             view.getListAdapter().submitList(it)
         }
 
-        loadAll.toLiveData(config).observe(owner, observer)
+        boxDao.loadAll().toLiveData(config).observe(owner, observer)
     }
 
-    override fun loadCount() {
-        compositeDisposable.add(bookDao.count()
+    override fun createBox(name: String) {
+        compositeDisposable.add(boxDao.insert(Box(name = name))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it > 0) {
-                    view.setSearchHint("共 ${it} 本图书")
-                }
+                view.hideCreateBoxDialog()
             }, {
-                view.showError(it.message ?: "获取图书信息失败")
+                view.showError(it.message ?: "创建失败")
             }))
     }
 }
