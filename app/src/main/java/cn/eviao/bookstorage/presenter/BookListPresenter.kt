@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.presenter
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.paging.Config
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
@@ -24,24 +25,36 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
 
     override fun subscribe() {
         loadBooks(null)
+        loadCount()
     }
 
     override fun unsubscribe() {
         compositeDisposable.clear()
     }
 
-    override fun loadBooks(keyword: String?): LiveData<PagedList<Book>> {
+    override fun loadBooks(keyword: String?) {
         val loadAll = if (keyword.isNullOrBlank()) {
             bookDao.loadAll()
         } else {
             bookDao.loadAll("%${keyword}%")
         }
 
-        return loadAll.toLiveData(Config(
+        val config = Config(
             pageSize = 30,
             enablePlaceholders = true,
             maxSize = 300
-        ))
+        )
+        val owner = view as LifecycleOwner
+        val observer = Observer<PagedList<Book>> {
+            if (it.isEmpty()) {
+                view.showEmpty()
+            } else {
+                view.showContent()
+            }
+            view.getListAdapter().submitList(it)
+        }
+
+        return loadAll.toLiveData(config).observe(owner, observer)
     }
 
     override fun loadCount() {
@@ -51,8 +64,6 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
             .subscribe({
                 if (it > 0) {
                     view.setSearchHint("共 ${it} 本图书")
-                } else {
-                    view.showEmpty()
                 }
             }, {
                 view.showError(it.message ?: "获取图书信息失败")

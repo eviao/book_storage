@@ -13,7 +13,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getColor
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.contract.BookListContract
@@ -39,19 +38,9 @@ class BookListActivity : BaseActivity(), BookListContract.View {
 
         presenter = BookListPresenter(this)
 
-        loadBooks(null)
-        loadCount()
-
+        ui.boxButton.setOnClickListener(handleStartBox)
         ui.scanButton.setOnClickListener(handleStartScanner)
         ui.searchEdit.setOnEditorActionListener(handleSearch)
-    }
-
-    fun loadBooks(keyword: String?) {
-        presenter.loadBooks(keyword).observe(this, Observer(ui.listAdapter::submitList))
-    }
-
-    fun loadCount() {
-        presenter.loadCount()
     }
 
     override fun onResume() {
@@ -69,11 +58,18 @@ class BookListActivity : BaseActivity(), BookListContract.View {
     }
 
     override fun showEmpty() {
-        val view = layoutInflater.inflate(R.layout.layout_book_list_empty, null)
-        val addButton = view.findViewById<ImageButton>(R.id.add_book_button)
-        addButton.setOnClickListener(handleStartScanner)
+        ui.statusView.showEmpty(
+            R.layout.layout_book_list_empty,
+            RelativeLayout.LayoutParams(matchParent, matchParent)
+        )
+    }
 
-        ui.statusView.showEmpty(view, RelativeLayout.LayoutParams(matchParent, matchParent))
+    override fun showContent() {
+        ui.statusView.showContent()
+    }
+
+    override fun getListAdapter(): BookListAdapter {
+        return ui.listAdapter
     }
 
     override fun setSearchHint(hint: String) {
@@ -82,9 +78,14 @@ class BookListActivity : BaseActivity(), BookListContract.View {
 
     val handleSearch = TextView.OnEditorActionListener { view, actionId, event ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            loadBooks(view.text?.toString())
+            val keyword = view.text?.toString()
+            presenter.loadBooks(keyword)
         }
         true
+    }
+
+    val handleStartBox = View.OnClickListener {
+        startActivity<BoxListActivity>()
     }
 
     val handleStartScanner = View.OnClickListener {

@@ -7,6 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.ui.activity.BookDetailActivity
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import com.facebook.drawee.drawable.ScalingUtils
@@ -70,8 +71,11 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
             }
         }
 
-        override fun onClick(v: View?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onClick(v: View?) = with(context) {
+            book?.let {
+                startActivity<BookDetailActivity>("isbn" to it.isbn)
+            }
+            Unit
         }
     }
 }
