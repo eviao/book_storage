@@ -122,11 +122,11 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
             .show()
     }
 
-    override fun showFetchDetail(isbn: String) {
+    override fun startFetchDetail(isbn: String) {
         startActivity<FetchDetailActivity>("isbn" to isbn)
     }
 
-    override fun showBookDetail(isbn: String) {
+    override fun startBookDetail(isbn: String) {
         startActivity<BookDetailActivity>("isbn" to isbn)
     }
 

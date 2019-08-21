@@ -6,16 +6,24 @@ import cn.eviao.bookstorage.ui.BaseView
 
 interface FetchDetailContract {
     interface View : BaseView<Presenter> {
-        fun showLoading()
+        fun showSkeleton()
 
-        fun hideLoading()
+        fun showSubmitLoading()
+
+        fun hideSubmitLoading()
+
+        fun disableSubmitButton()
 
         fun showError(message: String)
+
+        fun startBookList()
 
         fun renderBook(book: Book)
     }
 
     interface Presenter : BasePresenter {
         fun loadBook()
+
+        fun saveBook()
     }
 }

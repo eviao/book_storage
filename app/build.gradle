@@ -55,6 +55,8 @@ dependencies {
 
     implementation 'com.robinhood.ticker:ticker:2.0.2'
 
+    implementation 'com.classic.common:multiple-status-view:1.6'
+
     implementation deps.rxjava2
     implementation deps.rxandroid
 

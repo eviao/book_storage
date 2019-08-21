@@ -39,9 +39,9 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
             .subscribe({
                 view.hideLoading()
                 if (it > 0) {
-                    view.showBookDetail(isbn)
+                    view.startBookDetail(isbn)
                 } else {
-                    view.showFetchDetail(isbn)
+                    view.startFetchDetail(isbn)
                 }
             }, {
                 view.hideLoading()

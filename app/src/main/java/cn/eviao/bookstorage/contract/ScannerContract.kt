@@ -15,9 +15,9 @@ interface ScannerContract {
 
         fun restartScanning()
 
-        fun showFetchDetail(isbn: String)
+        fun startFetchDetail(isbn: String)
 
-        fun showBookDetail(isbn: String)
+        fun startBookDetail(isbn: String)
     }
 
     interface Presenter : BasePresenter {
