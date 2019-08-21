@@ -1,8 +1,5 @@
 package cn.eviao.bookstorage.contract
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.presenter.BasePresenter
 import cn.eviao.bookstorage.ui.BaseView
 import cn.eviao.bookstorage.ui.adapter.BookListAdapter
