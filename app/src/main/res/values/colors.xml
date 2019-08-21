@@ -9,5 +9,7 @@
     <color name="app_text_color_50">#FF7A7A7A</color>
     <color name="app_text_color_30">#FF9A9A9A</color>
     <color name="app_text_color_10">#FFAAAAAA</color>
+
+    <color name="app_search_background_code">#FFE3E7E9</color>
     <color name="app_background_color">#FFF1F2F3</color>
 </resources>

@@ -3,7 +3,7 @@
        android:shape="rectangle"
        android:padding="10dp">
 
-    <solid android:color="#E3E7E9" />
+    <solid android:color="@color/app_search_background_code" />
 
     <padding android:top="8dp" android:right="16dp" android:bottom="8dp" android:left="16dp" />
 

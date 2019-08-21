@@ -10,8 +10,8 @@ import io.reactivex.schedulers.Schedulers
 
 class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Presenter {
 
-    private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var bookDao: BookDao
+    private var compositeDisposable: CompositeDisposable
+    private var bookDao: BookDao
 
     init {
         compositeDisposable = CompositeDisposable()

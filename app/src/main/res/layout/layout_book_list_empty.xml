@@ -4,32 +4,33 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:id="@+id/error_view">
+              android:id="@+id/empty_view">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            app:contentPadding="24dp"
+            android:background="@color/qmui_config_color_transparent"
             app:cardElevation="0dp">
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/qmui_config_color_transparent"
                 android:gravity="center">
 
-            <ImageView
+            <ImageButton
+                    android:id="@+id/add_book_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_crying"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_add_64_56c596"/>
 
             <TextView
-                    android:id="@+id/message_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="@string/book_list_empty"
                     android:textColor="@color/app_text_color_10"
                     android:gravity="center"/>
         </LinearLayout>

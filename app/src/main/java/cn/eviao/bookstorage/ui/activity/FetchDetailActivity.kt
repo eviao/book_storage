@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.Gravity.RIGHT
+import android.view.View.GONE
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -112,12 +113,17 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
 
     override fun renderBook(book: Book) {
         ui.statusView.showContent()
-        ui.pictureImage.setImageURI(book.image)
+
+        if (book.image != null) {
+            ui.pictureImage.setImageURI(book.image)
+        }else {
+            ui.pictureImage.visibility = GONE
+        }
 
         ui.titleText.text = book.title
         ui.isbnText.text = book.isbn
-        ui.authorsText.text = book.authors
-        ui.publisherText.text = book.publisher
+        ui.authorsText.text = book.authors ?: "未知"
+        ui.publisherText.text = book.publisher ?: "未知"
     }
 }
 

@@ -4,6 +4,7 @@ import cn.eviao.bookstorage.api.Api
 import cn.eviao.bookstorage.api.transformer.ErrorTransformer
 import cn.eviao.bookstorage.api.transformer.RetryTransformer
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.utils.isValidImage
 import io.reactivex.Observable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -32,13 +33,14 @@ class DoubanCrawlImpl : Api {
         return document.select("#mainpic > a").attr("href")
     }
 
-    private fun parseAuthors(document: Document): String {
+    private fun parseAuthors(document: Document): String? {
         return document
             .select("#info .pl")
             .filter { it.text().contains("作者") }
             .flatMap { it.nextElementSibling().select("a") }
             .map { it.text() }
-            .reduce { t, u -> "${t} / ${u}" }
+            .ifEmpty { null }
+            ?.reduce { t, u -> "${t} / ${u}" }
     }
 
     private fun parseAttrTag(document: Document, title: String): String? {
@@ -72,13 +74,14 @@ class DoubanCrawlImpl : Api {
             .orElse(null)
     }
 
-    private fun parseTags(document: Document): String {
+    private fun parseTags(document: Document): String? {
         return document
             .select("#db-tags-section .tag")
             .map { it.text() }
             .filter { it?.isNotBlank() ?: false }
             .map { it.trim() }
-            .reduce { t, u -> "${t};${u}" }
+            .ifEmpty { null }
+            ?.reduce { t, u -> "${t};${u}" }
     }
 
     private fun parseContent(document: Document, isbn: String): Book {
@@ -104,7 +107,7 @@ class DoubanCrawlImpl : Api {
             title = title,
             subtitle = subtitle,
             originTitle = originTitle,
-            image = image,
+            image = if (image != null && isValidImage(image)) image else null,
             isbn = isbn,
             pubdate = pubdate,
             rating = rating,

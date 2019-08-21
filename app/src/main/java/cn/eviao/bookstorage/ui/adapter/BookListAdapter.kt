@@ -3,9 +3,9 @@ package cn.eviao.bookstorage.ui.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
@@ -58,10 +58,16 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
             itemView.setOnClickListener(this)
         }
 
-        fun bindTo(book: Book?) {
-            this.book = book
+        fun bindTo(b: Book?) {
+            b?.let {
+                book = it
 
-            pictureImage.setImageURI("https://img3.doubanio.com/view/subject/l/public/s29063065.jpg")
+                if (it.image == null) {
+                    pictureImage.image = context.getDrawable(R.drawable.ic_placeholder_64_56c596)
+                } else {
+                    pictureImage.setImageURI(it.image)
+                }
+            }
         }
 
         override fun onClick(v: View?) {

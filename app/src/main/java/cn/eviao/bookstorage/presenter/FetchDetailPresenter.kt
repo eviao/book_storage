@@ -16,7 +16,7 @@ class FetchDetailPresenter(
     val isbn: String
 ) : FetchDetailContract.Presenter {
 
-    private lateinit var compositeDisposable: CompositeDisposable
+    private var compositeDisposable: CompositeDisposable
 
     private var api: Api
     private var bookDao: BookDao
@@ -82,7 +82,7 @@ class FetchDetailPresenter(
             .subscribe({
                 view.startBookList()
             }, {
-                view.showError(it.message!!)
+                view.showError(it.message ?: "获取图书信息失败")
             }))
     }
 }
