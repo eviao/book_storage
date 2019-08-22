@@ -1,9 +1,7 @@
 package cn.eviao.bookstorage.model
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import kotlinx.android.parcel.Parcelize
 
 @Entity(
@@ -11,7 +9,14 @@ import kotlinx.android.parcel.Parcelize
     indices = [
         Index(value = ["title"]),
         Index(value = ["isbn"], unique = true)
-    ]
+    ],
+    foreignKeys = arrayOf(
+        ForeignKey(
+            entity = Box::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("box_id")
+        )
+    )
 )
 @Parcelize
 data class Book(
@@ -41,7 +46,10 @@ data class Book(
 
     val publisher: String? = null,
 
-    val tags: String? = null
+    val tags: String? = null,
+
+    @ColumnInfo(name = "box_id")
+    val boxId: Long? = null
 ) : Identifiable, Parcelable {
 
     override fun identity(): Long? = id

@@ -23,5 +23,8 @@ interface BoxDao {
     fun loadBy(id: Long): Maybe<Box>
 
     @Query("select * from boxs order by id desc")
-    fun loadAll(): DataSource.Factory<Int, Box>
+    fun loadAll(): Single<List<Box>>
+
+    @Query("select * from boxs order by id desc")
+    fun loadPage(): DataSource.Factory<Int, Box>
 }

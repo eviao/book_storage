@@ -35,8 +35,8 @@ interface BookDao {
     fun countBy(isbn: String): Single<Int>
 
     @Query("select * from books where title like :title order by id desc")
-    fun loadAll(title: String): DataSource.Factory<Int, Book>
+    fun loadPage(title: String): DataSource.Factory<Int, Book>
 
     @Query("select * from books order by id desc")
-    fun loadAll(): DataSource.Factory<Int, Book>
+    fun loadPage(): DataSource.Factory<Int, Book>
 }

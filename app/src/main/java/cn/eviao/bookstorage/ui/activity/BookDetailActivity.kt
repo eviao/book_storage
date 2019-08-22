@@ -2,8 +2,8 @@ package cn.eviao.bookstorage.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity.CENTER
-import android.view.Gravity.RIGHT
+import android.view.Gravity.*
+import android.view.View.GONE
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -11,6 +11,10 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.contract.BookDetailContract
+import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.model.Box
+import cn.eviao.bookstorage.presenter.BookDetailPresenter
 import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import cn.eviao.bookstorage.ui.widget.tickerView
@@ -18,6 +22,7 @@ import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
 import org.jetbrains.anko.*
@@ -25,65 +30,157 @@ import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
 
 
+class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
-class BookDetailActivity : BaseActivity() {
+    lateinit override var presenter: BookDetailContract.Presenter
 
     lateinit var ui: BookDetailActivityUi
+    lateinit var isbn: String
+
+    private lateinit var loadingDialog: QMUITipDialog
+    private lateinit var updateBoxDialog: QMUIDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        isbn = intent.getStringExtra("isbn")
+        presenter = BookDetailPresenter(this, isbn)
+
+        loadingDialog = QMUITipDialog.Builder(this)
+            .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+            .setTipWord("正在加载")
+            .create()
+        updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
+            .setTitle(R.string.box_list_title)
+            .setMessage("暂无记录")
+            .addAction("关闭", { dialog, int -> dialog.dismiss() })
+            .create(R.style.Dialog)
+
         ui = BookDetailActivityUi()
         ui.setContentView(this)
 
-        ui.pictureImage.setImageURI("https://img3.doubanio.com/view/subject/l/public/s29063065.jpg")
-
-        ui.scoreText.setText("9.7")
-
-        ui.toolbar.setOnMenuItemClickListener {
+        ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.box_menu_item -> {
-                    val items = arrayOf(
-                        "选项1",
-                        "选项2",
-                        "选项3",
-                        "选项4",
-                        "选项5",
-                        "选项6"
-                    )
-                    val builder = QMUIDialog.CheckableDialogBuilder(this)
-                    builder.addItems(items, { dialog, int -> })
-
-                    builder.addAction("取消", { dialog, int -> })
-                    builder.addAction("确定", { dialog, int ->  })
-                    builder.create().show()
-
+                    updateBoxDialog.show()
                     true
                 }
                 else -> true
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
+
+    override fun showLoading() {
+        loadingDialog.show()
+    }
+
+    override fun hideLoading() {
+        loadingDialog.hide()
+    }
+
+    override fun showError(message: String) {
+        longToast(message)
+    }
+
+    override fun renderBook(book: Book) {
+
+        ui.titleText.text = book.title
+
+        val subtitle = book.subtitle ?: book.originTitle
+        if (subtitle.isNullOrBlank()) {
+            ui.subtitleText.visibility = GONE
+        } else {
+            ui.subtitleText.text = subtitle
+        }
+
+        if (book.image.isNullOrBlank()) {
+            ui.pictureImage.visibility = GONE
+        } else {
+            ui.pictureImage.setImageURI(book.image)
+        }
+
+        if (book.rating == null) {
+            ui.ratingText.visibility = GONE
+        } else {
+            ui.ratingText.text = book.rating.toString()
+        }
+
+        if (book.authors.isNullOrBlank()) {
+            ui.authorsText.visibility = GONE
+        } else {
+            ui.authorsText.text = book.authors
+        }
+
+        if (book.tags.isNullOrBlank()) {
+            ui.tagsText.visibility = GONE
+        } else {
+            ui.tagsText.text = book.tags
+        }
+
+        ui.summaryText.text = book.summary
+        ui.catalogText.text = book.catalog
+    }
+
+    override fun createUpdateBoxDialog(boxs: List<Box>, book: Book) {
+        if (boxs.isEmpty()) {
+            return
+        }
+
+        val builder = QMUIDialog.CheckableDialogBuilder(this)
+        builder.setTitle(R.string.box_list_title)
+        builder.addItems(boxs.map { it.name }.toTypedArray(), { dialog, int -> })
+        builder.addAction("取消", { dialog, int -> dialog.dismiss() })
+        builder.addAction("确定", { dialog, int ->
+            if (builder.checkedIndex < 0) {
+                dialog.dismiss()
+            } else {
+                toast(builder.checkedIndex.toString())
+            }
+        })
+
+        if (book.boxId != null) {
+            builder.checkedIndex = boxs.indexOf(boxs.find { it.id == book.boxId })
+        }
+
+        updateBoxDialog = builder.create(R.style.Dialog)
+    }
 }
 
 class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
-    lateinit var toolbar: Toolbar
+    lateinit var topToolbar: Toolbar
+
     lateinit var titleText: TextView
     lateinit var subtitleText: TextView
     lateinit var pictureImage: SimpleDraweeView
-    lateinit var scoreText: TickerView
+
+    lateinit var ratingText: TickerView
+    lateinit var authorsText: TextView
+    lateinit var tagsText: TextView
+
+    lateinit var summaryText: TextView
+    lateinit var catalogText: TextView
 
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
 
         verticalLayout {
 
-            toolbar = themedToolbar {
+            topToolbar = themedToolbar {
                 backgroundColor = Color.WHITE
                 navigationIcon = getDrawable(context, R.drawable.ic_left_32_56c596)
                 inflateMenu(R.menu.menu_book_detail)
 
-                elevation = dip(1).toFloat()
+                elevation = dip(1.0f).toFloat()
             }
 
             themedScrollView(R.style.AppTheme_Scrollbar) {
@@ -93,13 +190,12 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                         backgroundColor = Color.WHITE
 
                         verticalLayout {
-                            titleText = textView("图书名称") {
+                            titleText = textView {
                                 textSize = sp(8).toFloat()
                                 textColor = getColor(context, R.color.app_text_color)
                             }
-                            subtitleText = textView("图书副标题") {
+                            subtitleText = textView {
                                 textSize = sp(6).toFloat()
-//                                textColor = getColor(context, R.color.app_text_color_50)
                                 textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
@@ -118,7 +214,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             }.lparams(width = dip(120))
 
                             verticalLayout {
-                                scoreText = tickerView {
+                                ratingText = tickerView {
                                     textSize = sp(32).toFloat()
                                     textColor = getColor(context, R.color.colorPrimary)
                                     animationDuration = 600
@@ -127,21 +223,27 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                                     text = "0.0"
                                 }.lparams(width = wrapContent) {
                                     bottomMargin = dip(8)
-                                    gravity = RIGHT
+                                    gravity = END
                                 }
 
-                                textView("作者 / 作者 / 作者")
-                                textView("标签 / 标签 / 标签 / 标签 / 标签")
+                                authorsText = textView {
+                                    textSize = sp(5).toFloat()
+                                }
+
+                                tagsText = textView {
+                                    textSize = sp(5).toFloat()
+                                }
                             }.lparams(width = matchParent) {
-                                leftMargin = dip(16)
+                                leftMargin = dip(0)
                             }.applyRecursively {
                                 when (it) {
                                     is TextView -> {
                                         it.textColor = getColor(context, R.color.app_text_color_70)
-                                        it.gravity = RIGHT
+                                        it.gravity = END
 
                                         it.lparams(width = matchParent) {
-                                            bottomMargin = dip(6)
+                                            topMargin = dip(4)
+                                            bottomMargin = dip(4)
                                         }
                                     }
                                 }
@@ -157,7 +259,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
-                            textView("内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明") {
+
+                            summaryText = textView {
                                 textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }
@@ -170,7 +273,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
-                            textView("目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录目录") {
+
+                            catalogText = textView {
                                 textColor = getColor(context, R.color.app_text_color_50)
                             }
                         }

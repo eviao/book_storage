@@ -81,7 +81,7 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
         createBoxDialog = builder
             .setTitle("新增")
             .setPlaceholder("在此输入名称")
-            .setInputType(InputType.TYPE_CLASS_TEXT)
+            .setInputType(InputType.TYPE_NULL)
             .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
             .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
                 val name = builder.editText.text?.toString()

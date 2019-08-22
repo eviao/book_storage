@@ -47,7 +47,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             view.getListAdapter().submitList(it)
         }
 
-        boxDao.loadAll().toLiveData(config).observe(owner, observer)
+        boxDao.loadPage().toLiveData(config).observe(owner, observer)
     }
 
     override fun createBox(name: String) {
