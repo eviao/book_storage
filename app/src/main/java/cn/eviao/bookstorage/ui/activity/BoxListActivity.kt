@@ -71,17 +71,24 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
     }
 
     override fun hideCreateBoxDialog() {
-        createBoxDialog?.let { it.dismiss() }
+        createBoxDialog.dismiss()
     }
 
+    @Suppress("DEPRECATION")
     fun showCreateBoxDialog() {
-        createBoxDialog = QMUIDialog.EditTextDialogBuilder(this)
+        val builder = QMUIDialog.EditTextDialogBuilder(this)
+        createBoxDialog = builder
             .setTitle("新增")
             .setPlaceholder("在此输入名称")
             .setInputType(InputType.TYPE_CLASS_TEXT)
             .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
             .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
-                presenter.createBox("abcc")
+                val name = builder.editText.text?.toString()
+                if (name.isNullOrBlank()) {
+                    longToast("请输入名称")
+                } else {
+                    presenter.createBox(name)
+                }
             })
             .create(R.style.Dialog)
         createBoxDialog.show()
@@ -107,7 +114,7 @@ class BoxListActivityUi : AnkoComponent<BoxListActivity> {
     override fun createView(ui: AnkoContext<BoxListActivity>) = with(ui) {
         verticalLayout {
             topToolbar = themedToolbar {
-                title = "Box List"
+                title = "Boxs"
                 backgroundColor = Color.WHITE
                 navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_left_32_56c596)
                 elevation = dip(1.0f).toFloat()
@@ -117,8 +124,10 @@ class BoxListActivityUi : AnkoComponent<BoxListActivity> {
 
             cardView {
                 statusView = multipleStatusView {
+
                     recyclerView {
                         backgroundColor = Color.WHITE
+                        layoutParams = RelativeLayout.LayoutParams(matchParent, matchParent)
 
                         layoutManager = LinearLayoutManager(context)
                         addItemDecoration(
