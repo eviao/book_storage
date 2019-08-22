@@ -123,7 +123,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
                     rightMargin = dip(8)
                 }
 
-                boxButton = imageButton(imageResource = R.drawable.ic_box)
+                boxButton = imageButton(imageResource = R.drawable.ic_box_32)
                     .lparams {
                         gravity = Gravity.CENTER_VERTICAL
                         rightMargin = dip(8)

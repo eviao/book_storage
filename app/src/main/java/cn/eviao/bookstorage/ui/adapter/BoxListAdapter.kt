@@ -1,7 +1,6 @@
 package cn.eviao.bookstorage.ui.adapter
 
 import android.content.Context
-import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -11,9 +10,9 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.model.Box
+import cn.eviao.bookstorage.ui.activity.BoxUpdateActivity
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.textChangedListener
 
 class BoxListItemUi : AnkoComponent<ViewGroup> {
 
@@ -46,37 +45,41 @@ class BoxListItemUi : AnkoComponent<ViewGroup> {
 class BoxListAdapter(val context: Context) : PagedListAdapter<Box, BoxListAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(BoxListItemUi().createView(AnkoContext.create(context, parent)))
+        ViewHolder(context, BoxListItemUi().createView(AnkoContext.create(context, parent)))
 
-    override fun onBindViewHolder(holder: BoxListAdapter.ViewHolder, position: Int) {
-        getItem(position)?.let {
-            holder.nameText.text = it.name
+    override fun onBindViewHolder(holder: BoxListAdapter.ViewHolder, position: Int) =
+        holder.bindTo(getItem(position))
 
-            if (it.intro.isNullOrBlank()) {
-                holder.introText.visibility = View.GONE
-            } else {
-                holder.introText.text = it.intro
-            }
-        }
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var box: Box? = null
 
         val nameText: TextView = itemView.findViewById(BoxListItemUi.ID_NAME)
         val introText: TextView = itemView.findViewById(BoxListItemUi.ID_INTRO)
 
         val handleClick = View.OnClickListener {
-            println("**************")
-        }
-
-        val handleLongClick = View.OnLongClickListener {
-            println("==============")
-            true
+            with(context) {
+                box?.let {
+                    startActivity<BoxUpdateActivity>("id" to it.id)
+                }
+            }
         }
 
         init {
             itemView.setOnClickListener(handleClick)
-            itemView.setOnLongClickListener(handleLongClick)
+        }
+
+        fun bindTo(b: Box?) {
+            b?.let {
+                box = it
+
+                nameText.text = it.name
+
+                if (it.intro.isNullOrBlank()) {
+                    introText.visibility = View.GONE
+                } else {
+                    introText.text = it.intro
+                }
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import android.text.InputType
 import android.widget.ImageButton
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat.getColor
 import cn.eviao.bookstorage.contract.BoxListContract
 import cn.eviao.bookstorage.presenter.BoxListPresenter
 import cn.eviao.bookstorage.ui.widget.multipleStatusView
@@ -96,7 +97,7 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
 
     val handleMenuClick = Toolbar.OnMenuItemClickListener {
         when (it.itemId) {
-            R.id.create_menu_item -> {
+            R.id.save_menu_item -> {
                 showCreateBoxDialog()
                 true
             }
@@ -114,7 +115,8 @@ class BoxListActivityUi : AnkoComponent<BoxListActivity> {
     override fun createView(ui: AnkoContext<BoxListActivity>) = with(ui) {
         verticalLayout {
             topToolbar = themedToolbar {
-                title = "Boxs"
+                title = resources.getString(R.string.box_list_title)
+                setTitleTextColor(getColor(context, R.color.app_text_color_70))
                 backgroundColor = Color.WHITE
                 navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_left_32_56c596)
                 elevation = dip(1.0f).toFloat()

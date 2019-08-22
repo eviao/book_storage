@@ -20,6 +20,7 @@ data class Box(
     val name: String? = null,
 
     val intro: String? = null
+
 ) : Identifiable, Parcelable {
 
     override fun identity(): Long? = id

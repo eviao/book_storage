@@ -80,7 +80,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
             toolbar = themedToolbar {
                 backgroundColor = Color.WHITE
-                navigationIcon = getDrawable(context, R.drawable.ic_left)
+                navigationIcon = getDrawable(context, R.drawable.ic_left_32_56c596)
                 inflateMenu(R.menu.menu_book_detail)
 
                 elevation = dip(1).toFloat()

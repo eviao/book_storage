@@ -30,5 +30,7 @@
     </style>
     <style name="Dialog.Action">
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="qmui_dialog_positive_action_text_color">?attr/qmui_config_color_blue</item>
+        <item name="qmui_dialog_negative_action_text_color">?attr/qmui_config_color_red</item>
     </style>
 </resources>

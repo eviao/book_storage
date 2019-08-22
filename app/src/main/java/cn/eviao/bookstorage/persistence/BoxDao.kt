@@ -14,7 +14,7 @@ interface BoxDao {
     fun insert(box: Box): Single<Long>
 
     @Update
-    fun update(box: Box): Completable
+    fun update(box: Box): Single<Int>
 
     @Delete
     fun delete(box: Box): Completable
