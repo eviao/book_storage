@@ -32,6 +32,7 @@ dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.support.core_ktx
+    implementation deps.support.design
     implementation deps.constraint_layout
 
     implementation deps.lifecycle.runtime
@@ -53,7 +54,6 @@ dependencies {
     implementation deps.easypermissions
     implementation deps.jsoup
 
-    implementation deps.support.design
     implementation deps.qmui
     implementation deps.fresco
     implementation deps.ticker
