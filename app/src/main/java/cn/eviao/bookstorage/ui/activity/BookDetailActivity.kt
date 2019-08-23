@@ -10,12 +10,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
+import androidx.core.view.setPadding
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.contract.BookDetailContract
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.presenter.BookDetailPresenter
 import cn.eviao.bookstorage.ui.BaseActivity
+import cn.eviao.bookstorage.ui.widget.SpecifiedDialogBuilder
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import cn.eviao.bookstorage.ui.widget.tickerView
 import com.facebook.drawee.drawable.ScalingUtils
@@ -63,6 +65,10 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
                 }
                 R.id.delete_menu_item -> {
                     deleteBook()
+                    true
+                }
+                R.id.all_menu_item -> {
+                    presenter.loadBookAll()
                     true
                 }
                 else -> true
@@ -130,13 +136,32 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         ui.catalogText.text = book.catalog
     }
 
+    override fun showDetailAllDialog(book: Book, box: Box?) {
+        val dialogUi = BookDetailAllDialogUi()
+        val view = dialogUi.createView(AnkoContextImpl(this, this, false))
+
+        dialogUi.isbnText.text = book.isbn
+        dialogUi.pubdateText.text = book.pubdate
+        dialogUi.publisherText.text = book.publisher
+
+        dialogUi.boxText.text = if (box == null) "-" else {
+            if (box.intro.isNullOrBlank()) box.name else "${box.name}（${box.intro}）"
+        }
+
+        SpecifiedDialogBuilder(this)
+            .setContentView(view)
+            .setTitle("完整信息")
+            .addAction("关闭", { dialog, int -> dialog.dismiss() })
+            .create().show()
+    }
+
     override fun showUpdateBoxDialog(boxs: List<Box>, book: Book) {
         if (boxs.isEmpty()) {
             updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
                 .setTitle(R.string.box_list_title)
                 .setMessage("暂无记录")
                 .addAction("关闭", { dialog, int -> dialog.dismiss() })
-                .create(R.style.Dialog)
+                .create()
             updateBoxDialog.show()
             return
         }
@@ -158,7 +183,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
             builder.checkedIndex = boxs.indexOf(boxs.find { it.id == book.boxId })
         }
 
-        updateBoxDialog = builder.create(R.style.Dialog)
+        updateBoxDialog = builder.create()
         updateBoxDialog.show()
     }
 
@@ -177,7 +202,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
             .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE ) { dialog, index ->
                 presenter.deleteBook()
             }
-            .create(R.style.Dialog)
+            .create()
             .show()
     }
 }
@@ -315,6 +340,78 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
                     val layoutParams = it.layoutParams as LinearLayout.LayoutParams
                     layoutParams.topMargin = dip(16)
+                }
+            }
+        }
+    }
+}
+
+
+class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
+
+    lateinit var isbnText: TextView
+    lateinit var pubdateText: TextView
+    lateinit var publisherText: TextView
+    lateinit var boxText: TextView
+
+    override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
+        verticalLayout {
+            layoutParams = LinearLayout.LayoutParams(matchParent, matchParent)
+            setPadding(dip(24))
+
+            linearLayout {
+                textView("ISBN") {
+                    textColor = getColor(context, R.color.app_text_color_30)
+                }
+
+                isbnText = textView {
+                    textColor = getColor(context, R.color.app_text_color_70)
+                    gravity = END
+                }.lparams(width = matchParent)
+            }
+
+            linearLayout {
+                textView("出版时间") {
+                    textColor = getColor(context, R.color.app_text_color_30)
+                }
+
+                pubdateText = textView {
+                    textColor = getColor(context, R.color.app_text_color_70)
+                    gravity = END
+                }.lparams(width = matchParent)
+            }
+
+            linearLayout {
+                textView("出版社") {
+                    textColor = getColor(context, R.color.app_text_color_30)
+                }
+
+                publisherText = textView {
+                    textColor = getColor(context, R.color.app_text_color_70)
+                    gravity = END
+                }.lparams(width = matchParent)
+            }
+
+            linearLayout {
+                textView("Box") {
+                    textColor = getColor(context, R.color.app_text_color_30)
+                }
+
+                boxText = textView {
+                    textColor = getColor(context, R.color.app_text_color_70)
+                    gravity = END
+                }.lparams(width = matchParent)
+            }
+        }.applyRecursively {
+            when (it) {
+                is LinearLayout -> {
+                    val lparams = LinearLayout.LayoutParams(matchParent, wrapContent)
+                    lparams.bottomMargin = dip(8)
+
+                    it.layoutParams = lparams
+                }
+                is TextView -> {
+                    it.textSize = sp(6).toFloat()
                 }
             }
         }

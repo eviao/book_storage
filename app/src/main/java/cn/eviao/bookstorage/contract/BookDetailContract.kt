@@ -19,6 +19,8 @@ interface BookDetailContract {
 
         fun hideUpdateBoxDialog()
 
+        fun showDetailAllDialog(book: Book, box: Box?)
+
         fun startBookList()
 
         fun renderBook(book: Book)
@@ -26,6 +28,8 @@ interface BookDetailContract {
 
     interface Presenter : BasePresenter {
         fun loadBook()
+
+        fun loadBookAll()
 
         fun loadBoxs()
 

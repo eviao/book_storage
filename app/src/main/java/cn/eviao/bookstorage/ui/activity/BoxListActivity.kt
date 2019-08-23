@@ -91,7 +91,7 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
                     presenter.createBox(name)
                 }
             })
-            .create(R.style.Dialog)
+            .create()
         createBoxDialog.show()
     }
 

@@ -6,6 +6,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">16sp</item>
+
+        <item name="qmui_dialog_action_style">@style/AppTheme.Dialog.Action</item>
+        <item name="qmui_dialog_menu_item_style">@style/AppTheme.Dialog.MenuItem</item>
     </style>
 
     <style name="AppTheme.Search">
@@ -25,15 +28,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Dialog" parent="QMUI.Dialog">
-        <item name="qmui_dialog_action_style">@style/Dialog.Action</item>
-        <item name="qmui_dialog_menu_item_style">@style/Dialog.MenuItem</item>
-    </style>
-    <style name="Dialog.MenuItem" parent="QMUI.Dialog_MenuItem">
+    <style name="AppTheme.Dialog.MenuItem" parent="QMUI.Dialog_MenuItem">
         <item name="qmui_dialog_menu_item_mark_drawable">@drawable/dialog_check_mark</item>
     </style>
-    <style name="Dialog.Action" parent="QMUI.Dialog.Action">
-        <item name="android:textColor">@color/app_text_color_70</item>
+    <style name="AppTheme.Dialog.Action" parent="QMUI.Dialog.Action">
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="qmui_dialog_positive_action_text_color">@color/colorPrimary</item>
         <item name="qmui_dialog_negative_action_text_color">@color/colorDanger</item>
     </style>

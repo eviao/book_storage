@@ -6,6 +6,7 @@ import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +18,7 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
     private var boxDao: BoxDao
 
     private lateinit var book: Book
+    private lateinit var box: Box
 
     init {
         compositeDisposable = CompositeDisposable()
@@ -54,6 +56,23 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .subscribe({
                 book = it
                 view.renderBook(it)
+            }, {
+                view.showError(it.message ?: "加载失败")
+            }))
+    }
+
+    override fun loadBookAll() {
+        if (book.boxId == null) {
+            view.showDetailAllDialog(book, null)
+            return
+        }
+
+        compositeDisposable.add(boxDao.loadBy(book.boxId!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                box = it
+                view.showDetailAllDialog(book, it)
             }, {
                 view.showError(it.message ?: "加载失败")
             }))

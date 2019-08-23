@@ -101,7 +101,7 @@ class BoxUpdateActivity : BaseActivity(), BoxUpdateContract.View {
             .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE ) { dialog, index ->
                 presenter.deleteBox()
             }
-            .create(R.style.Dialog)
+            .create()
             .show()
     }
 }
