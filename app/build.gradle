@@ -34,35 +34,31 @@ dependencies {
     implementation deps.support.core_ktx
     implementation deps.constraint_layout
 
-    implementation deps.anko
-    implementation "org.jetbrains.anko:anko-recyclerview-v7:0.10.8"
-    implementation "org.jetbrains.anko:anko-recyclerview-v7-coroutines:0.10.8"
-    implementation "org.jetbrains.anko:anko-cardview-v7:0.10.8"
-    implementation "org.jetbrains.anko:anko-design:0.10.8"
-    implementation "org.jetbrains.anko:anko-design-coroutines:0.10.8"
+    implementation deps.lifecycle.runtime
+    kapt deps.lifecycle.compiler
 
-    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
-    kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
-    implementation "androidx.room:room-runtime:2.1.0"
-    kapt "androidx.room:room-compiler:2.1.0"
-    implementation "androidx.room:room-rxjava2:2.1.0"
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
+    implementation deps.room.runtime
+    implementation deps.room.rxjava2
+    kapt deps.room.compiler
 
-    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation deps.paging.runtime_ktx
 
-    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
-    implementation 'pub.devrel:easypermissions:3.0.0'
-
-    implementation 'com.robinhood.ticker:ticker:2.0.2'
-
-    implementation 'com.classic.common:multiple-status-view:1.6'
+    implementation deps.anko.base
+    implementation deps.anko.recyclerview
+    implementation deps.anko.recyclerview_v7_coroutines
+    implementation deps.anko.cardview
 
     implementation deps.rxjava2
     implementation deps.rxandroid
+    implementation deps.easypermissions
+    implementation deps.jsoup
 
     implementation deps.support.design
     implementation deps.qmui
     implementation deps.fresco
+    implementation deps.ticker
+    implementation deps.multiple_status_view
+    implementation deps.barcodescanner
 
     testImplementation deps.junit
     androidTestImplementation deps.runner
