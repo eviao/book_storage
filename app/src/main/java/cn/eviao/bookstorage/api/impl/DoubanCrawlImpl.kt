@@ -71,6 +71,7 @@ class DoubanCrawlImpl : Api {
             .stream()
             .map { it.previousSibling().outerHtml() }
             .reduce { t, u -> "${t}\r\n ${u}" }
+            .map { it.trim() }
             .orElse(null)
     }
 

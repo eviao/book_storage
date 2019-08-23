@@ -6,6 +6,7 @@ import android.view.Gravity.*
 import android.view.View.GONE
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
@@ -22,6 +23,7 @@ import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
@@ -50,11 +52,6 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
             .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
             .setTipWord("正在加载")
             .create()
-        updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
-            .setTitle(R.string.box_list_title)
-            .setMessage("暂无记录")
-            .addAction("关闭", { dialog, int -> dialog.dismiss() })
-            .create(R.style.Dialog)
 
         ui = BookDetailActivityUi()
         ui.setContentView(this)
@@ -62,7 +59,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.box_menu_item -> {
-                    updateBoxDialog.show()
+                    presenter.loadBoxs()
                     true
                 }
                 else -> true
@@ -131,28 +128,40 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         ui.catalogText.text = book.catalog
     }
 
-    override fun createUpdateBoxDialog(boxs: List<Box>, book: Book) {
+    override fun showUpdateBoxDialog(boxs: List<Box>, book: Book) {
         if (boxs.isEmpty()) {
+            updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
+                .setTitle(R.string.box_list_title)
+                .setMessage("暂无记录")
+                .addAction("关闭", { dialog, int -> dialog.dismiss() })
+                .create(R.style.Dialog)
+            updateBoxDialog.show()
             return
         }
 
         val builder = QMUIDialog.CheckableDialogBuilder(this)
         builder.setTitle(R.string.box_list_title)
         builder.addItems(boxs.map { it.name }.toTypedArray(), { dialog, int -> })
-        builder.addAction("取消", { dialog, int -> dialog.dismiss() })
-        builder.addAction("确定", { dialog, int ->
+        builder.addAction("取消",  { dialog, int -> dialog.dismiss() })
+        builder.addAction(0, "确定", QMUIDialogAction.ACTION_PROP_POSITIVE) { dialog, int ->
             if (builder.checkedIndex < 0) {
                 dialog.dismiss()
             } else {
-                toast(builder.checkedIndex.toString())
+                val box = boxs.get(builder.checkedIndex)
+                presenter.updateBox(box)
             }
-        })
+        }
 
         if (book.boxId != null) {
             builder.checkedIndex = boxs.indexOf(boxs.find { it.id == book.boxId })
         }
 
         updateBoxDialog = builder.create(R.style.Dialog)
+        updateBoxDialog.show()
+    }
+
+    override fun hideUpdateBoxDialog() {
+        updateBoxDialog.hide()
     }
 }
 

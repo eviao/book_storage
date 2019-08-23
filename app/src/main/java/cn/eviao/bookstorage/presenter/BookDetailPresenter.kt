@@ -2,6 +2,7 @@ package cn.eviao.bookstorage.presenter
 
 import cn.eviao.bookstorage.contract.BookDetailContract
 import cn.eviao.bookstorage.model.Book
+import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
@@ -14,6 +15,8 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
     private var compositeDisposable: CompositeDisposable
     private var bookDao: BookDao
     private var boxDao: BoxDao
+
+    private lateinit var book: Book
 
     init {
         compositeDisposable = CompositeDisposable()
@@ -47,23 +50,35 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .map(::tagsFilter)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess(::loadBoxs)
             .doFinally { view.hideLoading() }
             .subscribe({
+                book = it
                 view.renderBook(it)
             }, {
                 view.showError(it.message ?: "加载失败")
             }))
     }
 
-    fun loadBoxs(book: Book) {
+    override fun loadBoxs(){
         compositeDisposable.add(boxDao.loadAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.createUpdateBoxDialog(it, book)
+                view.showUpdateBoxDialog(it, book)
             }, {
                 view.showError(it.message ?: "加载失败")
+            }))
+    }
+
+    override fun updateBox(box: Box) {
+        compositeDisposable.add(bookDao.update(book.copy(boxId = box.id))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                view.hideUpdateBoxDialog()
+                loadBook()
+            }, {
+                view.showError(it.message ?: "更新失败")
             }))
     }
 }

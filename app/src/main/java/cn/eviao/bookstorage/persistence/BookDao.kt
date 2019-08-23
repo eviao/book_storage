@@ -1,10 +1,7 @@
 package cn.eviao.bookstorage.persistence
 
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import cn.eviao.bookstorage.model.Book
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -15,6 +12,9 @@ interface BookDao {
 
     @Insert
     fun insert(book: Book): Single<Long>
+
+    @Update
+    fun update(book: Book): Single<Int>
 
     @Delete
     fun delete(book: Book): Completable

@@ -3,7 +3,7 @@
 
     <item android:id="@+id/box_menu_item"
           android:title="store"
-          android:icon="@drawable/ic_store"
+          android:icon="@drawable/ic_store_32_56c596"
           android:orderInCategory="100"
           app:showAsAction="always" />
 
