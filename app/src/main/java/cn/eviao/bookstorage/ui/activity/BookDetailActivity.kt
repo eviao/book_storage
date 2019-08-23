@@ -57,6 +57,9 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         ui = BookDetailActivityUi()
         ui.setContentView(this)
 
+        ui.topToolbar.setNavigationOnClickListener {
+            startBookList()
+        }
         ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.box_menu_item -> {

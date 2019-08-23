@@ -15,7 +15,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activity.BookListActivity">
+        <activity android:name=".ui.activity.BookListActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -23,37 +23,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.BookDetailActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+        <activity android:name=".ui.activity.BookDetailActivity" android:launchMode="singleTop" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
+        <activity android:name=".ui.activity.ScannerActivity" android:launchMode="singleTop" />
 
-        <activity android:name=".ui.activity.ScannerActivity" />
+        <activity android:name=".ui.activity.FetchDetailActivity" android:launchMode="singleTop" />
 
-        <activity android:name=".ui.activity.FetchDetailActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+        <activity android:name=".ui.activity.BoxListActivity" android:launchMode="singleTask" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
-        
-        <activity android:name=".ui.activity.BoxListActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".ui.activity.BoxUpdateActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
+        <activity android:name=".ui.activity.BoxUpdateActivity" android:launchMode="singleTop" />
     </application>
 </manifest>

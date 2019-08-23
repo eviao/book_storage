@@ -24,7 +24,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_add_64_56c596"/>
+                    app:srcCompat="@drawable/ic_empty_64_56c596"/>
 
             <TextView
                     android:layout_width="match_parent"

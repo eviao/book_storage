@@ -8,7 +8,6 @@ import cn.eviao.bookstorage.persistence.DataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.longToast
 
 class BoxUpdatePresenter(val view: BoxUpdateContract.View, val id: Long) : BoxUpdateContract.Presenter {
 

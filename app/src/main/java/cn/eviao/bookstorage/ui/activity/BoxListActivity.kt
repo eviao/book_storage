@@ -16,7 +16,6 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import android.text.InputType
-import android.widget.ImageButton
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat.getColor
 import cn.eviao.bookstorage.contract.BoxListContract
@@ -39,6 +38,8 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
 
         ui = BoxListActivityUi()
         ui.setContentView(this)
+
+        ui.topToolbar.setNavigationOnClickListener { startBookList() }
         ui.topToolbar.setOnMenuItemClickListener(handleMenuClick)
     }
 
@@ -53,10 +54,10 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
     }
 
     override fun showEmpty() {
-        val view = layoutInflater.inflate(R.layout.layout_box_list_empty, null)
-        val addButton = view.findViewById<ImageButton>(R.id.create_box_button)
-        addButton.setOnClickListener { showCreateBoxDialog() }
-        ui.statusView.showEmpty(view, RelativeLayout.LayoutParams(matchParent, matchParent))
+        ui.statusView.showEmpty(
+            R.layout.layout_box_list_empty,
+            RelativeLayout.LayoutParams(matchParent, matchParent)
+        )
     }
 
     override fun showContent() {
@@ -93,6 +94,10 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
             })
             .create()
         createBoxDialog.show()
+    }
+
+    fun startBookList() {
+        startActivity<BookListActivity>()
     }
 
     val handleMenuClick = Toolbar.OnMenuItemClickListener {

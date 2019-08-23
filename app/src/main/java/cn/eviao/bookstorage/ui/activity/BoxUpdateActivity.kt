@@ -47,6 +47,9 @@ class BoxUpdateActivity : BaseActivity(), BoxUpdateContract.View {
         ui = BoxUpdateActivityUi()
         ui.setContentView(this)
 
+        ui.topToolbar.setNavigationOnClickListener {
+            startBoxList()
+        }
         ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.save_menu_item -> {
