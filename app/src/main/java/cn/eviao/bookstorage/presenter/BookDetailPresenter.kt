@@ -81,4 +81,15 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
                 view.showError(it.message ?: "更新失败")
             }))
     }
+
+    override fun deleteBook() {
+        compositeDisposable.add(bookDao.delete(book)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                view.startBookList()
+            }, {
+                view.showError(it.message ?: "更新失败")
+            }))
+    }
 }

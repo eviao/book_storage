@@ -18,7 +18,6 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
-import android.widget.Toast
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 
@@ -91,10 +90,6 @@ class BoxUpdateActivity : BaseActivity(), BoxUpdateContract.View {
 
     fun updateBox() {
         val name = ui.nameEdit.text?.toString()
-        if (name.isNullOrBlank()) {
-            longToast("请输入名称")
-            return
-        }
         val intro = ui.introEdit.text?.toString()
         presenter.updateBox(Box(name = name, intro = intro))
     }

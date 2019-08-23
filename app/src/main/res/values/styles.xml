@@ -33,7 +33,7 @@
         <item name="qmui_dialog_menu_item_mark_drawable">@drawable/dialog_check_mark</item>
     </style>
     <style name="Dialog.Action" parent="QMUI.Dialog.Action">
-        <item name="android:textColor">@color/app_text_color_50</item>
+        <item name="android:textColor">@color/app_text_color_70</item>
         <item name="qmui_dialog_positive_action_text_color">@color/colorPrimary</item>
         <item name="qmui_dialog_negative_action_text_color">@color/colorDanger</item>
     </style>

@@ -6,7 +6,6 @@ import android.view.Gravity.*
 import android.view.View.GONE
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
@@ -62,6 +61,10 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
                     presenter.loadBoxs()
                     true
                 }
+                R.id.delete_menu_item -> {
+                    deleteBook()
+                    true
+                }
                 else -> true
             }
         }
@@ -90,7 +93,6 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
     }
 
     override fun renderBook(book: Book) {
-
         ui.titleText.text = book.title
 
         val subtitle = book.subtitle ?: book.originTitle
@@ -162,6 +164,21 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
     override fun hideUpdateBoxDialog() {
         updateBoxDialog.hide()
+    }
+
+    override fun startBookList() {
+        startActivity<BookListActivity>()
+    }
+
+    fun deleteBook() {
+        QMUIDialog.MessageDialogBuilder(this)
+            .setMessage("确定要删除吗？")
+            .addAction("取消") { dialog, index -> dialog.dismiss() }
+            .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE ) { dialog, index ->
+                presenter.deleteBook()
+            }
+            .create(R.style.Dialog)
+            .show()
     }
 }
 

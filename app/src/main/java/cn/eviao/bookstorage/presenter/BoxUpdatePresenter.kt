@@ -8,6 +8,7 @@ import cn.eviao.bookstorage.persistence.DataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import org.jetbrains.anko.longToast
 
 class BoxUpdatePresenter(val view: BoxUpdateContract.View, val id: Long) : BoxUpdateContract.Presenter {
 
@@ -46,6 +47,11 @@ class BoxUpdatePresenter(val view: BoxUpdateContract.View, val id: Long) : BoxUp
 
     @SuppressLint("CheckResult")
     override fun updateBox(b: Box) {
+        if (b.name.isNullOrBlank()) {
+            view.showError("请输入名称")
+            return
+        }
+
         compositeDisposable.add(boxDao.update(box.copy(name = b.name, intro = b.intro))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
