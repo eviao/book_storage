@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">book_storage</string>
+    <string name="app_name">Book Storage</string>
     <string name="search_hint">图书 / 作者 / 目录</string>
     <string name="book_list_empty">暂无图书</string>
     <string name="box_list_title">Box</string>
