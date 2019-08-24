@@ -59,9 +59,9 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
             itemView.setOnClickListener(this)
         }
 
-        fun bindTo(b: Book?) {
-            b?.let {
-                book = it
+        fun bindTo(book: Book?) {
+            book?.let {
+                this.book = it
 
                 if (it.image == null) {
                     pictureImage.image = context.getDrawable(R.drawable.ic_placeholder_64_56c596)
