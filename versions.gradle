@@ -85,6 +85,8 @@ anko.base = "org.jetbrains.anko:anko:$versions.anko"
 anko.recyclerview = "org.jetbrains.anko:anko-recyclerview-v7:$versions.anko"
 anko.recyclerview_v7_coroutines = "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$versions.anko"
 anko.cardview = "org.jetbrains.anko:anko-cardview-v7:$versions.anko"
+anko.design = "org.jetbrains.anko:anko-design:$versions.anko"
+anko.design_coroutines = "org.jetbrains.anko:anko-design-coroutines:$versions.anko"
 deps.anko = anko
 
 def espresso = [:]

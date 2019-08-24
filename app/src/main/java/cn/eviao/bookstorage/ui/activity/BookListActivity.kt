@@ -115,7 +115,7 @@ class ListActivityUi() : AnkoComponent<BookListActivity> {
                     imeOptions = EditorInfo.IME_ACTION_SEARCH
                     hintResource = R.string.search_hint
                     textAppearance = R.style.AppTheme_Search
-                    background = getDrawable(context, R.drawable.search_edittext)
+                    background = getDrawable(context, R.drawable.edittext_search)
                     singleLine = true
                     filters = arrayOf(InputFilter.LengthFilter(32))
                 }.lparams {

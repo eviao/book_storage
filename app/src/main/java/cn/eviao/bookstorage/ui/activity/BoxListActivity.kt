@@ -15,13 +15,19 @@ import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
-import android.text.InputType
+import android.view.Gravity.START
+import android.view.View
+import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.view.setPadding
 import cn.eviao.bookstorage.contract.BoxListContract
+import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.presenter.BoxListPresenter
+import cn.eviao.bookstorage.ui.widget.SpecifiedDialogBuilder
 import cn.eviao.bookstorage.ui.widget.multipleStatusView
 import com.classic.common.MultipleStatusView
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 
 
 class BoxListActivity : BaseActivity(), BoxListContract.View {
@@ -29,15 +35,29 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
     lateinit override var presenter: BoxListContract.Presenter
 
     lateinit var ui: BoxListActivityUi
-    lateinit var createBoxDialog: QMUIDialog
+    lateinit var editBoxDialog: QMUIDialog
+    private lateinit var submitLoadingDialog: QMUITipDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = BoxListPresenter(this)
 
+        submitLoadingDialog = QMUITipDialog.Builder(this)
+            .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+            .setTipWord("正在保存")
+            .create()
+
         ui = BoxListActivityUi()
         ui.setContentView(this)
+
+        ui.listAdapter.onItemClickListener = { view, box ->
+            showUpdateBoxDialog(box)
+        }
+        ui.listAdapter.onItemLongClickListener = { view, box ->
+            showDeleteBoxDialog(box)
+            true
+        }
 
         ui.topToolbar.setNavigationOnClickListener { startBookList() }
         ui.topToolbar.setOnMenuItemClickListener(handleMenuClick)
@@ -68,32 +88,69 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
         longToast(message)
     }
 
+    override fun showSubmitLoading() {
+        submitLoadingDialog.show()
+    }
+
+    override fun hideSubmitLoading() {
+        submitLoadingDialog.hide()
+    }
+
     override fun getListAdapter(): BoxListAdapter {
         return ui.listAdapter
     }
 
-    override fun hideCreateBoxDialog() {
-        createBoxDialog.dismiss()
-    }
-
     @Suppress("DEPRECATION")
     fun showCreateBoxDialog() {
-        val builder = QMUIDialog.EditTextDialogBuilder(this)
-        createBoxDialog = builder
-            .setTitle("新增")
-            .setPlaceholder("在此输入名称")
-            .setInputType(InputType.TYPE_NULL)
+        val dialogUi = BoxEditDialogUi()
+        val view = dialogUi.createView(AnkoContext.create(this, this))
+
+        val builder = SpecifiedDialogBuilder(this)
+        editBoxDialog = builder.setTitle("新增")
+            .setContentView(view)
             .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
             .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
-                val name = builder.editText.text?.toString()
-                if (name.isNullOrBlank()) {
-                    longToast("请输入名称")
-                } else {
-                    presenter.createBox(name)
-                }
+                val name = dialogUi.nameEdit.text?.toString()
+                val intro = dialogUi.introEdit.text?.toString()
+                presenter.createBox(Box(name = name, intro = intro))
             })
             .create()
-        createBoxDialog.show()
+        editBoxDialog.show()
+    }
+
+    fun showUpdateBoxDialog(box: Box) {
+        val dialogUi = BoxEditDialogUi()
+        val view = dialogUi.createView(AnkoContext.create(this, this))
+
+        dialogUi.nameEdit.setText(box.name)
+        dialogUi.introEdit.setText(box.intro)
+
+        val builder = SpecifiedDialogBuilder(this)
+        editBoxDialog = builder.setTitle("修改")
+            .setContentView(view)
+            .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
+            .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
+                val name = dialogUi.nameEdit.text?.toString()
+                val intro = dialogUi.introEdit.text?.toString()
+                presenter.updateBox(Box(name = name, intro = intro))
+            })
+            .create()
+        editBoxDialog.show()
+    }
+
+    fun showDeleteBoxDialog(box: Box) {
+        editBoxDialog = QMUIDialog.MessageDialogBuilder(this)
+            .setMessage("确定要删除吗？")
+            .addAction("取消") { dialog, index -> dialog.dismiss() }
+            .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE ) { dialog, index ->
+                presenter.deleteBox(box)
+            }
+            .create()
+        editBoxDialog.show()
+    }
+
+    override fun hideEditBoxDialog() {
+        editBoxDialog.dismiss()
     }
 
     fun startBookList() {
@@ -107,6 +164,34 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
                 true
             }
             else -> true
+        }
+    }
+}
+
+class BoxEditDialogUi : AnkoComponent<BoxListActivity> {
+
+    lateinit var nameEdit: EditText
+    lateinit var introEdit: EditText
+
+    override fun createView(ui: AnkoContext<BoxListActivity>) = with(ui) {
+        verticalLayout {
+            setPadding(dip(24))
+
+            nameEdit = editText {
+                hint = "在此输入名称"
+                singleLine = true
+                backgroundResource = R.drawable.edittext_editor
+            }
+
+            introEdit = editText {
+                hint = "备注"
+                minLines = 3
+                maxLines = 3
+                gravity = START
+                backgroundResource = R.drawable.edittext_editor
+            }.lparams(width = matchParent) {
+                topMargin = dip(8)
+            }
         }
     }
 }

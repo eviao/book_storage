@@ -141,7 +141,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
     override fun showDetailAllDialog(book: Book, box: Box?) {
         val dialogUi = BookDetailAllDialogUi()
-        val view = dialogUi.createView(AnkoContextImpl(this, this, false))
+        val view = dialogUi.createView(AnkoContext.create(this, this))
 
         dialogUi.isbnText.text = book.isbn
         dialogUi.pubdateText.text = book.pubdate

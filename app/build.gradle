@@ -48,6 +48,8 @@ dependencies {
     implementation deps.anko.recyclerview
     implementation deps.anko.recyclerview_v7_coroutines
     implementation deps.anko.cardview
+    implementation deps.anko.design
+    implementation deps.anko.design_coroutines
 
     implementation deps.rxjava2
     implementation deps.rxandroid

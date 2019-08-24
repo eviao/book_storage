@@ -16,6 +16,10 @@ class SpecifiedDialogBuilder(context: Context?) : QMUIDialogBuilder<SpecifiedDia
         return this
     }
 
+    fun getContentView(): View? {
+        return contentView
+    }
+
     override fun onCreateContent(dialog: QMUIDialog, parent: ViewGroup, context: Context) {
         parent.addView(contentView)
     }

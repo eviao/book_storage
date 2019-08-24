@@ -230,7 +230,7 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
                         }
 
                         submitButton = button("确认保存") {
-                            backgroundResource = R.drawable.primary_button
+                            backgroundResource = R.drawable.button_primary
                             textColor = Color.WHITE
                         }.lparams(width = matchParent) {
                             setMargins(dip(16), dip(16), dip(16), dip(16))
