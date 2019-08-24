@@ -14,7 +14,8 @@ import kotlinx.android.parcel.Parcelize
         ForeignKey(
             entity = Box::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("box_id")
+            childColumns = arrayOf("box_id"),
+            onDelete = ForeignKey.SET_NULL
         )
     )
 )
