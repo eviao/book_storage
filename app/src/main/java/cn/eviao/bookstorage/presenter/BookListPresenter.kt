@@ -33,7 +33,6 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
     }
 
     override fun loadBooks(keyword: String?) {
-
         val loadAll = if (keyword.isNullOrBlank()) {
             bookDao.loadPage()
         } else {

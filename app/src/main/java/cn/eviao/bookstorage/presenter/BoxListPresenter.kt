@@ -51,18 +51,6 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
 
         boxDao.loadPage().toLiveData(config).observe(owner, observer)
     }
-//
-//    override fun loadBoxForUpdate(id: Long) {
-//        compositeDisposable.add(boxDao.loadBy(id)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                box = it
-//                view.showUpdateBoxDialog(it)
-//            }, {
-//                view.showError(it.message ?: "加载失败")
-//            }))
-//    }
 
     override fun createBox(box: Box) {
         if (box.name.isNullOrBlank()) {
@@ -70,11 +58,10 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             return
         }
 
-        view.showSubmitLoading()
-
         compositeDisposable.add(boxDao.insert(box)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { view.showSubmitLoading() }
             .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.hideEditBoxDialog()
@@ -89,11 +76,10 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             return
         }
 
-        view.showSubmitLoading()
-
         compositeDisposable.add(boxDao.update(this.box.copy(name = box.name, intro = box.intro))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { view.showSubmitLoading() }
             .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.hideEditBoxDialog()

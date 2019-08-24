@@ -45,12 +45,11 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
     }
 
     override fun loadBook() {
-        view.showLoading()
-
         compositeDisposable.add(bookDao.loadBy(isbn)
             .map(::tagsFilter)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { view.showLoading() }
             .doFinally { view.hideLoading() }
             .subscribe({
                 book = it

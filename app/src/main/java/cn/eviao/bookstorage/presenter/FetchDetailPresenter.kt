@@ -44,17 +44,15 @@ class FetchDetailPresenter(
             return
         }
 
-        book = null
-        loading = true
-
-        view.showSkeleton()
-
         compositeDisposable.add(api.fetch(isbn)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally {
-                loading = false
+            .doOnSubscribe {
+                book = null
+                loading = true
+                view.showSkeleton()
             }
+            .doFinally { loading = false }
             .subscribe({
                 book = it
                 view.renderBook(it)
@@ -70,12 +68,13 @@ class FetchDetailPresenter(
             return
         }
 
-        view.showSubmitLoading()
-        view.disableSubmitButton()
-
         compositeDisposable.add(bookDao.insert(book!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                view.showSubmitLoading()
+                view.disableSubmitButton()
+            }
             .doFinally {
                 view.hideSubmitLoading()
             }

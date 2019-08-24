@@ -31,20 +31,18 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
             return
         }
 
-        view.showLoading()
-
         compositeDisposable.add(bookDao.countBy(isbn)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { view.showLoading() }
+            .doFinally { view.hideLoading() }
             .subscribe({
-                view.hideLoading()
                 if (it > 0) {
                     view.startBookDetail(isbn)
                 } else {
                     view.startFetchDetail(isbn)
                 }
             }, {
-                view.hideLoading()
                 view.showError(it.message ?: "加载失败")
             }))
     }
