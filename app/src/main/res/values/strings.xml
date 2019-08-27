@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Book Storage</string>
     <string name="search_hint">图书 / 作者 / 目录</string>
-    <string name="book_list_empty">暂无图书</string>
+    <string name="book_list_empty">点击右上角扫描图书</string>
     <string name="box_list_title">Box</string>
-    <string name="box_list_empty">暂无数据</string>
+    <string name="box_list_empty">点击右上角添加</string>
     <string name="box_update_title">修改</string>
     <string name="permit_camera">应用程序需要访问您的相机,您需要在下个弹窗中允许我们使用照相机</string>
 </resources>

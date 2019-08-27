@@ -19,12 +19,6 @@
                 android:background="@color/qmui_config_color_transparent"
                 android:gravity="center">
 
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_empty_64_56c596"/>
-
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
