@@ -29,6 +29,7 @@ import cn.eviao.bookstorage.ui.widget.SpecifiedDialogBuilder
 import cn.eviao.bookstorage.ui.widget.multipleStatusView
 import com.classic.common.MultipleStatusView
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
+import android.text.InputFilter
 
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -141,7 +142,7 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
             .addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
                 val name = dialogUi.nameEdit.text?.toString()
                 val intro = dialogUi.introEdit.text?.toString()
-                presenter.updateBox(Box(name = name, intro = intro))
+                presenter.updateBox(Box(id = box.id, name = name, intro = intro))
             })
             .create()
 
@@ -197,6 +198,7 @@ class BoxEditDialogUi : AnkoComponent<BoxListActivity> {
                 hint = "在此输入名称"
                 singleLine = true
                 backgroundResource = R.drawable.edittext_editor
+                filters = arrayOf<InputFilter>(InputFilter.LengthFilter(32))
                 focusable = FOCUSABLE_AUTO
                 isFocusableInTouchMode = true
             }
@@ -205,6 +207,7 @@ class BoxEditDialogUi : AnkoComponent<BoxListActivity> {
                 hint = "备注"
                 minLines = 3
                 maxLines = 3
+                filters = arrayOf<InputFilter>(InputFilter.LengthFilter(128))
                 gravity = START
                 backgroundResource = R.drawable.edittext_editor
             }.lparams(width = matchParent) {

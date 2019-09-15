@@ -2,6 +2,8 @@ package cn.eviao.bookstorage.ui.adapter
 
 import android.content.Context
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -81,8 +83,9 @@ class BoxListAdapter(val context: Context) : PagedListAdapter<Box, BoxListAdapte
             nameText.text = box.name
 
             if (box.intro.isNullOrBlank()) {
-                introText.visibility = View.GONE
+                introText.visibility = GONE
             } else {
+                introText.visibility = VISIBLE
                 introText.text = box.intro
             }
 

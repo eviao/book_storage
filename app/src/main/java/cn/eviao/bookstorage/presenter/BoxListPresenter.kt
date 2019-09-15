@@ -18,8 +18,6 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
     private var compositeDisposable: CompositeDisposable
     private var boxDao: BoxDao
 
-    private lateinit var box: Box
-
     init {
         compositeDisposable = CompositeDisposable()
         boxDao = DataSource.getInstance().boxDao()
@@ -76,7 +74,9 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             return
         }
 
-        compositeDisposable.add(boxDao.update(this.box.copy(name = box.name, intro = box.intro))
+        compositeDisposable.add(boxDao.loadBy(box.id!!).flatMapSingle {
+            boxDao.update(it.copy(name = box.name, intro = box.intro))
+        }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { view.showSubmitLoading() }
