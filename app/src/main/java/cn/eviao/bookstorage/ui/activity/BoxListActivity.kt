@@ -16,7 +16,8 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import android.view.Gravity.START
-import android.view.View
+import android.view.View.FOCUSABLE_AUTO
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat.getColor
@@ -30,6 +31,7 @@ import com.classic.common.MultipleStatusView
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class BoxListActivity : BaseActivity(), BoxListContract.View {
 
     lateinit override var presenter: BoxListContract.Presenter
@@ -104,8 +106,8 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
     fun showCreateBoxDialog() {
         val dialogUi = BoxEditDialogUi()
         val view = dialogUi.createView(AnkoContext.create(this, this))
-
         val builder = SpecifiedDialogBuilder(this)
+
         editBoxDialog = builder.setTitle("新增")
             .setContentView(view)
             .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
@@ -115,17 +117,24 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
                 presenter.createBox(Box(name = name, intro = intro))
             })
             .create()
+
+        val window = editBoxDialog.getWindow()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
         editBoxDialog.show()
+        dialogUi.nameEdit.requestFocus()
     }
 
     fun showUpdateBoxDialog(box: Box) {
         val dialogUi = BoxEditDialogUi()
         val view = dialogUi.createView(AnkoContext.create(this, this))
+        val builder = SpecifiedDialogBuilder(this)
 
         dialogUi.nameEdit.setText(box.name)
         dialogUi.introEdit.setText(box.intro)
 
-        val builder = SpecifiedDialogBuilder(this)
         editBoxDialog = builder.setTitle("修改")
             .setContentView(view)
             .addAction("取消", QMUIDialogAction.ActionListener { dialog, index -> dialog.dismiss() })
@@ -135,7 +144,14 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
                 presenter.updateBox(Box(name = name, intro = intro))
             })
             .create()
+
+        val window = editBoxDialog.getWindow()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
         editBoxDialog.show()
+        dialogUi.nameEdit.requestFocus()
     }
 
     fun showDeleteBoxDialog(box: Box) {
@@ -181,6 +197,8 @@ class BoxEditDialogUi : AnkoComponent<BoxListActivity> {
                 hint = "在此输入名称"
                 singleLine = true
                 backgroundResource = R.drawable.edittext_editor
+                focusable = FOCUSABLE_AUTO
+                isFocusableInTouchMode = true
             }
 
             introEdit = editText {
