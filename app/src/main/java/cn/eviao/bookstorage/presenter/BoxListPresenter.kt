@@ -63,6 +63,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.hideEditBoxDialog()
+                view.showToast("保存成功")
             }, {
                 view.showError(it.message ?: "创建失败")
             }))
@@ -82,6 +83,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .doOnSubscribe { view.showSubmitLoading() }
             .doFinally { view.hideSubmitLoading() }
             .subscribe({
+                view.showToast("保存成功")
                 view.hideEditBoxDialog()
             }, {
                 view.showError(it.message ?: "修改失败")
@@ -94,6 +96,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { view.hideSubmitLoading() }
             .subscribe({
+                view.showToast("删除成功")
                 view.hideEditBoxDialog()
             }, {
                 view.showError(it.message ?: "删除失败")

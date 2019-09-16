@@ -30,6 +30,7 @@ import cn.eviao.bookstorage.ui.widget.multipleStatusView
 import com.classic.common.MultipleStatusView
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import android.text.InputFilter
+import android.widget.LinearLayout
 
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -79,7 +80,7 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
     override fun showEmpty() {
         ui.statusView.showEmpty(
             R.layout.layout_box_list_empty,
-            RelativeLayout.LayoutParams(matchParent, matchParent)
+            LinearLayout.LayoutParams(matchParent, matchParent)
         )
     }
 
@@ -164,6 +165,10 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
             }
             .create()
         editBoxDialog.show()
+    }
+
+    override fun showToast(message: String) {
+        toast(message)
     }
 
     override fun hideEditBoxDialog() {

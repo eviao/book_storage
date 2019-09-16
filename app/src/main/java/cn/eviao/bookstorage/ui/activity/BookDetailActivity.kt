@@ -147,8 +147,8 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         dialogUi.pubdateText.text = book.pubdate
         dialogUi.publisherText.text = book.publisher
 
-        dialogUi.boxText.text = if (box == null) "-" else {
-            if (box.intro.isNullOrBlank()) box.name else "${box.name}（${box.intro}）"
+        dialogUi.boxText.text = if (box == null) "无" else {
+            if (box.intro.isNullOrBlank()) box.name else "${box.name} [${box.intro}]"
         }
 
         SpecifiedDialogBuilder(this)
@@ -162,7 +162,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         if (boxs.isEmpty()) {
             updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
                 .setTitle(R.string.box_list_title)
-                .setMessage("暂无记录")
+                .setMessage(getString(R.string.box_list_empty))
                 .addAction("关闭", { dialog, int -> dialog.dismiss() })
                 .create()
             updateBoxDialog.show()
@@ -396,7 +396,7 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
             }
 
             linearLayout {
-                textView("Box") {
+                textView(R.string.box_list_title) {
                     textColor = getColor(context, R.color.app_text_color_30)
                 }
 

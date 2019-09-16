@@ -122,8 +122,8 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
 
         ui.titleText.text = book.title
         ui.isbnText.text = book.isbn
-        ui.authorsText.text = book.authors ?: "未知"
-        ui.publisherText.text = book.publisher ?: "未知"
+        ui.authorsText.text = book.authors ?: "无"
+        ui.publisherText.text = book.publisher ?: "无"
     }
 }
 

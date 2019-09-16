@@ -7,10 +7,7 @@ import android.text.InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,7 +57,7 @@ class BookListActivity : BaseActivity(), BookListContract.View {
     override fun showEmpty() {
         ui.statusView.showEmpty(
             R.layout.layout_book_list_empty,
-            RelativeLayout.LayoutParams(matchParent, matchParent)
+            LinearLayout.LayoutParams(matchParent, matchParent)
         )
     }
 
@@ -72,8 +69,8 @@ class BookListActivity : BaseActivity(), BookListContract.View {
         return ui.listAdapter
     }
 
-    override fun setSearchHint(hint: String) {
-        ui.searchEdit.hint = hint
+    override fun setSearchHint(hint: String?) {
+        ui.searchEdit.hint = hint ?: getString(R.string.search_hint)
     }
 
     val handleSearch = TextView.OnEditorActionListener { view, actionId, event ->

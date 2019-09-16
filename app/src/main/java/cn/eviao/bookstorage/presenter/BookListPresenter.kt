@@ -62,9 +62,7 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it > 0) {
-                    view.setSearchHint("共 ${it} 本图书")
-                }
+                view.setSearchHint(if (it > 0) "共 ${it} 本图书" else null)
             }, {
                 view.showError(it.message ?: "获取图书信息失败")
             }))

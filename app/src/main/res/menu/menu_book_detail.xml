@@ -8,7 +8,7 @@
             app:showAsAction="always" />
 
     <item android:id="@+id/box_menu_item"
-            android:title="Box"
+            android:title="@string/box_list_title"
             android:icon="@drawable/ic_store_32_56c596"
             android:orderInCategory="100" />
 

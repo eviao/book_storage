@@ -15,7 +15,7 @@ interface BookListContract {
 
         fun getListAdapter(): BookListAdapter
 
-        fun setSearchHint(hint: String)
+        fun setSearchHint(hint: String?)
     }
 
     interface Presenter : BasePresenter {

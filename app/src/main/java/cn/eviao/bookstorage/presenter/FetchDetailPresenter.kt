@@ -64,7 +64,7 @@ class FetchDetailPresenter(
     @SuppressLint("CheckResult")
     override fun saveBook() {
         if (book == null) {
-            view.showError("数据丢失了，请重新加载")
+            view.showError("数据丢失，请重新加载")
             return
         }
 
