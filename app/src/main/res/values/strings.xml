@@ -4,6 +4,5 @@
     <string name="book_list_empty">右上角扫描添加图书</string>
     <string name="box_list_title">存储箱</string>
     <string name="box_list_empty">暂无记录</string>
-    <string name="box_update_title">修改</string>
     <string name="permit_camera">应用程序需要访问您的相机,您需要在下个弹窗中允许我们使用照相机</string>
 </resources>
