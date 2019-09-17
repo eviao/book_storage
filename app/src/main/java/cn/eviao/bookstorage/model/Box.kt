@@ -23,5 +23,9 @@ data class Box(
 
 ) : Identifiable, Parcelable {
 
+    companion object {
+        val EMPTY = Box()
+    }
+
     override fun identity(): Long? = id
 }

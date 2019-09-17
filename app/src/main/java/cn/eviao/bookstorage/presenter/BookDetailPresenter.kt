@@ -6,6 +6,7 @@ import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -54,7 +55,7 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
                 if (it.boxId != null) {
                     boxDao.loadBy(it.boxId)
                 } else {
-                    Maybe.empty()
+                    Maybe.just(Box.EMPTY)
                 }
             }
             .doOnSuccess { box = it }
@@ -66,11 +67,11 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
                 view.showLoading()
             }
             .doFinally { view.hideLoading() }
-            .subscribe({ }, {
+            .subscribe({
+                view.renderBook()
+            }, {
                 it.printStackTrace()
                 view.showError(it.message!!)
-            }, {
-                view.renderBook()
             }))
     }
 

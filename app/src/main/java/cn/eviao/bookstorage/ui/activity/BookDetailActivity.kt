@@ -137,7 +137,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
     fun showDetailDialog() {
         val book = (presenter as BookDetailPresenter).book
-        val box = (presenter as BookDetailPresenter).box
+        val box = (presenter as BookDetailPresenter).box!!
 
         if (book == null) {
             longToast("图书信息加载失败")
@@ -151,7 +151,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         dialogUi.pubdateText.text = book.pubdate
         dialogUi.publisherText.text = book.publisher
 
-        dialogUi.boxText.text = if (box == null) "无" else {
+        dialogUi.boxText.text = if (box == Box.EMPTY) "无" else {
             if (box.intro.isNullOrBlank()) box.name else "${box.name} [${box.intro}]"
         }
 
