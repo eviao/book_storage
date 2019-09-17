@@ -33,15 +33,20 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
 
     lateinit override var presenter: FetchDetailContract.Presenter
 
-    lateinit var ui: FetchDetailUi
-    lateinit var isbn: String
+    private lateinit var ui: FetchDetailUi
 
-    private lateinit var submitLoadingDialog: Dialog
+    private var isbn: String? = null
+    private var submitLoadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isbn = intent.getStringExtra("isbn")
+        val isbn = intent.getStringExtra("isbn")
+        if (isbn == null) {
+            throw RuntimeException("isbn must not be null")
+        }
+
+        this.isbn = isbn
         presenter = FetchDetailPresenter(this, isbn)
 
         ui = FetchDetailUi()
@@ -96,7 +101,7 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
     }
 
     override fun hideSubmitLoading() {
-        submitLoadingDialog.hide()
+        submitLoadingDialog?.dismiss()
     }
 
     override fun disableSubmitButton() {

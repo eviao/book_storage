@@ -31,7 +31,7 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     override lateinit var presenter: ScannerContract.Presenter
 
     private lateinit var scannerView: ZXingScannerView
-    private lateinit var loadingDialog: Dialog
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,15 +104,15 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     }
 
     override fun hideLoading() {
-        loadingDialog.hide()
-    }
-
-    override fun showErrorISBN(isbn: String) {
-        scannerView.longSnackbar("无效的书号: ${isbn}")
+        loadingDialog?.dismiss()
     }
 
     override fun showError(message: String) {
         longToast(message)
+    }
+
+    override fun showInvalidISBN(isbn: String) {
+        scannerView.longSnackbar("无效的书号: ${isbn}")
     }
 
     override fun startFetchDetail(isbn: String) {

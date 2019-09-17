@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cn.eviao.bookstorage.R
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedToolbar
-import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import android.view.Gravity.START
 import android.view.View.FOCUSABLE_AUTO
@@ -35,10 +34,9 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
 
     lateinit override var presenter: BoxListContract.Presenter
 
-    lateinit var ui: BoxListUi
+    private lateinit var ui: BoxListUi
 
     private var editBoxDialog: Dialog? = null
-    private var submitLoadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,14 +81,6 @@ class BoxListActivity : BaseActivity(), BoxListContract.View {
 
     override fun showError(message: String) {
         longToast(message)
-    }
-
-    override fun showSubmitLoading() {
-        submitLoadingDialog = indeterminateProgressDialog("正在保存")
-    }
-
-    override fun hideSubmitLoading() {
-        submitLoadingDialog?.dismiss()
     }
 
     override fun getListAdapter(): BoxListAdapter {
@@ -252,7 +242,9 @@ class BoxListUi : AnkoComponent<BoxListActivity> {
                         layoutManager = LinearLayoutManager(context)
 
                         addItemDecoration(
-                            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+                            DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                                setDrawable(context.getDrawable(R.drawable.list_divider))
+                            }
                         )
 
                         listAdapter = BoxListAdapter(context)

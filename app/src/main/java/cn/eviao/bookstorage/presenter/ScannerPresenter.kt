@@ -26,7 +26,7 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
 
     override fun loadBook(isbn: String) {
         if (!isValidISBN(isbn)) {
-            view.showErrorISBN(isbn)
+            view.showInvalidISBN(isbn)
             view.restartScanning()
             return
         }

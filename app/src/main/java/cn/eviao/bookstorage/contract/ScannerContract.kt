@@ -13,7 +13,7 @@ interface ScannerContract {
 
         fun showError(message: String)
 
-        fun showErrorISBN(isbn: String)
+        fun showInvalidISBN(isbn: String)
 
         fun restartScanning()
 

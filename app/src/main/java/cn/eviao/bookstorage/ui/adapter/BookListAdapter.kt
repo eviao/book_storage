@@ -15,28 +15,6 @@ import com.facebook.drawee.view.SimpleDraweeView
 import org.jetbrains.anko.*
 
 
-class BookListItemUi : AnkoComponent<ViewGroup> {
-
-    companion object {
-        const val ID_PICTURE = 0x0001
-    }
-
-    override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
-
-        verticalLayout {
-            simpleDraweeView {
-                id = ID_PICTURE
-
-                val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
-                hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
-                setHierarchy(hierarchy)
-            }.lparams(width = matchParent, height = dip(110)) {
-                setMargins(dip(8), dip(24), dip(8), dip(0))
-            }
-        }
-    }
-}
-
 class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAdapter.ViewHolder>(DiffCallback())  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -67,6 +45,28 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
                 startActivity<BookDetailActivity>("isbn" to it.isbn)
             }
             Unit
+        }
+    }
+}
+
+class BookListItemUi : AnkoComponent<ViewGroup> {
+
+    companion object {
+        const val ID_PICTURE = 0x0001
+    }
+
+    override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
+
+        verticalLayout {
+            simpleDraweeView {
+                id = ID_PICTURE
+
+                val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
+                hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
+                setHierarchy(hierarchy)
+            }.lparams(width = matchParent, height = dip(110)) {
+                setMargins(dip(8), dip(24), dip(8), dip(0))
+            }
         }
     }
 }

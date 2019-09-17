@@ -15,10 +15,6 @@ interface BoxListContract {
 
         fun showError(message: String)
 
-        fun showSubmitLoading()
-
-        fun hideSubmitLoading()
-
         fun showToast(message: String)
 
         fun hideEditBoxDialog()

@@ -16,37 +16,6 @@ import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import org.jetbrains.anko.*
 
-class BoxListItemUi : AnkoComponent<ViewGroup> {
-
-    companion object {
-        const val ID_NAME = 0x0001
-        const val ID_INTRO = 0x0002
-    }
-
-    override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
-
-        verticalLayout {
-            layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent)
-            padding = dip(16)
-            backgroundColor = getColor(context, R.color.app_background_color)
-
-            textView {
-                id = ID_NAME
-
-                textSize = sp(6).toFloat()
-                textColor = getColor(context, R.color.app_text_color_70)
-            }.lparams(width = matchParent)
-
-            textView {
-                id = ID_INTRO
-
-                textSize = sp(6).toFloat()
-                textColor = getColor(context, R.color.app_text_color_10)
-            }.lparams(width = matchParent)
-        }
-    }
-}
-
 typealias OnItemClickListener = (view: View, box: Box) -> Unit
 typealias OnItemLongClickListener = (view: View, box: Box) -> Boolean
 
@@ -104,6 +73,37 @@ class BoxListAdapter(val context: Context) : PagedListAdapter<Box, BoxListAdapte
                     onItemLongClickListener.invoke(it, box)
                 }
             }
+        }
+    }
+}
+
+class BoxListItemUi : AnkoComponent<ViewGroup> {
+
+    companion object {
+        const val ID_NAME = 0x0001
+        const val ID_INTRO = 0x0002
+    }
+
+    override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
+
+        verticalLayout {
+            layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent)
+            padding = dip(16)
+            backgroundColor = getColor(context, R.color.app_background_color)
+
+            textView {
+                id = ID_NAME
+
+                textSize = sp(6).toFloat()
+                textColor = getColor(context, R.color.app_text_color_70)
+            }.lparams(width = matchParent)
+
+            textView {
+                id = ID_INTRO
+
+                textSize = sp(6).toFloat()
+                textColor = getColor(context, R.color.app_text_color_10)
+            }.lparams(width = matchParent)
         }
     }
 }

@@ -59,8 +59,6 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
         compositeDisposable.add(boxDao.insert(box)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { view.showSubmitLoading() }
-            .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.hideEditBoxDialog()
                 view.showToast("保存成功")
@@ -81,8 +79,6 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { view.showSubmitLoading() }
-            .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.showToast("保存成功")
                 view.hideEditBoxDialog()
@@ -96,7 +92,6 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
         compositeDisposable.add(boxDao.delete(box)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { view.hideSubmitLoading() }
             .subscribe({
                 view.showToast("删除成功")
                 view.hideEditBoxDialog()

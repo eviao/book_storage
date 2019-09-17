@@ -33,15 +33,20 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
     lateinit override var presenter: BookDetailContract.Presenter
 
-    lateinit var ui: BookDetailUi
-    lateinit var isbn: String
+    private lateinit var ui: BookDetailUi
 
+    private var isbn: String? = null
     private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isbn = intent.getStringExtra("isbn")
+        val isbn = intent.getStringExtra("isbn")
+        if (isbn == null) {
+            throw RuntimeException("isbn must not be null")
+        }
+
+        this.isbn = isbn
         presenter = BookDetailPresenter(this, isbn)
 
         ui = BookDetailUi()
