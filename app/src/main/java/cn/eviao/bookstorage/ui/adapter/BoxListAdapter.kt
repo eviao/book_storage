@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.ui.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -25,17 +26,20 @@ class BoxListItemUi : AnkoComponent<ViewGroup> {
     override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
 
         verticalLayout {
-            padding = dip(16)
             layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent)
+            padding = dip(16)
+            backgroundColor = getColor(context, R.color.app_background_color)
 
             textView {
                 id = ID_NAME
+
                 textSize = sp(6).toFloat()
                 textColor = getColor(context, R.color.app_text_color_70)
             }.lparams(width = matchParent)
 
             textView {
                 id = ID_INTRO
+
                 textSize = sp(6).toFloat()
                 textColor = getColor(context, R.color.app_text_color_10)
             }.lparams(width = matchParent)
@@ -94,6 +98,7 @@ class BoxListAdapter(val context: Context) : PagedListAdapter<Box, BoxListAdapte
                     onItemClickListener.invoke(it, box)
                 }
             }
+
             onItemLongClickListener?.let {
                 itemView.setOnLongClickListener {
                     onItemLongClickListener.invoke(it, box)

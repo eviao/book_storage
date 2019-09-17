@@ -1,6 +1,7 @@
 package cn.eviao.bookstorage.ui.activity
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -9,11 +10,10 @@ import android.os.Vibrator
 import android.view.Gravity.BOTTOM
 import android.widget.FrameLayout
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.base.BaseActivity
 import cn.eviao.bookstorage.contract.ScannerContract
 import cn.eviao.bookstorage.presenter.ScannerPresenter
-import cn.eviao.bookstorage.ui.BaseActivity
 import com.google.zxing.Result
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.longSnackbar
@@ -21,6 +21,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
 
+@Suppress("DEPRECATION")
 class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.ResultHandler {
 
     companion object {
@@ -30,7 +31,7 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     override lateinit var presenter: ScannerContract.Presenter
 
     private lateinit var scannerView: ZXingScannerView
-    private lateinit var loadingDialog: QMUITipDialog
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +39,8 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
         presenter = ScannerPresenter(this)
 
         scannerView = initScannerView()
-        loadingDialog = QMUITipDialog.Builder(this)
-            .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-            .setTipWord("正在加载")
-            .create()
 
-        val ui = ScannerActivityUi()
+        val ui = ScannerUi()
         ui.setContentView(this)
         ui.scannerWrapperView.addView(scannerView)
     }
@@ -103,7 +100,7 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     }
 
     override fun showLoading() {
-        loadingDialog.show()
+        loadingDialog = indeterminateProgressDialog("正在加载")
     }
 
     override fun hideLoading() {
@@ -115,11 +112,7 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     }
 
     override fun showError(message: String) {
-        QMUITipDialog.Builder(this)
-            .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-            .setTipWord(message)
-            .create()
-            .show()
+        longToast(message)
     }
 
     override fun startFetchDetail(isbn: String) {
@@ -132,11 +125,11 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
 
     override fun handleResult(rawResult: Result) {
         startShaking()
-        presenter.loadDetail(rawResult.text)
+        presenter.loadBook(rawResult.text)
     }
 }
 
-class ScannerActivityUi : AnkoComponent<ScannerActivity> {
+class ScannerUi : AnkoComponent<ScannerActivity> {
 
     lateinit var scannerWrapperView: FrameLayout
 

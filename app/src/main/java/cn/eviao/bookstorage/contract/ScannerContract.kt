@@ -1,10 +1,12 @@
 package cn.eviao.bookstorage.contract
 
-import cn.eviao.bookstorage.presenter.BasePresenter
-import cn.eviao.bookstorage.ui.BaseView
+import cn.eviao.bookstorage.base.BasePresenter
+import cn.eviao.bookstorage.base.BaseView
 
 interface ScannerContract {
+
     interface View : BaseView<Presenter> {
+
         fun showLoading()
 
         fun hideLoading()
@@ -21,6 +23,7 @@ interface ScannerContract {
     }
 
     interface Presenter : BasePresenter {
-        fun loadDetail(isbn: String)
+
+        fun loadBook(isbn: String)
     }
 }

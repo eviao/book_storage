@@ -21,8 +21,9 @@ class FetchDetailPresenter(
     private var api: Api
     private var bookDao: BookDao
 
-    private var book: Book? = null
     private var loading = false
+
+    var book: Book? = null
 
     init {
         compositeDisposable = CompositeDisposable()
@@ -55,8 +56,9 @@ class FetchDetailPresenter(
             .doFinally { loading = false }
             .subscribe({
                 book = it
-                view.renderBook(it)
+                view.renderBook()
             }, {
+                it.printStackTrace()
                 view.showError(it.message!!)
             }))
     }
@@ -64,8 +66,7 @@ class FetchDetailPresenter(
     @SuppressLint("CheckResult")
     override fun saveBook() {
         if (book == null) {
-            view.showError("数据丢失，请重新加载")
-            return
+            throw RuntimeException("book is not loaded.")
         }
 
         compositeDisposable.add(bookDao.insert(book!!)
@@ -81,7 +82,8 @@ class FetchDetailPresenter(
             .subscribe({
                 view.startBookList()
             }, {
-                view.showError(it.message ?: "获取图书信息失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 }

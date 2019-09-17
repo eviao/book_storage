@@ -1,11 +1,13 @@
 package cn.eviao.bookstorage.contract
 
+import cn.eviao.bookstorage.base.BasePresenter
+import cn.eviao.bookstorage.base.BaseView
 import cn.eviao.bookstorage.model.Book
-import cn.eviao.bookstorage.presenter.BasePresenter
-import cn.eviao.bookstorage.ui.BaseView
 
 interface FetchDetailContract {
+
     interface View : BaseView<Presenter> {
+
         fun showSkeleton()
 
         fun showSubmitLoading()
@@ -18,10 +20,11 @@ interface FetchDetailContract {
 
         fun startBookList()
 
-        fun renderBook(book: Book)
+        fun renderBook()
     }
 
     interface Presenter : BasePresenter {
+
         fun loadBook()
 
         fun saveBook()

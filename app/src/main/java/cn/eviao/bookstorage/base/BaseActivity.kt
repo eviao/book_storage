@@ -1,4 +1,4 @@
-package cn.eviao.bookstorage.ui
+package cn.eviao.bookstorage.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

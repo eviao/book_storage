@@ -6,6 +6,7 @@ import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
+import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -13,18 +14,19 @@ import io.reactivex.schedulers.Schedulers
 class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) : BookDetailContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
+
     private var bookDao: BookDao
     private var boxDao: BoxDao
 
-    private lateinit var book: Book
-    private lateinit var box: Box
+    var book: Book? = null
+    var box: Box? = null
 
     init {
         compositeDisposable = CompositeDisposable()
 
-        val ds = DataSource.getInstance()
-        bookDao = ds.bookDao()
-        boxDao = ds.boxDao()
+        val dataSource = DataSource.getInstance()
+        bookDao = dataSource.bookDao()
+        boxDao = dataSource.boxDao()
     }
 
     override fun subscribe() {
@@ -35,44 +37,40 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
         compositeDisposable.clear()
     }
 
-    private fun tagsFilter(b: Book): Book {
-        if (b.tags.isNullOrBlank()) {
-            return b
+    private fun tagsFilter(book: Book): Book {
+        if (book.tags.isNullOrBlank()) {
+            return book
         }
-        val tags = b.tags.split(";").take(3)
+        val tags = book.tags.split(";").take(3)
             .reduce { t, u -> "${t} / ${u}" }
-        return b.copy(tags = tags)
+        return book.copy(tags = tags)
     }
 
     override fun loadBook() {
         compositeDisposable.add(bookDao.loadBy(isbn)
             .map(::tagsFilter)
+            .doOnSuccess { book = it }
+            .flatMap {
+                if (it.boxId != null) {
+                    boxDao.loadBy(it.boxId)
+                } else {
+                    Maybe.empty()
+                }
+            }
+            .doOnSuccess { box = it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { view.showLoading() }
+            .doOnSubscribe {
+                book = null
+                box = null
+                view.showLoading()
+            }
             .doFinally { view.hideLoading() }
-            .subscribe({
-                book = it
-                view.renderBook(it)
+            .subscribe({ }, {
+                it.printStackTrace()
+                view.showError(it.message!!)
             }, {
-                view.showError(it.message ?: "加载失败")
-            }))
-    }
-
-    override fun loadBookAll() {
-        if (book.boxId == null) {
-            view.showDetailAllDialog(book, null)
-            return
-        }
-
-        compositeDisposable.add(boxDao.loadBy(book.boxId!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                box = it
-                view.showDetailAllDialog(book, it)
-            }, {
-                view.showError(it.message ?: "加载失败")
+                view.renderBook()
             }))
     }
 
@@ -81,32 +79,42 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.showUpdateBoxDialog(it, book)
+                view.showUpdateBoxDialog(it)
             }, {
-                view.showError(it.message ?: "加载失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 
     override fun updateBox(box: Box) {
-        compositeDisposable.add(bookDao.update(book.copy(boxId = box.id))
+        if (book == null) {
+            throw RuntimeException("book is not loaded.")
+        }
+
+        compositeDisposable.add(bookDao.update(book!!.copy(boxId = box.id))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.hideUpdateBoxDialog()
                 loadBook()
             }, {
-                view.showError(it.message ?: "更新失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 
     override fun deleteBook() {
-        compositeDisposable.add(bookDao.delete(book)
+        if (book == null) {
+            throw RuntimeException("book is not loaded.")
+        }
+
+        compositeDisposable.add(bookDao.delete(book!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 view.startBookList()
             }, {
-                view.showError(it.message ?: "更新失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 }

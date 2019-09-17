@@ -1,10 +1,9 @@
 package cn.eviao.bookstorage.ui.activity
 
-import android.annotation.SuppressLint
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity.CENTER
-import android.view.Gravity.RIGHT
+import android.view.Gravity.*
 import android.view.View.GONE
 import android.widget.Button
 import android.widget.LinearLayout
@@ -15,30 +14,29 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.base.BaseActivity
 import cn.eviao.bookstorage.contract.FetchDetailContract
-import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.presenter.FetchDetailPresenter
-import cn.eviao.bookstorage.ui.BaseActivity
 import cn.eviao.bookstorage.ui.widget.multipleStatusView
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import com.classic.common.MultipleStatusView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
 
 
+@Suppress("DEPRECATION")
 class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
 
     lateinit override var presenter: FetchDetailContract.Presenter
 
-    lateinit var ui: FetchDetailActivityUi
+    lateinit var ui: FetchDetailUi
     lateinit var isbn: String
 
-    private lateinit var submitLoadingDialog: QMUITipDialog
+    private lateinit var submitLoadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +44,12 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
         isbn = intent.getStringExtra("isbn")
         presenter = FetchDetailPresenter(this, isbn)
 
-        ui = FetchDetailActivityUi()
+        ui = FetchDetailUi()
         ui.setContentView(this)
 
-        submitLoadingDialog = QMUITipDialog.Builder(this)
-            .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-            .setTipWord("正在保存")
-            .create()
-
+        ui.topToolbar.setNavigationOnClickListener {
+            finish()
+        }
         ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.refresh_menu_item -> {
@@ -96,7 +92,7 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
     }
 
     override fun showSubmitLoading() {
-        submitLoadingDialog.show()
+        submitLoadingDialog = indeterminateProgressDialog("正在保存")
     }
 
     override fun hideSubmitLoading() {
@@ -111,8 +107,13 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
         startActivity<BookListActivity>()
     }
 
-    override fun renderBook(book: Book) {
+    override fun renderBook() {
         ui.statusView.showContent()
+
+        val book = (presenter as FetchDetailPresenter).book
+        if (book == null) {
+            return
+        }
 
         if (book.image != null) {
             ui.pictureImage.setImageURI(book.image)
@@ -127,7 +128,7 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
     }
 }
 
-class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
+class FetchDetailUi : AnkoComponent<FetchDetailActivity> {
 
     lateinit var topToolbar: Toolbar
     lateinit var statusView: MultipleStatusView
@@ -140,7 +141,6 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
 
     lateinit var submitButton: Button
 
-    @SuppressLint("RtlHardcoded")
     override fun createView(ui: AnkoContext<FetchDetailActivity>) = with(ui) {
         verticalLayout {
 
@@ -164,18 +164,18 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
                         cardView {
                             verticalLayout {
                                 titleText = textView {
+                                    gravity = CENTER
+
                                     textSize = sp(8).toFloat()
                                     textColor = getColor(context, R.color.app_text_color)
-
-                                    gravity = CENTER
                                 }
 
                                 pictureImage = simpleDraweeView{
+                                    gravity = CENTER
+
                                     val hierarchy = GenericDraweeHierarchyBuilder(resources).build()
                                     hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                                     setHierarchy(hierarchy)
-
-                                    gravity = CENTER
                                 }.lparams(width = dip(200), height = dip(260)) {
                                     topMargin = dip(16)
                                 }
@@ -192,8 +192,8 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
                                         textColor = getColor(context, R.color.app_text_color_50)
                                     }
                                     isbnText = textView {
+                                        gravity = END
                                         textColor = getColor(context, R.color.app_text_color_70)
-                                        gravity = RIGHT
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }
@@ -206,8 +206,8 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
                                         textColor = getColor(context, R.color.app_text_color_50)
                                     }
                                     authorsText = textView {
+                                        gravity = END
                                         textColor = getColor(context, R.color.app_text_color_70)
-                                        gravity = RIGHT
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }
@@ -220,8 +220,8 @@ class FetchDetailActivityUi : AnkoComponent<FetchDetailActivity> {
                                         textColor = getColor(context, R.color.app_text_color_50)
                                     }
                                     publisherText = textView {
+                                        gravity = END
                                         textColor = getColor(context, R.color.app_text_color_70)
-                                        gravity = RIGHT
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }

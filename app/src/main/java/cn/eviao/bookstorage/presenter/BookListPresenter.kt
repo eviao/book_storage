@@ -64,7 +64,8 @@ class BookListPresenter(val view: BookListContract.View) : BookListContract.Pres
             .subscribe({
                 view.setSearchHint(if (it > 0) "共 ${it} 本图书" else null)
             }, {
-                view.showError(it.message ?: "获取图书信息失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 }

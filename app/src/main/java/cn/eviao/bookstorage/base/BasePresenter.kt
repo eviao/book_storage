@@ -1,4 +1,4 @@
-package cn.eviao.bookstorage.presenter
+package cn.eviao.bookstorage.base
 
 interface BasePresenter {
 

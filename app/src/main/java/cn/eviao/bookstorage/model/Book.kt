@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
     tableName = "books",
     indices = [
         Index(value = ["title"]),
-        Index(value = ["isbn"], unique = true)
+        Index(value = ["isbn"], unique = true),
+        Index(value = ["box_id"])
     ],
     foreignKeys = arrayOf(
         ForeignKey(

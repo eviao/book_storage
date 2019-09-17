@@ -9,14 +9,13 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/qmui_config_color_transparent"
             app:cardElevation="0dp">
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/qmui_config_color_transparent"
+                android:background="@color/app_background_color"
                 android:gravity="center">
 
             <TextView

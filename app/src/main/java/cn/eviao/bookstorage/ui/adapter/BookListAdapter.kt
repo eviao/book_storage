@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.ui.activity.BookDetailActivity
 import cn.eviao.bookstorage.ui.widget.DiffCallback
@@ -32,10 +31,7 @@ class BookListItemUi : AnkoComponent<ViewGroup> {
                 hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                 setHierarchy(hierarchy)
             }.lparams(width = matchParent, height = dip(110)) {
-                leftMargin = dip(8)
-                topMargin = dip(24)
-                rightMargin = dip(8)
-                bottomMargin = dip(0)
+                setMargins(dip(8), dip(24), dip(8), dip(0))
             }
         }
     }
@@ -62,12 +58,7 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
         fun bindTo(book: Book?) {
             book?.let {
                 this.book = it
-
-                if (it.image == null) {
-                    pictureImage.image = context.getDrawable(R.drawable.ic_placeholder_64_56c596)
-                } else {
-                    pictureImage.setImageURI(it.image)
-                }
+                it.image?.let { pictureImage.setImageURI(it) }
             }
         }
 

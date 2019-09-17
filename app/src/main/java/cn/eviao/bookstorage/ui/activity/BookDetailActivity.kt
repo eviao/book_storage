@@ -1,5 +1,6 @@
 package cn.eviao.bookstorage.ui.activity
 
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity.*
@@ -10,22 +11,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
-import androidx.core.view.setPadding
 import cn.eviao.bookstorage.R
+import cn.eviao.bookstorage.base.BaseActivity
 import cn.eviao.bookstorage.contract.BookDetailContract
-import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.presenter.BookDetailPresenter
-import cn.eviao.bookstorage.ui.BaseActivity
-import cn.eviao.bookstorage.ui.widget.SpecifiedDialogBuilder
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
 import cn.eviao.bookstorage.ui.widget.tickerView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
 import org.jetbrains.anko.*
@@ -33,15 +28,15 @@ import org.jetbrains.anko.appcompat.v7.themedToolbar
 import org.jetbrains.anko.cardview.v7.cardView
 
 
+@Suppress("DEPRECATION")
 class BookDetailActivity : BaseActivity(), BookDetailContract.View {
 
     lateinit override var presenter: BookDetailContract.Presenter
 
-    lateinit var ui: BookDetailActivityUi
+    lateinit var ui: BookDetailUi
     lateinit var isbn: String
 
-    private lateinit var loadingDialog: QMUITipDialog
-    private lateinit var updateBoxDialog: QMUIDialog
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +44,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         isbn = intent.getStringExtra("isbn")
         presenter = BookDetailPresenter(this, isbn)
 
-        loadingDialog = QMUITipDialog.Builder(this)
-            .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-            .setTipWord("正在加载")
-            .create()
-
-        ui = BookDetailActivityUi()
+        ui = BookDetailUi()
         ui.setContentView(this)
 
         ui.topToolbar.setNavigationOnClickListener {
@@ -62,16 +52,16 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         }
         ui.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
+                R.id.all_menu_item -> {
+                    showDetailDialog()
+                    true
+                }
                 R.id.box_menu_item -> {
                     presenter.loadBoxs()
                     true
                 }
                 R.id.delete_menu_item -> {
                     deleteBook()
-                    true
-                }
-                R.id.all_menu_item -> {
-                    presenter.loadBookAll()
                     true
                 }
                 else -> true
@@ -90,18 +80,24 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
     }
 
     override fun showLoading() {
-        loadingDialog.show()
+        loadingDialog = indeterminateProgressDialog("正在加载")
     }
 
     override fun hideLoading() {
-        loadingDialog.hide()
+        loadingDialog?.dismiss()
     }
 
     override fun showError(message: String) {
         longToast(message)
     }
 
-    override fun renderBook(book: Book) {
+    override fun renderBook() {
+        val book = (presenter as BookDetailPresenter).book
+        if (book == null) {
+            longToast("图书信息加载失败")
+            return
+        }
+
         ui.titleText.text = book.title
 
         val subtitle = book.subtitle ?: book.originTitle
@@ -139,8 +135,16 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         ui.catalogText.text = book.catalog
     }
 
-    override fun showDetailAllDialog(book: Book, box: Box?) {
-        val dialogUi = BookDetailAllDialogUi()
+    fun showDetailDialog() {
+        val book = (presenter as BookDetailPresenter).book
+        val box = (presenter as BookDetailPresenter).box
+
+        if (book == null) {
+            longToast("图书信息加载失败")
+            return
+        }
+
+        val dialogUi = BookDetailDialogUi()
         val view = dialogUi.createView(AnkoContext.create(this, this))
 
         dialogUi.isbnText.text = book.isbn
@@ -151,47 +155,29 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
             if (box.intro.isNullOrBlank()) box.name else "${box.name} [${box.intro}]"
         }
 
-        SpecifiedDialogBuilder(this)
-            .setContentView(view)
-            .setTitle("完整信息")
-            .addAction("关闭", { dialog, int -> dialog.dismiss() })
-            .create().show()
+        alert {
+            customView {
+                addView(view, LinearLayout.LayoutParams(matchParent, matchParent))
+            }
+            negativeButton("关闭", { dialog -> dialog.dismiss() })
+        }.show()
     }
 
-    override fun showUpdateBoxDialog(boxs: List<Box>, book: Book) {
+    override fun showUpdateBoxDialog(boxs: List<Box>) {
         if (boxs.isEmpty()) {
-            updateBoxDialog = QMUIDialog.MessageDialogBuilder(this)
-                .setTitle(R.string.box_list_title)
-                .setMessage(getString(R.string.box_list_empty))
-                .addAction("关闭", { dialog, int -> dialog.dismiss() })
-                .create()
-            updateBoxDialog.show()
+            alert {
+                message = getString(R.string.box_list_empty)
+                negativeButton("关闭", { dialog -> dialog.dismiss() })
+            }.show()
             return
         }
 
-        val builder = QMUIDialog.CheckableDialogBuilder(this)
-        builder.setTitle(R.string.box_list_title)
-        builder.addItems(boxs.map { it.name }.toTypedArray(), { dialog, int -> })
-        builder.addAction("取消",  { dialog, int -> dialog.dismiss() })
-        builder.addAction(0, "确定", QMUIDialogAction.ACTION_PROP_POSITIVE) { dialog, int ->
-            if (builder.checkedIndex < 0) {
-                dialog.dismiss()
-            } else {
-                val box = boxs.get(builder.checkedIndex)
-                presenter.updateBox(box)
-            }
-        }
+        val title = getString(R.string.box_list_title)
+        val items = boxs.map { it.name!! }
 
-        if (book.boxId != null) {
-            builder.checkedIndex = boxs.indexOf(boxs.find { it.id == book.boxId })
-        }
-
-        updateBoxDialog = builder.create()
-        updateBoxDialog.show()
-    }
-
-    override fun hideUpdateBoxDialog() {
-        updateBoxDialog.hide()
+        selector(title, items, { dialog, index ->
+            presenter.updateBox(boxs.get(index))
+        })
     }
 
     override fun startBookList() {
@@ -199,18 +185,15 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
     }
 
     fun deleteBook() {
-        QMUIDialog.MessageDialogBuilder(this)
-            .setMessage("确定要删除吗？")
-            .addAction("取消") { dialog, index -> dialog.dismiss() }
-            .addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE ) { dialog, index ->
-                presenter.deleteBook()
-            }
-            .create()
-            .show()
+        alert {
+            message = "确定要删除吗？"
+            negativeButton("取消", { dialog -> dialog.dismiss() })
+            positiveButton("确定", { dialog -> presenter.deleteBook() })
+        }.show()
     }
 }
 
-class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
+class BookDetailUi : AnkoComponent<BookDetailActivity> {
 
     lateinit var topToolbar: Toolbar
 
@@ -307,9 +290,8 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
                     cardView {
                         verticalLayout {
-                            themedTextView("内容说明", R.style.TextBold) {
+                            textView("内容说明") {
                                 textColor = getColor(context, R.color.app_text_color_70)
-                                textAppearance = R.style.TextBold
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
@@ -322,7 +304,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 
                     cardView {
                         verticalLayout {
-                            themedTextView("目录", R.style.TextBold) {
+                            textView("目录") {
                                 textColor = getColor(context, R.color.app_text_color)
                             }.lparams {
                                 bottomMargin = dip(4)
@@ -350,7 +332,7 @@ class BookDetailActivityUi : AnkoComponent<BookDetailActivity> {
 }
 
 
-class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
+class BookDetailDialogUi : AnkoComponent<BookDetailActivity> {
 
     lateinit var isbnText: TextView
     lateinit var pubdateText: TextView
@@ -360,7 +342,7 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
         verticalLayout {
             layoutParams = LinearLayout.LayoutParams(matchParent, matchParent)
-            setPadding(dip(24))
+            setPadding(dip(24), dip(24), dip(24), dip(0))
 
             linearLayout {
                 textView("ISBN") {
@@ -368,8 +350,8 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
                 }
 
                 isbnText = textView {
-                    textColor = getColor(context, R.color.app_text_color_70)
                     gravity = END
+                    textColor = getColor(context, R.color.app_text_color_70)
                 }.lparams(width = matchParent)
             }
 
@@ -379,8 +361,8 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
                 }
 
                 pubdateText = textView {
-                    textColor = getColor(context, R.color.app_text_color_70)
                     gravity = END
+                    textColor = getColor(context, R.color.app_text_color_70)
                 }.lparams(width = matchParent)
             }
 
@@ -390,8 +372,8 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
                 }
 
                 publisherText = textView {
-                    textColor = getColor(context, R.color.app_text_color_70)
                     gravity = END
+                    textColor = getColor(context, R.color.app_text_color_70)
                 }.lparams(width = matchParent)
             }
 
@@ -401,8 +383,8 @@ class BookDetailAllDialogUi : AnkoComponent<BookDetailActivity> {
                 }
 
                 boxText = textView {
-                    textColor = getColor(context, R.color.app_text_color_70)
                     gravity = END
+                    textColor = getColor(context, R.color.app_text_color_70)
                 }.lparams(width = matchParent)
             }
         }.applyRecursively {

@@ -24,7 +24,7 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
         compositeDisposable.clear()
     }
 
-    override fun loadDetail(isbn: String) {
+    override fun loadBook(isbn: String) {
         if (!isValidISBN(isbn)) {
             view.showErrorISBN(isbn)
             view.restartScanning()
@@ -43,7 +43,8 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
                     view.startFetchDetail(isbn)
                 }
             }, {
-                view.showError(it.message ?: "加载失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 }

@@ -1,35 +1,30 @@
 package cn.eviao.bookstorage.contract
 
+import cn.eviao.bookstorage.base.BasePresenter
+import cn.eviao.bookstorage.base.BaseView
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.model.Box
-import cn.eviao.bookstorage.presenter.BasePresenter
-import cn.eviao.bookstorage.ui.BaseView
-import io.reactivex.Single
 
 interface BookDetailContract {
 
     interface View : BaseView<Presenter> {
+
         fun showLoading()
 
         fun hideLoading()
 
         fun showError(message: String)
 
-        fun showUpdateBoxDialog(boxs: List<Box>, book: Book)
-
-        fun hideUpdateBoxDialog()
-
-        fun showDetailAllDialog(book: Book, box: Box?)
+        fun showUpdateBoxDialog(boxs: List<Box>)
 
         fun startBookList()
 
-        fun renderBook(book: Book)
+        fun renderBook()
     }
 
     interface Presenter : BasePresenter {
-        fun loadBook()
 
-        fun loadBookAll()
+        fun loadBook()
 
         fun loadBoxs()
 

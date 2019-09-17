@@ -56,7 +56,6 @@ dependencies {
     implementation deps.easypermissions
     implementation deps.jsoup
 
-    implementation deps.qmui
     implementation deps.fresco
     implementation deps.ticker
     implementation deps.multiple_status_view

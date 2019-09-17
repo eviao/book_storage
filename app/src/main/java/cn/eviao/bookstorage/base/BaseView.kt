@@ -1,4 +1,4 @@
-package cn.eviao.bookstorage.ui
+package cn.eviao.bookstorage.base
 
 interface BaseView<T> {
 

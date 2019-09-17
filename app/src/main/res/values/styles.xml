@@ -1,14 +1,19 @@
 <resources>
 
-    <style name="AppTheme" parent="QMUI.Compat">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">16sp</item>
 
-        <item name="qmui_dialog_action_style">@style/AppTheme.Dialog.Action</item>
-        <item name="qmui_dialog_menu_item_style">@style/AppTheme.Dialog.MenuItem</item>
+        <item name="android:imageButtonStyle">@style/ImageButton.Compat</item>
+        <item name="imageButtonStyle">@style/ImageButton.Compat</item>
+    </style>
+
+    <style name="ImageButton.Compat" parent="@style/Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.Search">
@@ -22,18 +27,5 @@
         <item name="android:scrollbars">none</item>
         <item name="android:scrollbarThumbVertical">@null</item>
         <item name="android:scrollbarTrackVertical">@null</item>
-    </style>
-
-    <style name="TextBold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="AppTheme.Dialog.MenuItem" parent="QMUI.Dialog_MenuItem">
-        <item name="qmui_dialog_menu_item_mark_drawable">@drawable/dialog_check_mark</item>
-    </style>
-    <style name="AppTheme.Dialog.Action" parent="QMUI.Dialog.Action">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="qmui_dialog_positive_action_text_color">@color/colorPrimary</item>
-        <item name="qmui_dialog_negative_action_text_color">@color/colorDanger</item>
     </style>
 </resources>

@@ -65,7 +65,8 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
                 view.hideEditBoxDialog()
                 view.showToast("保存成功")
             }, {
-                view.showError(it.message ?: "创建失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 
@@ -86,7 +87,8 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
                 view.showToast("保存成功")
                 view.hideEditBoxDialog()
             }, {
-                view.showError(it.message ?: "修改失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 
@@ -99,7 +101,8 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
                 view.showToast("删除成功")
                 view.hideEditBoxDialog()
             }, {
-                view.showError(it.message ?: "删除失败")
+                it.printStackTrace()
+                view.showError(it.message!!)
             }))
     }
 }
