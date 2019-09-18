@@ -16,5 +16,5 @@
     <color name="app_background_color">#F1F2F3</color>
     <color name="app_search_background_color">#E3E7E9</color>
     <color name="app_editor_background_color">#F5F6F7</color>
-    <color name="app_divider_color">#56C596</color>
+    <color name="app_divider_color">#F1F2F3</color>
 </resources>

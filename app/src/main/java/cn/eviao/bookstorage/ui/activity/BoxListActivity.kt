@@ -243,7 +243,7 @@ class BoxListUi : AnkoComponent<BoxListActivity> {
 
                         addItemDecoration(
                             DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                                setDrawable(context.getDrawable(R.drawable.list_divider))
+                                setDrawable(context.getDrawable(R.drawable.divider_list))
                             }
                         )
 

@@ -2,7 +2,6 @@ package cn.eviao.bookstorage.contract
 
 import cn.eviao.bookstorage.base.BasePresenter
 import cn.eviao.bookstorage.base.BaseView
-import cn.eviao.bookstorage.model.Book
 
 interface FetchDetailContract {
 

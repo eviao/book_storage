@@ -89,7 +89,7 @@ class BoxListItemUi : AnkoComponent<ViewGroup> {
         verticalLayout {
             layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent)
             padding = dip(16)
-            backgroundColor = getColor(context, R.color.app_background_color)
+            backgroundColor = Color.WHITE
 
             textView {
                 id = ID_NAME

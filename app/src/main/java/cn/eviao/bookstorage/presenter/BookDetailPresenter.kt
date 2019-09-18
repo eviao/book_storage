@@ -6,7 +6,6 @@ import cn.eviao.bookstorage.model.Box
 import cn.eviao.bookstorage.persistence.BookDao
 import cn.eviao.bookstorage.persistence.BoxDao
 import cn.eviao.bookstorage.persistence.DataSource
-import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
