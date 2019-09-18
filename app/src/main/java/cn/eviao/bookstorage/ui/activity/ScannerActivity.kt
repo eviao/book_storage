@@ -1,7 +1,6 @@
 package cn.eviao.bookstorage.ui.activity
 
 import android.Manifest
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -31,7 +30,6 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     override lateinit var presenter: ScannerContract.Presenter
 
     private lateinit var scannerView: ZXingScannerView
-    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,14 +95,6 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
     private fun startShaking() {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(VibrationEffect.createOneShot(200, 128))
-    }
-
-    override fun showLoading() {
-        loadingDialog = indeterminateProgressDialog("正在加载")
-    }
-
-    override fun hideLoading() {
-        loadingDialog?.dismiss()
     }
 
     override fun showError(message: String) {

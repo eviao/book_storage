@@ -36,7 +36,6 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
     private lateinit var ui: BookDetailUi
 
     private var isbn: String? = null
-    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,12 +83,8 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         presenter.unsubscribe()
     }
 
-    override fun showLoading() {
-        loadingDialog = indeterminateProgressDialog("正在加载")
-    }
-
-    override fun hideLoading() {
-        loadingDialog?.dismiss()
+    override fun showToast(message: String) {
+        toast(message)
     }
 
     override fun showError(message: String) {
@@ -180,7 +175,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         val title = getString(R.string.box_list_title)
         val items = boxs.map { it.name!! }
 
-        selector(title, items, { dialog, index ->
+        selector(title, items, { _, index ->
             presenter.updateBox(boxs.get(index))
         })
     }
@@ -193,7 +188,7 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
         alert {
             message = "确定要删除吗？"
             negativeButton("取消", { dialog -> dialog.dismiss() })
-            positiveButton("确定", { dialog -> presenter.deleteBook() })
+            positiveButton("确定", { _ -> presenter.deleteBook() })
         }.show()
     }
 }

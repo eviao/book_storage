@@ -61,7 +61,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 view.hideEditBoxDialog()
-                view.showToast("保存成功")
+                view.showToast("创建成功")
             }, {
                 it.printStackTrace()
                 view.showError(it.message!!)
@@ -80,7 +80,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.showToast("保存成功")
+                view.showToast("修改已保存")
                 view.hideEditBoxDialog()
             }, {
                 it.printStackTrace()
@@ -93,7 +93,7 @@ class BoxListPresenter(val view: BoxListContract.View) : BoxListContract.Present
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                view.showToast("删除成功")
+                view.showToast("已删除")
                 view.hideEditBoxDialog()
             }, {
                 it.printStackTrace()

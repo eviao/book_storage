@@ -9,13 +9,13 @@ interface FetchDetailContract {
 
         fun showSkeleton()
 
-        fun showSubmitLoading()
+        fun showLoading()
 
-        fun hideSubmitLoading()
-
-        fun disableSubmitButton()
+        fun hideLoading()
 
         fun showError(message: String)
+
+        fun disableSubmitButton()
 
         fun startBookList()
 

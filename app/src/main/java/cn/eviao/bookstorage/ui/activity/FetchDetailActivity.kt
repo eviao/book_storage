@@ -36,7 +36,7 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
     private lateinit var ui: FetchDetailUi
 
     private var isbn: String? = null
-    private var submitLoadingDialog: Dialog? = null
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,12 +96,14 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
         ui.statusView.showError(view, lparams)
     }
 
-    override fun showSubmitLoading() {
-        submitLoadingDialog = indeterminateProgressDialog("正在保存")
+    override fun showLoading() {
+        loadingDialog = indeterminateProgressDialog("正在加载") {
+            setCancelable(false)
+        }
     }
 
-    override fun hideSubmitLoading() {
-        submitLoadingDialog?.dismiss()
+    override fun hideLoading() {
+        loadingDialog?.dismiss()
     }
 
     override fun disableSubmitButton() {

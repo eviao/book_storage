@@ -8,9 +8,7 @@ interface BookDetailContract {
 
     interface View : BaseView<Presenter> {
 
-        fun showLoading()
-
-        fun hideLoading()
+        fun showToast(message: String)
 
         fun showError(message: String)
 

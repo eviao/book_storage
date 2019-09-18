@@ -7,10 +7,6 @@ interface ScannerContract {
 
     interface View : BaseView<Presenter> {
 
-        fun showLoading()
-
-        fun hideLoading()
-
         fun showError(message: String)
 
         fun showInvalidISBN(isbn: String)

@@ -63,9 +63,7 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .doOnSubscribe {
                 book = null
                 box = null
-                view.showLoading()
             }
-            .doFinally { view.hideLoading() }
             .subscribe({
                 view.renderBook()
             }, {
@@ -95,6 +93,7 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                view.showToast("修改已保存")
                 loadBook()
             }, {
                 it.printStackTrace()
@@ -111,6 +110,7 @@ class BookDetailPresenter(val view: BookDetailContract.View, val isbn: String) :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                view.showToast("已删除")
                 view.startBookList()
             }, {
                 it.printStackTrace()

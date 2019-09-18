@@ -34,8 +34,6 @@ class ScannerPresenter(val view: ScannerContract.View) : ScannerContract.Present
         compositeDisposable.add(bookDao.countBy(isbn)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { view.showLoading() }
-            .doFinally { view.hideLoading() }
             .subscribe({
                 if (it > 0) {
                     view.startBookDetail(isbn)
