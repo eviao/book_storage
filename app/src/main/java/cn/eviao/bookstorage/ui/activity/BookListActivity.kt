@@ -112,18 +112,19 @@ class BookListUi() : AnkoComponent<BookListActivity> {
                     hintResource = R.string.search_hint
                     filters = arrayOf(InputFilter.LengthFilter(32))
 
+                    textColor = getColor(context, R.color.app_search_text_color)
                     background = getDrawable(context, R.drawable.edittext_search)
                 }.lparams {
                     weight = 1f
                     rightMargin = dip(8)
                 }
 
-                boxButton = imageButton(imageResource = R.drawable.ic_box_32).lparams {
+                boxButton = imageButton(imageResource = R.drawable.ic_box_32_ff6b6b).lparams {
                     gravity = CENTER_VERTICAL
                     rightMargin = dip(8)
                 }
 
-                scanButton = imageButton(imageResource = R.drawable.ic_barcode_32_205072).lparams {
+                scanButton = imageButton(imageResource = R.drawable.ic_barcode_32_ff6b6b).lparams {
                    gravity = CENTER_VERTICAL
                 }
             }.lparams(width = matchParent, height = wrapContent) {

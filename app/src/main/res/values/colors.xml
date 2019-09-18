@@ -3,9 +3,8 @@
     <color name="ic_launcher_background">#56C596</color>
     
     <color name="colorPrimary">#56C596</color>
-    <color name="colorPrimaryDark">#205072</color>
-    <color name="colorAccent">#FFCA3A</color>
-    <color name="colorDanger">#F24C27</color>
+    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <color name="colorAccent">#FF6B6B</color>
 
     <color name="app_text_color">#2A2A2A</color>
     <color name="app_text_color_70">#4A4A4A</color>
@@ -13,8 +12,11 @@
     <color name="app_text_color_30">#9A9A9A</color>
     <color name="app_text_color_10">#AAAAAA</color>
 
+    <color name="app_search_text_color">#7A7A7A</color>
+    <color name="app_search_hint_text_color">#7A7A7A</color>
+    <color name="app_search_background_color">#F0F0F0</color>
+
     <color name="app_background_color">#F1F2F3</color>
-    <color name="app_search_background_color">#E3E7E9</color>
     <color name="app_editor_background_color">#F5F6F7</color>
     <color name="app_divider_color">#F1F2F3</color>
 </resources>

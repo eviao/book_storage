@@ -19,8 +19,7 @@
     <style name="AppTheme.Search">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/app_search_hint_text_color</item>
     </style>
 
     <style name="AppTheme.Scrollbar">

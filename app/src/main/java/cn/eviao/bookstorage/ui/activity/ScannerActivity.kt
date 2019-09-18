@@ -2,6 +2,7 @@ package cn.eviao.bookstorage.ui.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.VibrationEffect
@@ -29,17 +30,20 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
 
     override lateinit var presenter: ScannerContract.Presenter
 
+    private lateinit var ui: ScannerUi
     private lateinit var scannerView: ZXingScannerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
         presenter = ScannerPresenter(this)
 
-        scannerView = initScannerView()
-
-        val ui = ScannerUi()
+        ui = ScannerUi()
         ui.setContentView(this)
+
+        scannerView = initScannerView()
         ui.scannerWrapperView.addView(scannerView)
     }
 
@@ -57,7 +61,7 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
 
     private fun initScannerView(): ZXingScannerView {
         val scanner = ZXingScannerView(this)
-        scanner.setBorderColor(getColor(R.color.colorPrimary))
+        scanner.setBorderColor(getColor(R.color.colorAccent))
         scanner.setBorderCornerRadius(10)
         scanner.setBorderStrokeWidth(10)
         scanner.setLaserColor(getColor(R.color.colorAccent))
