@@ -87,6 +87,10 @@ class FetchDetailActivity : BaseActivity(), FetchDetailContract.View {
         )
     }
 
+    override fun showToast(message: String) {
+        toast(message)
+    }
+
     override fun showError(message: String) {
         val view = layoutInflater.inflate(R.layout.layout_fetch_detail_error, null)
         val messageText = view.findViewById<TextView>(R.id.message_text)

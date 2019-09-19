@@ -9,6 +9,8 @@ interface FetchDetailContract {
 
         fun showSkeleton()
 
+        fun showToast(message: String)
+
         fun showLoading()
 
         fun hideLoading()

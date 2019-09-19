@@ -79,6 +79,7 @@ class FetchDetailPresenter(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { view.disableSubmitButton() }
             .subscribe({
+                view.showToast("已添加")
                 view.startBookList()
             }, {
                 it.printStackTrace()
