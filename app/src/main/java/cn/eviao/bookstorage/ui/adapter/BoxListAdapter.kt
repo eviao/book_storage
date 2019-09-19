@@ -95,14 +95,14 @@ class BoxListItemUi : AnkoComponent<ViewGroup> {
                 id = ID_NAME
 
                 textSize = sp(6).toFloat()
-                textColor = getColor(context, R.color.app_text_color_70)
+                textColor = getColor(context, R.color.app_text_color_secondary)
             }.lparams(width = matchParent)
 
             textView {
                 id = ID_INTRO
 
                 textSize = sp(6).toFloat()
-                textColor = getColor(context, R.color.app_text_color_10)
+                textColor = getColor(context, R.color.app_text_color_tertiary)
             }.lparams(width = matchParent)
         }
     }

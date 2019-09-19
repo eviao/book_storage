@@ -174,7 +174,7 @@ class FetchDetailUi : AnkoComponent<FetchDetailActivity> {
                                     gravity = CENTER
 
                                     textSize = sp(8).toFloat()
-                                    textColor = getColor(context, R.color.app_text_color)
+                                    textColor = getColor(context, R.color.app_text_color_primary)
                                 }
 
                                 pictureImage = simpleDraweeView{
@@ -196,11 +196,11 @@ class FetchDetailUi : AnkoComponent<FetchDetailActivity> {
 
                                 linearLayout {
                                     textView("ISBN") {
-                                        textColor = getColor(context, R.color.app_text_color_50)
+                                        textColor = getColor(context, R.color.app_text_color_tertiary)
                                     }
                                     isbnText = textView {
                                         gravity = END
-                                        textColor = getColor(context, R.color.app_text_color_70)
+                                        textColor = getColor(context, R.color.app_text_color_secondary)
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }
@@ -210,11 +210,11 @@ class FetchDetailUi : AnkoComponent<FetchDetailActivity> {
 
                                 linearLayout {
                                     textView("作者") {
-                                        textColor = getColor(context, R.color.app_text_color_50)
+                                        textColor = getColor(context, R.color.app_text_color_tertiary)
                                     }
                                     authorsText = textView {
                                         gravity = END
-                                        textColor = getColor(context, R.color.app_text_color_70)
+                                        textColor = getColor(context, R.color.app_text_color_secondary)
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }
@@ -224,11 +224,11 @@ class FetchDetailUi : AnkoComponent<FetchDetailActivity> {
 
                                 linearLayout {
                                     textView("出版社") {
-                                        textColor = getColor(context, R.color.app_text_color_50)
+                                        textColor = getColor(context, R.color.app_text_color_tertiary)
                                     }
                                     publisherText = textView {
                                         gravity = END
-                                        textColor = getColor(context, R.color.app_text_color_70)
+                                        textColor = getColor(context, R.color.app_text_color_secondary)
                                     }.lparams(width = matchParent) {
                                         leftMargin = dip(16)
                                     }

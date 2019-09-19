@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/box_list_empty"
-                    android:textColor="@color/app_text_color_10"
+                    android:textColor="@color/app_text_color_tertiary"
                     android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

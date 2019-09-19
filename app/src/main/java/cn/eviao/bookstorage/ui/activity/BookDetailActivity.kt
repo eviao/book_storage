@@ -1,6 +1,5 @@
 package cn.eviao.bookstorage.ui.activity
 
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity.*
@@ -229,11 +228,11 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
                         verticalLayout {
                             titleText = textView {
                                 textSize = sp(8).toFloat()
-                                textColor = getColor(context, R.color.app_text_color)
+                                textColor = getColor(context, R.color.app_text_color_primary)
                             }
                             subtitleText = textView {
                                 textSize = sp(6).toFloat()
-                                textColor = getColor(context, R.color.app_text_color_50)
+                                textColor = getColor(context, R.color.app_text_color_tertiary)
                             }
                         }
                     }
@@ -275,7 +274,7 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
                             }.applyRecursively {
                                 when (it) {
                                     is TextView -> {
-                                        it.textColor = getColor(context, R.color.app_text_color_70)
+                                        it.textColor = getColor(context, R.color.app_text_color_secondary)
                                         it.gravity = END
 
                                         it.lparams(width = matchParent) {
@@ -290,28 +289,28 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
 
                     cardView {
                         verticalLayout {
-                            textView("内容说明") {
-                                textColor = getColor(context, R.color.app_text_color_70)
+                            themedTextView("内容说明", R.style.AppTheme_BookDetail_Header) {
+                                textColor = getColor(context, R.color.app_text_color_secondary)
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
 
                             summaryText = textView {
-                                textColor = getColor(context, R.color.app_text_color_50)
+                                textColor = getColor(context, R.color.app_text_color_tertiary)
                             }
                         }
                     }
 
                     cardView {
                         verticalLayout {
-                            textView("目录") {
-                                textColor = getColor(context, R.color.app_text_color)
+                            themedTextView("目录", R.style.AppTheme_BookDetail_Header) {
+                                textColor = getColor(context, R.color.app_text_color_secondary)
                             }.lparams {
                                 bottomMargin = dip(4)
                             }
 
                             catalogText = textView {
-                                textColor = getColor(context, R.color.app_text_color_50)
+                                textColor = getColor(context, R.color.app_text_color_tertiary)
                             }
                         }
                     }
@@ -342,50 +341,26 @@ class BookDetailDialogUi : AnkoComponent<BookDetailActivity> {
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
         verticalLayout {
             layoutParams = LinearLayout.LayoutParams(matchParent, matchParent)
-            setPadding(dip(24), dip(24), dip(24), dip(0))
+            setPadding(dip(24), dip(24), dip(24), dip(24))
 
             linearLayout {
-                textView("ISBN") {
-                    textColor = getColor(context, R.color.app_text_color_30)
-                }
-
-                isbnText = textView {
-                    gravity = END
-                    textColor = getColor(context, R.color.app_text_color_70)
-                }.lparams(width = matchParent)
+                themedTextView("ISBN", R.style.AppTheme_BookDetail_Label)
+                isbnText = themedTextView(R.style.AppTheme_BookDetail_Description).lparams(width = matchParent)
             }
 
             linearLayout {
-                textView("出版时间") {
-                    textColor = getColor(context, R.color.app_text_color_30)
-                }
-
-                pubdateText = textView {
-                    gravity = END
-                    textColor = getColor(context, R.color.app_text_color_70)
-                }.lparams(width = matchParent)
+                themedTextView("出版时间", R.style.AppTheme_BookDetail_Label)
+                pubdateText = themedTextView(R.style.AppTheme_BookDetail_Description).lparams(width = matchParent)
             }
 
             linearLayout {
-                textView("出版社") {
-                    textColor = getColor(context, R.color.app_text_color_30)
-                }
-
-                publisherText = textView {
-                    gravity = END
-                    textColor = getColor(context, R.color.app_text_color_70)
-                }.lparams(width = matchParent)
+                themedTextView("出版社", R.style.AppTheme_BookDetail_Label)
+                publisherText = themedTextView(R.style.AppTheme_BookDetail_Description).lparams(width = matchParent)
             }
 
             linearLayout {
-                textView(R.string.box_list_title) {
-                    textColor = getColor(context, R.color.app_text_color_30)
-                }
-
-                boxText = textView {
-                    gravity = END
-                    textColor = getColor(context, R.color.app_text_color_70)
-                }.lparams(width = matchParent)
+                themedTextView(R.string.box_list_title, R.style.AppTheme_BookDetail_Label)
+                boxText = themedTextView(R.style.AppTheme_BookDetail_Description).lparams(width = matchParent)
             }
         }.applyRecursively {
             when (it) {

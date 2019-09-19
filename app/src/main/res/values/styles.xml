@@ -27,4 +27,16 @@
         <item name="android:scrollbarThumbVertical">@null</item>
         <item name="android:scrollbarTrackVertical">@null</item>
     </style>
+
+    <style name="AppTheme.BookDetail"></style>
+    <style name="AppTheme.BookDetail.Header">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="AppTheme.BookDetail.Label">
+        <item name="android:textColor">@color/app_text_color_tertiary</item>
+    </style>
+    <style name="AppTheme.BookDetail.Description">
+        <item name="android:textColor">@color/app_text_color_secondary</item>
+        <item name="android:gravity">end</item>
+    </style>
 </resources>

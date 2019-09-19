@@ -224,7 +224,7 @@ class BoxListUi : AnkoComponent<BoxListActivity> {
         verticalLayout {
             topToolbar = themedToolbar {
                 title = resources.getString(R.string.box_list_title)
-                setTitleTextColor(getColor(context, R.color.app_text_color_70))
+                setTitleTextColor(getColor(context, R.color.app_text_color_secondary))
 
                 backgroundColor = Color.WHITE
                 navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_left_32_56c596)
