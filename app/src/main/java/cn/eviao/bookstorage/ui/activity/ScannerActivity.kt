@@ -2,7 +2,6 @@ package cn.eviao.bookstorage.ui.activity
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.VibrationEffect
@@ -35,8 +34,6 @@ class ScannerActivity : BaseActivity(), ScannerContract.View, ZXingScannerView.R
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         presenter = ScannerPresenter(this)
 

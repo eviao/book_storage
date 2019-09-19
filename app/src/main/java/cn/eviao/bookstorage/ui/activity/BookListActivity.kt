@@ -119,12 +119,12 @@ class BookListUi() : AnkoComponent<BookListActivity> {
                     rightMargin = dip(8)
                 }
 
-                boxButton = imageButton(imageResource = R.drawable.ic_box_32_ff6b6b).lparams {
+                boxButton = imageButton(imageResource = R.drawable.ic_box_32_56c596).lparams {
                     gravity = CENTER_VERTICAL
                     rightMargin = dip(8)
                 }
 
-                scanButton = imageButton(imageResource = R.drawable.ic_barcode_32_ff6b6b).lparams {
+                scanButton = imageButton(imageResource = R.drawable.ic_barcode_32_56c596).lparams {
                    gravity = CENTER_VERTICAL
                 }
             }.lparams(width = matchParent, height = wrapContent) {
