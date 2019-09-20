@@ -28,7 +28,7 @@
         <item name="android:scrollbarTrackVertical">@null</item>
     </style>
 
-    <style name="AppTheme.BookDetail"></style>
+    <style name="AppTheme.BookDetail" />
     <style name="AppTheme.BookDetail.Header">
         <item name="android:textStyle">bold</item>
     </style>

@@ -1,5 +1,6 @@
 package cn.eviao.bookstorage.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType.TYPE_CLASS_TEXT
@@ -10,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.GridLayoutManager
 import cn.eviao.bookstorage.R
 import cn.eviao.bookstorage.base.BaseActivity
@@ -104,6 +106,9 @@ class BookListUi() : AnkoComponent<BookListActivity> {
         verticalLayout {
             // header
             linearLayout {
+                backgroundColor = Color.WHITE
+                setPadding(dip(16))
+
                 searchEdit = themedEditText(R.style.AppTheme_Search) {
                     imeOptions = EditorInfo.IME_ACTION_SEARCH
                     inputType = TYPE_CLASS_TEXT or TYPE_TEXT_FLAG_AUTO_COMPLETE
@@ -127,9 +132,7 @@ class BookListUi() : AnkoComponent<BookListActivity> {
                 scanButton = imageButton(imageResource = R.drawable.ic_barcode_32_56c596).lparams {
                    gravity = CENTER_VERTICAL
                 }
-            }.lparams(width = matchParent, height = wrapContent) {
-                margin = dip(16)
-            }
+            }.lparams(width = matchParent, height = wrapContent)
 
             // list
             frameLayout {
