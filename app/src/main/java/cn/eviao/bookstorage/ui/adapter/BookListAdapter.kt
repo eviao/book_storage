@@ -1,14 +1,17 @@
 package cn.eviao.bookstorage.ui.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import cn.eviao.bookstorage.drawable.TextDrawable
 import cn.eviao.bookstorage.model.Book
 import cn.eviao.bookstorage.ui.activity.BookDetailActivity
 import cn.eviao.bookstorage.ui.widget.DiffCallback
 import cn.eviao.bookstorage.ui.widget.simpleDraweeView
+import com.facebook.drawee.drawable.ProgressBarDrawable
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
@@ -17,8 +20,11 @@ import org.jetbrains.anko.*
 
 class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAdapter.ViewHolder>(DiffCallback())  {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(context, BookListItemUi().createView(AnkoContext.create(context, parent)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        return ViewHolder(context, BookListItemUi().createView(AnkoContext.create(context, parent)))
+    }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bindTo(getItem(position))
@@ -36,7 +42,9 @@ class BookListAdapter(val context: Context) : PagedListAdapter<Book, BookListAda
         fun bindTo(book: Book?) {
             book?.let {
                 this.book = it
-                it.image?.let { pictureImage.setImageURI(it) }
+
+                pictureImage.setImageURI(it.image)
+                pictureImage.hierarchy.setFailureImage(TextDrawable(context, it.title!!))
             }
         }
 
@@ -57,7 +65,7 @@ class BookListItemUi : AnkoComponent<ViewGroup> {
 
     override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
 
-        verticalLayout {
+        frameLayout {
             simpleDraweeView {
                 id = ID_PICTURE
 
