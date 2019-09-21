@@ -130,8 +130,17 @@ class BookDetailActivity : BaseActivity(), BookDetailContract.View {
             ui.tagsText.text = book.tags
         }
 
-        ui.summaryText.text = book.summary
-        ui.catalogText.text = book.catalog
+        if (book.summary.isNullOrBlank()) {
+            ui.summaryCard.visibility = GONE
+        } else {
+            ui.summaryText.text = book.summary
+        }
+
+        if (book.catalog.isNullOrBlank()) {
+            ui.catalogCard.visibility = GONE
+        } else {
+            ui.catalogText.text = book.catalog
+        }
     }
 
     fun showDetailDialog() {
@@ -204,7 +213,10 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
     lateinit var authorsText: TextView
     lateinit var tagsText: TextView
 
+    lateinit var summaryCard: CardView
     lateinit var summaryText: TextView
+
+    lateinit var catalogCard: CardView
     lateinit var catalogText: TextView
 
     override fun createView(ui: AnkoContext<BookDetailActivity>) = with(ui) {
@@ -287,7 +299,7 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
                         }.lparams(width = matchParent)
                     }
 
-                    cardView {
+                    summaryCard = cardView {
                         verticalLayout {
                             themedTextView("内容说明", R.style.AppTheme_BookDetail_Header) {
                                 textColor = getColor(context, R.color.app_text_color_secondary)
@@ -301,7 +313,7 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
                         }
                     }
 
-                    cardView {
+                    catalogCard = cardView {
                         verticalLayout {
                             themedTextView("目录", R.style.AppTheme_BookDetail_Header) {
                                 textColor = getColor(context, R.color.app_text_color_secondary)
