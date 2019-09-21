@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setMargins
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import cn.eviao.bookstorage.drawable.TextDrawable
@@ -66,6 +67,8 @@ class BookListItemUi : AnkoComponent<ViewGroup> {
     override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
 
         frameLayout {
+            topPadding = dip(8)
+
             simpleDraweeView {
                 id = ID_PICTURE
 
@@ -73,7 +76,7 @@ class BookListItemUi : AnkoComponent<ViewGroup> {
                 hierarchy.actualImageScaleType = ScalingUtils.ScaleType.FIT_CENTER
                 setHierarchy(hierarchy)
             }.lparams(width = matchParent, height = dip(110)) {
-                setMargins(dip(8), dip(24), dip(8), dip(0))
+                setMargins(dip(8))
             }
         }
     }
