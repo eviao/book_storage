@@ -241,6 +241,8 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
                             titleText = textView {
                                 textSize = sp(8).toFloat()
                                 textColor = getColor(context, R.color.app_text_color_primary)
+
+                                setTextIsSelectable(true)
                             }
                             subtitleText = textView {
                                 textSize = sp(6).toFloat()
@@ -323,6 +325,7 @@ class BookDetailUi : AnkoComponent<BookDetailActivity> {
 
                             catalogText = textView {
                                 textColor = getColor(context, R.color.app_text_color_tertiary)
+                                setTextIsSelectable(true)
                             }
                         }
                     }
